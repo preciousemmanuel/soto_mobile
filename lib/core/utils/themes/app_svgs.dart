@@ -12,8 +12,12 @@ class AppSvgs {
   static const String fb = "$svgIcon/fb.svg";
   static const String google = "$svgIcon/google.svg";
 
-  static const String lock = "$svgIcon/lock.svg";
-  static const String mail = "$svgIcon/mail.svg";
+  static const String order = "$svgIcon/order.svg";
+  static const String orderSolid = "$svgIcon/orderSolid.svg";
+  static const String profile = "$svgIcon/profile.svg";
+  static const String profileSolid = "$svgIcon/profileSolid.svg";
+  static const String cart = "$svgIcon/cart.svg";
+  static const String cartSolid = "$svgIcon/cartSolid.svg";
 }
 
 SizedBox svgHelper(

@@ -19,6 +19,11 @@ class AppImages {
   static const mail = "$images/mail.png";
   static const lock = "$images/lock.png";
   static const success = "$images/success.png";
+
+  static const cat = "$images/archive/cat.png";
+  static const banner = "$images/archive/banner.png";
+  static const bestSeller = "$images/archive/bestSeller.png";
+  static const product = "$images/archive/product.png";
 }
 
 // Image Helper

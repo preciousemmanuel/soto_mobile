@@ -38,4 +38,5 @@ class AppColors {
   static const text40 = Color(0xFF414040);
   static const text26 = Color(0xFF262626);
   static const text5C = Color(0xFF5D5C5C);
+  static const textAA = Color(0xFFAAAAAA);
 }
