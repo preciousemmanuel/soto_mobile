@@ -1,0 +1,4 @@
+enum SelectBankType {
+  sendMoney,
+  beneficiary,
+}
