@@ -1,4 +1,4 @@
-import 'package:soto_ecommerce/lib.dart';
+import 'package:soto_ecommerce/buyer/buyer.dart';
 
 void main() {
   runApp(const MyApp());
@@ -7,7 +7,7 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+  // @override
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -21,9 +21,10 @@ class MyApp extends StatelessWidget {
             splashColor: Colors.transparent,
             highlightColor: Colors.transparent,
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+            fontFamily: 'Poppins',
             useMaterial3: true,
           ),
-          home: const SplashScreen(),
+          home: const DashboardNav(),
         );
       },
     );

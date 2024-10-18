@@ -1,6 +1,6 @@
 // ignore_for_file: constant_identifier_names
 
-import 'package:soto_ecommerce/core/core.dart';
+import 'package:soto_ecommerce/buyer/core/core.dart';
 import 'package:soto_ecommerce/env/env.dart';
 
 class EnvMain {
