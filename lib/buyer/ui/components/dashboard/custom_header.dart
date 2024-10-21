@@ -4,11 +4,13 @@ class CustomHeader extends StatelessWidget {
   const CustomHeader({
     super.key,
     required this.title,
+    this.titleWeight,
     this.backBtn,
   });
 
   final String title;
   final VoidCallback? backBtn;
+  final FontWeight? titleWeight;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +34,7 @@ class CustomHeader extends StatelessWidget {
           child: Text(
             title,
             style: AppTypography.text24.copyWith(
-              fontWeight: FontWeight.w600,
+              fontWeight: titleWeight ?? FontWeight.w600,
             ),
           ),
         ),

@@ -2,6 +2,7 @@ import 'package:soto_ecommerce/buyer/buyer.dart';
 
 class CustomTextField extends StatefulWidget {
   final String? errorText, labelText, hintText;
+  final int? maxLines;
   final TextEditingController? controller;
   final Function(String)? onChanged;
   final Function(String)? onSubmitted;
@@ -24,6 +25,7 @@ class CustomTextField extends StatefulWidget {
 
   const CustomTextField({
     super.key,
+    this.maxLines,
     this.labelText,
     this.hintText,
     this.labelColor,
@@ -112,10 +114,11 @@ class _CustomTextFieldState extends State<CustomTextField> {
         Container(
           // color: AppColors.red,
           width: widget.width ?? double.infinity,
-          height: widget.height ?? 49.h,
+          height: widget.maxLines != null ? null : widget.height ?? 49.h,
           alignment: Alignment.center,
           child: Center(
             child: TextField(
+              maxLines: widget.maxLines ?? 1,
               textAlign: widget.textAlign,
               // cursorHeight: 14.sp,
               cursorColor: AppColors.black,

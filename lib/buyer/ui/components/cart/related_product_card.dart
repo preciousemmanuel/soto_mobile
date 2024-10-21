@@ -14,11 +14,11 @@ class RelatedProductCard extends StatelessWidget {
       decoration: BoxDecoration(
           color: AppColors.white,
           borderRadius: BorderRadius.circular(Sizer.radius(8)),
-          boxShadow: const [
+          boxShadow: [
             BoxShadow(
-              color: Colors.black12,
-              blurRadius: 10,
-              offset: Offset(0, 5),
+              color: Colors.black12.withOpacity(0.1),
+              blurRadius: 20,
+              offset: const Offset(0, 5),
             )
           ]),
       child: Column(

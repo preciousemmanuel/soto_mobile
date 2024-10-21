@@ -96,7 +96,7 @@ class CheckoutScreen extends StatelessWidget {
               total: 'N500,000',
               btnText: 'Pay',
               btnOntap: () {
-                RouterNav.push(context, const CheckoutScreen());
+                RouterNav.push(context, const CheckoutPaymentScreen());
               },
             ),
             const YBox(50),

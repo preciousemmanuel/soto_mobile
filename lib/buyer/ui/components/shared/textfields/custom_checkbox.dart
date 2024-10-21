@@ -15,27 +15,20 @@ class CustomCheckbox extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 500),
-        width: isSelected ? 20.w : 18.w,
-        height: isSelected ? 20.h : 18.h,
-        // padding: EdgeInsets.all(2.w),
+        duration: const Duration(milliseconds: 300),
+        width: isSelected ? Sizer.width(24) : Sizer.width(16),
+        height: isSelected ? Sizer.height(24) : Sizer.height(16),
         decoration: BoxDecoration(
-            color: AppColors.white,
-            border: isSelected
-                ? null
-                : Border.all(
-                    color: AppColors.baseGray,
-                    width: 2,
-                  ),
-            borderRadius: BorderRadius.circular(2.r)),
-        child: Container(
-          width: 10.w,
-          height: 10.w,
-          decoration: BoxDecoration(
-              color: isSelected ? AppColors.primaryOrange : Colors.transparent,
-              borderRadius: BorderRadius.circular(2.r)),
-          child: const Icon(Icons.check, size: 20, color: AppColors.white),
+          // color: AppColors.white,
+          borderRadius: BorderRadius.circular(Sizer.radius(20)),
+          border: isSelected
+              ? null
+              : Border.all(
+                  color:
+                      isSelected ? AppColors.primaryOrange : AppColors.grayCC,
+                ),
         ),
+        child: isSelected ? svgHelper(AppSvgs.check) : const SizedBox(),
       ),
     );
   }

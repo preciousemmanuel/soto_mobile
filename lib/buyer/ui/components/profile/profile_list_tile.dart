@@ -5,11 +5,13 @@ class ProfileListTile extends StatelessWidget {
     super.key,
     required this.title,
     required this.trailicon,
+    this.textColor,
     this.onTap,
   });
 
   final String title;
   final dynamic trailicon;
+  final Color? textColor;
   final VoidCallback? onTap;
 
   @override
@@ -32,7 +34,7 @@ class ProfileListTile extends StatelessWidget {
                   )
                 : Icon(
                     trailicon,
-                    color: AppColors.primaryOrange,
+                    color: textColor ?? AppColors.primaryOrange,
                   ),
           ),
           const XBox(10),
@@ -40,7 +42,7 @@ class ProfileListTile extends StatelessWidget {
             child: Text(
               title,
               style: AppTypography.text16.copyWith(
-                color: AppColors.text57,
+                color: textColor ?? AppColors.text57,
                 fontWeight: FontWeight.w500,
               ),
             ),

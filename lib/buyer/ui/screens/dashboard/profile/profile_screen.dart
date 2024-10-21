@@ -1,4 +1,5 @@
 import 'package:soto_ecommerce/buyer/buyer.dart';
+import 'package:soto_ecommerce/common/common.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -9,11 +10,14 @@ class ProfileScreen extends StatelessWidget {
       backgroundColor: AppColors.bgWhite,
       body: SafeArea(
         bottom: false,
-        child: Container(
-          padding: EdgeInsets.symmetric(
-            horizontal: Sizer.width(20),
-          ),
-          child: Column(
+        child: SizedBox(
+          width: Sizer.screenWidth,
+          height: Sizer.screenHeight,
+          child: ListView(
+            shrinkWrap: true,
+            padding: EdgeInsets.symmetric(
+              horizontal: Sizer.width(20),
+            ),
             children: [
               const YBox(20),
               Row(
@@ -57,86 +61,7 @@ class ProfileScreen extends StatelessWidget {
                 ],
               ),
               const YBox(20),
-              Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: Sizer.width(13),
-                  vertical: Sizer.height(15),
-                ),
-                decoration: BoxDecoration(
-                  color: AppColors.primaryOrange.withOpacity(0.1),
-                  borderRadius: BorderRadiusDirectional.circular(
-                    Sizer.radius(14),
-                  ),
-                ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.all(
-                        Sizer.radius(5),
-                      ),
-                      decoration: BoxDecoration(
-                        color: AppColors.orange5E.withOpacity(0.96),
-                        borderRadius:
-                            BorderRadiusDirectional.circular(Sizer.radius(50)),
-                        border: Border.all(color: AppColors.primaryOrange),
-                      ),
-                      child: Text(
-                        'PR',
-                        style: AppTypography.text20.copyWith(
-                          color: AppColors.white,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                    const XBox(10),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Precious Ruchi',
-                            style: AppTypography.text20.copyWith(
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          Text(
-                            'preciousruchi001@gmail.com',
-                            style: AppTypography.text12.copyWith(
-                              color: AppColors.text7D,
-                            ),
-                          ),
-                          const YBox(10),
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: Sizer.width(10),
-                              vertical: Sizer.height(4),
-                            ),
-                            decoration: BoxDecoration(
-                              color: AppColors.green98.withOpacity(0.2),
-                              borderRadius: BorderRadiusDirectional.circular(
-                                Sizer.radius(4),
-                              ),
-                            ),
-                            child: Text(
-                              'Verified',
-                              style: AppTypography.text10.copyWith(
-                                color: AppColors.green59,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    Icon(
-                      Iconsax.edit_2,
-                      size: Sizer.height(24),
-                      color: AppColors.primaryOrange,
-                    ),
-                  ],
-                ),
-              ),
+              const MyProfileAreaCard(),
               const YBox(16),
               Container(
                 alignment: Alignment.centerLeft,
@@ -158,13 +83,24 @@ class ProfileScreen extends StatelessWidget {
                     ProfileListTile(
                       title: 'Change Password',
                       trailicon: Iconsax.lock,
-                      onTap: () {},
+                      onTap: () {
+                        RouterNav.push(
+                            context,
+                            const ForgotPasswordScreen(
+                              isChangePassword: true,
+                            ));
+                      },
                     ),
                     const YBox(20),
                     ProfileListTile(
                       title: 'Change Address',
                       trailicon: Iconsax.location,
-                      onTap: () {},
+                      onTap: () {
+                        ModalWrapper.bottomSheet(
+                          context: context,
+                          widget: const ShippingAddressModal(),
+                        );
+                      },
                     ),
                     const YBox(20),
                     ProfileListTile(
@@ -185,7 +121,12 @@ class ProfileScreen extends StatelessWidget {
               ),
               const YBox(10),
               DecorationContainer(
-                onTap: () {},
+                onTap: () {
+                  ModalWrapper.bottomSheet(
+                    context: context,
+                    widget: const FeedbacksModal(),
+                  );
+                },
                 child: const ProfileListTile(
                   title: 'Feedback',
                   trailicon: Iconsax.sms_edit,
@@ -201,6 +142,21 @@ class ProfileScreen extends StatelessWidget {
                   trailicon: AppSvgs.chatHelp,
                 ),
               ),
+              const YBox(10),
+              DecorationContainer(
+                onTap: () {
+                  ModalWrapper.showCustomDialog(
+                    context,
+                    child: const LogoutModal(),
+                  );
+                },
+                child: const ProfileListTile(
+                  title: 'Logout',
+                  trailicon: Iconsax.logout,
+                  textColor: AppColors.red49,
+                ),
+              ),
+              const YBox(100),
             ],
           ),
         ),

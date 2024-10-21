@@ -6,6 +6,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 const String svgIcon = "assets/svgs";
 
 class AppSvgs {
+  static const String mscard = "$svgIcon/payments/mscard.svg";
+  static const String paypal = "$svgIcon/payments/paypal.svg";
+  static const String paystack = "$svgIcon/payments/paystack.svg";
+
   static const String arrowRight = "$svgIcon/arrowRight.svg";
   static const String arrowLeft = "$svgIcon/arrowLeft.svg";
 
@@ -22,6 +26,16 @@ class AppSvgs {
   static const String star = "$svgIcon/star.svg";
   static const String filter = "$svgIcon/filter.svg";
   static const String chatHelp = "$svgIcon/chatHelp.svg";
+
+  static const String call = "$svgIcon/call.svg";
+  static const String x = "$svgIcon/x.svg";
+  static const String ws = "$svgIcon/ws.svg";
+  static const String ig = "$svgIcon/ig.svg";
+
+  static const String arrowUp = "$svgIcon/arrowUp.svg";
+  static const String arrowDown = "$svgIcon/arrowDown.svg";
+  static const String check = "$svgIcon/check.svg";
+  static const String received = "$svgIcon/received.svg";
 }
 
 SizedBox svgHelper(

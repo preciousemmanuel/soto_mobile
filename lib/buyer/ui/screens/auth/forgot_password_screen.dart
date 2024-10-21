@@ -1,7 +1,12 @@
 import 'package:soto_ecommerce/buyer/buyer.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
-  const ForgotPasswordScreen({super.key});
+  const ForgotPasswordScreen({
+    super.key,
+    this.isChangePassword = false,
+  });
+
+  final bool isChangePassword;
 
   @override
   State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
@@ -56,7 +61,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     case 0:
                       return ForgetPasswordPageview(
                         icon: AppText.collections[index]['img'],
-                        title: AppText.collections[index]['title'],
+                        title: widget.isChangePassword
+                            ? 'Change Password'
+                            : AppText.collections[index]['title'],
                         subTitle: AppText.collections[index]['subTitle'],
                         controller: controller,
                       );

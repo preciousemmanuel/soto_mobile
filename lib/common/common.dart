@@ -1,1 +1,1 @@
-
+export 'modal/model.dart';
