@@ -57,7 +57,7 @@ class OnboardScreenThree extends StatelessWidget {
               CustomBtn.solid(
                 borderRadius: BorderRadius.circular(100),
                 onTap: () {
-                  RouterNav.push(context, const CreateAccountScreen());
+                  Navigator.pushNamed(context, RoutePath.createAccountScreen);
                 },
                 text: "Continue",
               ),

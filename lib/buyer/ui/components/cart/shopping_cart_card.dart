@@ -113,6 +113,7 @@ class AddSubtractBtn extends StatelessWidget {
             borderRadius: BorderRadius.circular(Sizer.radius(6)),
             border: Border.all(
               color: AppColors.primaryOrange,
+              width: 1.5,
             )),
         child: Icon(
           icon,

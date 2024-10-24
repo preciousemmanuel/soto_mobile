@@ -80,7 +80,7 @@ class CartScreen extends StatelessWidget {
               total: 'N1,000,000',
               btnText: 'Proceed to checkout',
               btnOntap: () {
-                RouterNav.push(context, const CheckoutScreen());
+                Navigator.pushNamed(context, RoutePath.checkoutScreen);
               },
             ),
             const YBox(100),

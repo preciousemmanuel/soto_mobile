@@ -97,7 +97,8 @@ class LoginScreen extends StatelessWidget {
                   alignment: Alignment.centerRight,
                   child: InkWell(
                     onTap: () {
-                      RouterNav.push(context, const ForgotPasswordScreen());
+                      Navigator.pushNamed(
+                          context, RoutePath.forgotPasswordScreen);
                     },
                     child: Text(
                       'Forgot Password?',
@@ -111,7 +112,7 @@ class LoginScreen extends StatelessWidget {
                 const YBox(30),
                 CustomBtn.solid(
                   onTap: () {
-                    RouterNav.push(context, const CreateAccountScreen());
+                    Navigator.pushNamed(context, RoutePath.dashboardNavScreen);
                   },
                   text: "Login",
                 ),
@@ -135,8 +136,8 @@ class LoginScreen extends StatelessWidget {
                           ),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              RouterNav.push(
-                                  context, const CreateAccountScreen());
+                              Navigator.pushNamed(
+                                  context, RoutePath.createAccountScreen);
                             },
                         ),
                       ],

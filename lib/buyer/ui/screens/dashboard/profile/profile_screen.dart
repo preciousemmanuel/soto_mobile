@@ -84,11 +84,8 @@ class ProfileScreen extends StatelessWidget {
                       title: 'Change Password',
                       trailicon: Iconsax.lock,
                       onTap: () {
-                        RouterNav.push(
-                            context,
-                            const ForgotPasswordScreen(
-                              isChangePassword: true,
-                            ));
+                        Navigator.pushNamed(
+                            context, RoutePath.forgotPasswordScreen);
                       },
                     ),
                     const YBox(20),
@@ -135,7 +132,7 @@ class ProfileScreen extends StatelessWidget {
               const YBox(10),
               DecorationContainer(
                 onTap: () {
-                  RouterNav.push(context, const HelpCenterScreen());
+                  Navigator.pushNamed(context, RoutePath.helpCenterScreen);
                 },
                 child: const ProfileListTile(
                   title: 'Help Center',

@@ -76,7 +76,7 @@ class ResetPasswordPageview extends StatelessWidget {
               const YBox(30),
               CustomBtn.solid(
                 onTap: () {
-                  RouterNav.push(context, const ConfirmationScreen());
+                  //  Navigator.pushNamed(context, const ConfirmationScreen());
                 },
                 text: "Continue",
               ),

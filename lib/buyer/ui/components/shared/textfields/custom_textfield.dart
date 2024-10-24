@@ -1,7 +1,7 @@
 import 'package:soto_ecommerce/buyer/buyer.dart';
 
 class CustomTextField extends StatefulWidget {
-  final String? errorText, labelText, hintText;
+  final String? errorText, labelText, hintText, optionalText;
   final int? maxLines;
   final TextEditingController? controller;
   final Function(String)? onChanged;
@@ -28,6 +28,7 @@ class CustomTextField extends StatefulWidget {
     this.maxLines,
     this.labelText,
     this.hintText,
+    this.optionalText,
     this.labelColor,
     this.textfieldColor,
     this.fillColor,
@@ -100,13 +101,24 @@ class _CustomTextFieldState extends State<CustomTextField> {
           Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
-                widget.labelText!,
-                style: TextStyle(
-                  color: AppColors.text5C,
-                  fontSize: widget.labelSize ?? 14.sp,
-                  fontWeight: FontWeight.w500,
-                ),
+              Row(
+                children: [
+                  Text(
+                    widget.labelText!,
+                    style: TextStyle(
+                      color: AppColors.text5C,
+                      fontSize: widget.labelSize ?? 14.sp,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Text(
+                    widget.optionalText ?? '',
+                    style: TextStyle(
+                      color: AppColors.text5C,
+                      fontSize: 12.sp,
+                    ),
+                  ),
+                ],
               ),
               const YBox(4)
             ],

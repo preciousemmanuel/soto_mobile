@@ -121,7 +121,8 @@ class CreateAccountScreen extends StatelessWidget {
                 const YBox(30),
                 CustomBtn.solid(
                   onTap: () {
-                    RouterNav.push(context, const ShippingAddressScreen());
+                    Navigator.pushNamed(
+                        context, RoutePath.shippingAddressScreen);
                   },
                   text: "Create Account",
                 ),
@@ -147,7 +148,8 @@ class CreateAccountScreen extends StatelessWidget {
                           ),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              RouterNav.push(context, const LoginScreen());
+                              Navigator.pushNamed(
+                                  context, RoutePath.loginScreen);
                             },
                         ),
                       ],

@@ -67,7 +67,7 @@ class ShippingAddressScreen extends StatelessWidget {
               const YBox(35),
               CustomBtn.solid(
                 onTap: () {
-                  RouterNav.push(context, const DashboardNav());
+                  Navigator.pushNamed(context, RoutePath.dashboardNavScreen);
                 },
                 text: "Continue",
               ),

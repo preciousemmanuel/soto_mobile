@@ -49,7 +49,7 @@ class HomeNotificationHeader extends StatelessWidget {
           ),
           InkWell(
             onTap: () {
-              RouterNav.push(context, const NotificationScreen());
+              Navigator.pushNamed(context, RoutePath.notificationScreen);
             },
             child: Stack(
               clipBehavior: Clip.none,

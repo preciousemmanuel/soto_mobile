@@ -29,7 +29,7 @@ class OnboardScreenOne extends StatelessWidget {
                 children: [
                   ArrowBackBtn(
                     onTap: () {
-                      RouterNav.push(context, const OnboardScreenTwo());
+                      Navigator.pushNamed(context, RoutePath.onboardScreenTwo);
                     },
                   ),
                 ],
@@ -52,7 +52,7 @@ class OnboardScreenOne extends StatelessWidget {
                 height: 54,
                 width: Sizer.width(165),
                 onTap: () {
-                  RouterNav.push(context, const OnboardScreenThree());
+                  Navigator.pushNamed(context, RoutePath.onboardScreenThree);
                 },
                 text: "Get Started",
               ),

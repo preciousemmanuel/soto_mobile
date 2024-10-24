@@ -70,7 +70,8 @@ class HomeScreen extends StatelessWidget {
                           ],
                         ),
                         onTap: () {
-                          // RouterNav.push(context, const ShippingAddressScreen());
+                          Navigator.pushNamed(
+                              context, RoutePath.createOrderScreen);
                         },
                       ),
                     ),
@@ -166,7 +167,12 @@ class HomeScreen extends StatelessWidget {
                 ),
                 childrenDelegate: SliverChildBuilderDelegate(
                   (context, index) {
-                    return const RelatedProductCard();
+                    return RelatedProductCard(
+                      onTap: () {
+                        Navigator.pushNamed(
+                            context, RoutePath.productDetailScreen);
+                      },
+                    );
                   },
                   childCount: 4,
                 ),

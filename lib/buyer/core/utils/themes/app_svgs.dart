@@ -36,6 +36,8 @@ class AppSvgs {
   static const String arrowDown = "$svgIcon/arrowDown.svg";
   static const String check = "$svgIcon/check.svg";
   static const String received = "$svgIcon/received.svg";
+  static const String starActive = "$svgIcon/starActive.svg";
+  static const String starInactive = "$svgIcon/starInactive.svg";
 }
 
 SizedBox svgHelper(

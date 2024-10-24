@@ -64,7 +64,7 @@ class MyProfileAreaCard extends StatelessWidget {
           ),
           InkWell(
             onTap: () {
-              RouterNav.push(context, const MyProfileScreenEdit());
+              Navigator.pushNamed(context, RoutePath.editMyProfileScreen);
             },
             child: Icon(
               Iconsax.edit_2,

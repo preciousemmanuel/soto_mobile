@@ -1,4 +1,5 @@
 import 'package:soto_ecommerce/buyer/buyer.dart';
+import 'package:soto_ecommerce/common/routes/app_router.dart';
 
 void main() {
   runApp(const MyApp());
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
             fontFamily: 'Poppins',
             useMaterial3: true,
           ),
+          onGenerateRoute: AppRouter.onGenerateRoute,
           home: const DashboardNav(),
         );
       },

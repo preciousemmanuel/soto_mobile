@@ -30,7 +30,7 @@ class _SplashScreenState extends State<SplashScreen>
     _animationController.forward();
 
     Future.delayed(const Duration(seconds: 4), () {
-      RouterNav.replace(context, const OnboardScreenOne());
+      Navigator.pushReplacementNamed(context, RoutePath.onboardScreenOne);
     });
   }
 

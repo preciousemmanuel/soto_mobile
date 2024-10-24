@@ -53,7 +53,7 @@ class BackIcon extends StatelessWidget {
     return InkWell(
       onTap: onTap ??
           () {
-            RouterNav.pop(context);
+            Navigator.pop(context);
           },
       child: Container(
         padding: EdgeInsets.all(Sizer.width(10)),
