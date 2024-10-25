@@ -1,5 +1,5 @@
-import 'package:soto_ecommerce/buyer/buyer.dart';
-import 'package:soto_ecommerce/common/routes/app_router.dart';
+import 'package:soto_ecommerce/common/common.dart';
+import 'package:soto_ecommerce/seller/screens/sellers_dashboard_nav.dart';
 
 void main() {
   runApp(const MyApp());
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
             useMaterial3: true,
           ),
           onGenerateRoute: AppRouter.onGenerateRoute,
-          home: const DashboardNav(),
+          home: const SellersDashboardNav(),
         );
       },
     );

@@ -1,4 +1,4 @@
-import 'package:soto_ecommerce/buyer/buyer.dart';
+import 'package:soto_ecommerce/common/common.dart';
 
 class ModalWrapper {
   const ModalWrapper._();

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:soto_ecommerce/buyer/buyer.dart';
-import 'package:soto_ecommerce/buyer/ui/screens/dashboard/order/review_order_screen.dart';
+import 'package:soto_ecommerce/common/common.dart';
 
 class AppRouter {
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
