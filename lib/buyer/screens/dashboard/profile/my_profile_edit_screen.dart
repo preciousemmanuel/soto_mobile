@@ -37,7 +37,7 @@ class _MyProfileScreenEditState extends State<MyProfileScreenEdit> {
             ProfileAvatar(
               width: 80,
               height: 80,
-              avatar: Text(
+              initials: Text(
                 'PR',
                 style: AppTypography.text36.copyWith(
                   color: AppColors.white,

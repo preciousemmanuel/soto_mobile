@@ -1,6 +1,5 @@
 export 'app_init_service.dart';
 export 'biometric_service.dart';
-export 'complete_kyc_service.dart';
 export 'dio/dio.dart';
 export 'file_picker_service.dart';
 export 'header_service.dart';

@@ -52,7 +52,7 @@ class OnboardScreenOne extends StatelessWidget {
                 height: 54,
                 width: Sizer.width(165),
                 onTap: () {
-                  Navigator.pushNamed(context, RoutePath.onboardScreenThree);
+                  Navigator.pushNamed(context, RoutePath.dashboardNavScreen);
                 },
                 text: "Get Started",
               ),

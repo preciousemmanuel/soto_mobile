@@ -58,20 +58,14 @@ class SnackBarType {
   final IconData icon;
 
   static const SnackBarType warning = SnackBarType(
-    bgColor: AppColors.red,
+    bgColor: AppColors.opacityRed100,
     iconColor: AppColors.red,
     icon: Iconsax.information5,
   );
 
-  // static const SnackBarType success = SnackBarType(
-  //   bgColor: AppColors.opacityGreen200,
-  //   iconColor: AppColors.textGreen,
-  //   icon: Icons.check_circle,
-  // );
-
-  // static const SnackBarType kyc = SnackBarType(
-  //   bgColor: AppColors.blue00,
-  //   iconColor: AppColors.primaryBlue,
-  //   icon: Icons.info,
-  // );
+  static const SnackBarType success = SnackBarType(
+    bgColor: AppColors.opacityGreen200,
+    iconColor: AppColors.green59,
+    icon: Icons.check_circle,
+  );
 }

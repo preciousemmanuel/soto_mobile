@@ -62,10 +62,12 @@ class NotificationIocnWidget extends StatelessWidget {
   const NotificationIocnWidget({
     super.key,
     this.iconColor,
+    this.iconSize,
     this.onTap,
   });
 
   final Color? iconColor;
+  final double? iconSize;
   final Function()? onTap;
 
   @override
@@ -78,7 +80,7 @@ class NotificationIocnWidget extends StatelessWidget {
           Icon(
             Iconsax.notification,
             color: iconColor ?? AppColors.text12,
-            size: Sizer.radius(28),
+            size: Sizer.radius(iconSize ?? 28),
           ),
           Positioned(
             right: -12,

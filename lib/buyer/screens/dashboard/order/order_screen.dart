@@ -18,7 +18,7 @@ class _OrderScreenState extends State<OrderScreen> {
         bottom: false,
         child: Column(
           children: [
-            const YBox(10),
+            const YBox(20),
             Container(
               padding: EdgeInsets.symmetric(
                 horizontal: Sizer.width(20),
@@ -33,12 +33,12 @@ class _OrderScreenState extends State<OrderScreen> {
               children: [
                 ...List.generate(
                   OrderStatusType.values.length,
-                  (i) => OrderStatus(
+                  (i) => StatusWidget(
                     margin: EdgeInsets.only(
                       left: i == 0 ? 20 : 0,
                       right: 10,
                     ),
-                    category: OrderStatusType.values[i].name,
+                    text: OrderStatusType.values[i].name,
                     isSelected: i == currentIndex,
                     onTap: () {
                       currentIndex = i;

@@ -10,6 +10,8 @@ export 'enum/enum.dart';
 export 'extensions/extensions.dart';
 export 'helpers/helpers.dart';
 export 'modal/modal.dart';
+export 'models/models.dart';
 export 'routes/routes.dart';
 export 'services/service.dart';
 export 'themes/themes.dart';
+export 'vm/vm.dart';

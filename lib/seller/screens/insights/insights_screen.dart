@@ -36,7 +36,7 @@ class InsightScreen extends StatelessWidget {
                 revenue: '500k',
                 percentage: '40% Increase from Last Month',
                 bgColor: AppColors.yellowE3,
-                nameTextColor: AppColors.red33,
+                nameTextColor: AppColors.primaryOrange,
               ),
               const YBox(16),
               const AnalyticsCard(

@@ -2,8 +2,8 @@ import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
 
-void printty(dynamic val, {String? logLevel}) {
+void printty(dynamic val, {String? logName}) {
   if (kDebugMode) {
-    log("==== ${logLevel ?? "Logger"} ==== ${val.toString()} ");
+    log("==== ${logName ?? "Logger"} ==== ${val.toString()} ");
   }
 }

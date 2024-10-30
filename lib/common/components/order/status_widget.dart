@@ -1,18 +1,20 @@
 import 'package:soto_ecommerce/common/common.dart';
 
-class OrderStatus extends StatelessWidget {
-  const OrderStatus({
+class StatusWidget extends StatelessWidget {
+  const StatusWidget({
     super.key,
-    required this.category,
+    required this.text,
     this.isSelected = false,
+    this.textStyle,
     this.onTap,
     this.margin,
   });
 
-  final String category;
+  final String text;
   final bool isSelected;
   final EdgeInsetsGeometry? margin;
   final VoidCallback? onTap;
+  final TextStyle? textStyle;
 
   @override
   Widget build(BuildContext context) {
@@ -31,11 +33,12 @@ class OrderStatus extends StatelessWidget {
           ),
         ),
         child: Text(
-          category,
-          style: AppTypography.text12.copyWith(
-            color: isSelected ? AppColors.white : AppColors.text57,
-            fontWeight: FontWeight.w500,
-          ),
+          text,
+          style: textStyle ??
+              AppTypography.text12.copyWith(
+                color: isSelected ? AppColors.white : AppColors.text57,
+                fontWeight: FontWeight.w500,
+              ),
         ),
       ),
     );

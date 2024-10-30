@@ -1,4 +1,3 @@
-import 'package:soto_ecommerce/buyer/buyer.dart';
 import 'package:soto_ecommerce/common/common.dart';
 
 class BaseVM extends ChangeNotifier {
@@ -44,22 +43,6 @@ class BaseVM extends ChangeNotifier {
     setErrorForObject(this, error);
   }
 
-  // bool _isBusy = false;
-  // bool get isBusy => _isBusy;
-
-  // bool _hasError = false;
-  // bool get hasError => _hasError;
-
-  // void setBusy(bool value) {
-  //   _isBusy = value;
-  //   notifyListeners();
-  // }
-
-  // void setError(bool value) {
-  //   _hasError = value;
-  //   notifyListeners();
-  // }
-
   reBuildUI() {
     notifyListeners();
   }
@@ -87,14 +70,14 @@ class BaseVM extends ChangeNotifier {
       if (!apiResponse.success) {
         // setBusy(false);
         setBusyForObject(busyObjectName ?? this, false);
-        printty(apiResponse.message, logLevel: url.toString());
+        printty(apiResponse.message, logName: url.toString());
         return apiResponse;
       }
 
-      printty(apiResponse.data, logLevel: url.toString());
+      printty(apiResponse.data, logName: url.toString());
       return onSuccess(apiResponse.data);
     } catch (e, s) {
-      printty(e, logLevel: url.toString());
+      printty(e, logName: url.toString());
       printty(s.toString());
       setError(true);
       if (onError != null) {

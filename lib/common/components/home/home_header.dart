@@ -4,23 +4,30 @@ class Homeheader extends StatelessWidget {
   const Homeheader({
     super.key,
     required this.headerName,
+    this.addPadding = true,
+    this.headerFontSize,
     this.sellAllBtn,
   });
 
   final String headerName;
+  final bool addPadding;
+  final double? headerFontSize;
   final VoidCallback? sellAllBtn;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: Sizer.width(20),
-      ),
+      padding: addPadding
+          ? EdgeInsets.symmetric(
+              horizontal: Sizer.width(20),
+            )
+          : EdgeInsets.zero,
       child: Row(
         children: [
           Text(
             headerName,
             style: AppTypography.text20.copyWith(
+              fontSize: headerFontSize,
               fontWeight: FontWeight.w600,
             ),
           ),

@@ -34,15 +34,15 @@ class StorageService {
   }
 
   /* ====== AuthUser ========= */
-  // static Future<AuthUser?> getUser() async {
-  //   var sharedPreferences = await SharedPreferences.getInstance();
-  //   if (sharedPreferences.containsKey(StorageKey.authUser) &&
-  //       sharedPreferences.getString(StorageKey.authUser) != null) {
-  //     return AuthUser.fromJson(
-  //         json.decode(sharedPreferences.getString(StorageKey.authUser)!));
-  //   }
-  //   return null;
-  // }
+  static Future<AuthUser?> getUser() async {
+    var sharedPreferences = await SharedPreferences.getInstance();
+    if (sharedPreferences.containsKey(StorageKey.authUser) &&
+        sharedPreferences.getString(StorageKey.authUser) != null) {
+      return AuthUser.fromJson(
+          json.decode(sharedPreferences.getString(StorageKey.authUser)!));
+    }
+    return null;
+  }
 
   static Future<bool> storeUser(Map<String, dynamic> user) async {
     var sharedPreferences = await SharedPreferences.getInstance();
@@ -68,7 +68,7 @@ class StorageService {
     await sharedPreferences.remove(StorageKey.refreshToken);
     await sharedPreferences.remove(StorageKey.authUser);
 
-    printty("Credentials Cleared", logLevel: "Logout");
+    printty("Credentials Cleared", logName: "Logout");
   }
 
   static storeStringItem(String key, String value) async {

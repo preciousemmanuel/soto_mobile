@@ -5,7 +5,9 @@ import 'package:soto_ecommerce/common/common.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AppUtils {
-  get count => null;
+  static String nairaSymbol = "₦";
+  static String nairaCurrency = "NGN";
+
   static String dateFormatter(String date) {
     var formatter = DateFormat('yyyy-MM-dd');
     DateTime dateTime = formatter.parse(date);
@@ -268,29 +270,6 @@ class AppUtils {
     return initials.toUpperCase();
   }
 
-  static String getErrorMessage({required String message}) {
-    String returningMessage;
-    if (message == "Connection failed" ||
-        message.toString().contains("Failed host lookup")) {
-      returningMessage =
-          "Error establishing internet connection. Please try again";
-    } else if (message.toString().contains("Future not completed")) {
-      returningMessage =
-          "Slow internet connection. Please check your internet connection and try again";
-    } else if (message == "Internal Server Error") {
-      returningMessage = "An error occurred. Please try again";
-    } else {
-      returningMessage = message;
-    }
-
-    return returningMessage;
-  }
-
-  static String getDisplayImage(String img) {
-    List<String> images = img.split("|");
-    return images.first;
-  }
-
   static String getFirstName(String name) {
     if (name.isEmpty) {
       return "";
@@ -306,44 +285,6 @@ class AppUtils {
       res += " ${w.substring(0, 1).toUpperCase()}${w.substring(1)}";
     }
     return res.trim();
-  }
-
-  //get the shortest Side of the target device
-  double shortestSide(BuildContext context) {
-    return MediaQuery.of(context).size.shortestSide;
-  }
-
-//check the type of target device
-  bool isMobileLayout(BuildContext context) {
-    return shortestSide(context) < 600;
-  }
-
-  static String addRemoveDelimeter(String amount,
-      {required bool addDelimter, bool addDecimal = false}) {
-    String formattedString = amount;
-    if (formattedString.isNotEmpty && formattedString.contains(",")) {
-      formattedString = formattedString.replaceAll(RegExp(r','), "");
-    }
-
-    if (addDelimter) {
-      // formattedString = "" +
-      //     AppUtils.formatAmount(amount: double.tryParse(formattedString) ?? 0);
-
-      if (addDecimal) {
-        formattedString = AppUtils.formatAmountWithDecimal(
-            amount: double.tryParse(formattedString) ?? 0.00);
-      } else {
-        formattedString = AppUtils.formatAmount(
-            amount: double.tryParse(formattedString) ?? 0.00);
-      }
-
-      return formattedString;
-    } else {
-      if (formattedString.isNotEmpty && formattedString.contains(",")) {
-        formattedString = formattedString.replaceAll(RegExp(r','), "");
-      }
-    }
-    return formattedString;
   }
 
   static double getTwoDecimalPlace({required double number}) {

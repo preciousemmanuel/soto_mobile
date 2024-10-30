@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:soto_ecommerce/buyer/buyer.dart';
 import 'package:soto_ecommerce/common/common.dart';
+import 'package:soto_ecommerce/seller/seller.dart';
 
 class AppRouter {
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
@@ -16,14 +17,15 @@ class AppRouter {
         return buildRoute(const OnboardScreenOne());
       case RoutePath.onboardScreenTwo:
         return buildRoute(const OnboardScreenTwo());
-      case RoutePath.onboardScreenThree:
-        return buildRoute(const OnboardScreenThree());
 
       // Auth
       case RoutePath.loginScreen:
-        return buildRoute(const DashboardNav());
+        final LoginScreenArgs? loginScreenArgs = args as LoginScreenArgs?;
+        return buildRoute(LoginScreen(
+          args: loginScreenArgs,
+        ));
       case RoutePath.createAccountScreen:
-        return buildRoute(const NotificationScreen());
+        return buildRoute(const CreateAccountScreen());
       case RoutePath.forgotPasswordScreen:
         bool isChangePassword = args is bool ? args : false;
         return buildRoute(ForgotPasswordScreen(
@@ -49,7 +51,7 @@ class AppRouter {
 
       // Cart
       case RoutePath.checkoutScreen:
-        return buildRoute(const ConfirmPaymentScreen());
+        return buildRoute(const CheckoutScreen());
       case RoutePath.confirmPaymentScreen:
         return buildRoute(const ConfirmPaymentScreen());
       case RoutePath.checkoutPaymentScreen:
@@ -60,6 +62,16 @@ class AppRouter {
         return buildRoute(const MyProfileScreenEdit());
       case RoutePath.helpCenterScreen:
         return buildRoute(const HelpCenterScreen());
+
+      /// SELLER ROUTES
+      case RoutePath.sellerDashboardNavScreen:
+        return buildRoute(const SellersDashboardNav());
+      case RoutePath.allTransactionsScreen:
+        return buildRoute(const AllTransactionsScreen());
+      case RoutePath.createBusinessAccountScreen:
+        return buildRoute(const CreateBusinessAccountScreen());
+      case RoutePath.createPasswordScreen:
+        return buildRoute(const CreatePasswordScreen());
 
       default:
         return errorScreen('No route defined for ${settings.name}');

@@ -1,6 +1,8 @@
 import 'package:soto_ecommerce/common/common.dart';
 
 class AppText {
+  static const String errorMsg =
+      "An error occurred. Please try again.\nContact support if error persists";
   static const List collections = [
     {
       "img": AppImages.mail,

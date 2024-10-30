@@ -106,7 +106,7 @@ class AddCardScreen extends StatelessWidget {
         padding: EdgeInsets.only(
           left: Sizer.width(20),
           right: Sizer.width(20),
-          bottom: Sizer.height(40),
+          bottom: Sizer.height(30),
           top: Sizer.height(10),
         ),
         // height: Sizer.height(92),

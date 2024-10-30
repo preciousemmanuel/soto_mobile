@@ -10,10 +10,12 @@ class AppColors {
   static const red = Colors.red;
   static const red49 = Color(0xFFE61849);
   static const red40 = Color(0xFFB84040);
-  static const red33 = Color(0xFFFF5733);
+  // static const red33 = Color(0xFFFF5733);
   static const red23 = Color(0xFFC03F23);
   static const redD5 = Color(0xFFFDDCD5);
   static const redDB = Color(0xFFFFDBDB);
+  static const red6C = Color(0xFFFF3E6C);
+  static const red3B = Color(0xFFDF393B);
 
   static const bgWhite = Color(0xFFFFFFFF);
   static const primaryOrange = Color(0xFFFF5733);
@@ -23,6 +25,7 @@ class AppColors {
   static const orangeEF = Color(0xFFFFF2EF);
   static const orangeE8 = Color(0xFFFFEDE8);
   static const orange71 = Color(0xFFF68971);
+  static const orangeE3 = Color(0xFFFFE8E3);
 
   static const black40 = Color(0xFF414040);
   static const black3D = Color(0xFF2A2B3D);
@@ -53,6 +56,8 @@ class AppColors {
   static const grayD9 = Color(0xFFD9D9D9);
   static const grayEF = Color(0xFFEFEFEF);
   static const grayF1 = Color(0xFFF1F1F1);
+  static const grayE8 = Color(0xFFE8E8E8);
+  static const grayE0 = Color(0xFFE0E0E0);
 
   static const green58 = Color(0xFF0FA958);
   static const green98 = Color(0xFF60DD98);
@@ -62,6 +67,7 @@ class AppColors {
   static const greenF1 = Color(0xFFE7FAF1);
   static const green78 = Color(0xFF0AAE78);
   static const greenE9 = Color(0xFFDEF5E9);
+  static const greenB78 = Color(0xFF48BB78);
 
   static const yellowE3 = Color(0xFFFDF3E3);
   static const yellowF5 = Color(0xFFFCF5F5);
@@ -90,12 +96,23 @@ class AppColors {
   static const text28 = Color(0xFF272728);
   static const textE70 = Color(0xFF6E6E70);
 
+  static const opacityRed100 = Color(0xFFFFF8F7);
+  static const opacityGreen200 = Color(0xFFF0FFF9);
   static const walletBgGradient = LinearGradient(
     colors: [
       Color(0xFFFF5733),
       Color(0xFFFFF8F7),
     ],
     stops: [0.1, 0.7],
+    begin: Alignment.topRight,
+    end: Alignment.bottomCenter,
+  );
+
+  static const fabGradient = LinearGradient(
+    colors: [
+      Color(0xFFFF4118),
+      Color(0xFFE97D66),
+    ],
     begin: Alignment.topRight,
     end: Alignment.bottomCenter,
   );

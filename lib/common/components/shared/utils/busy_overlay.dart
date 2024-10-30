@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:soto_ecommerce/common/common.dart';
 
 class BusyOverlay extends StatefulWidget {
@@ -28,10 +29,11 @@ class _BusyOverlayState extends State<BusyOverlay> {
               visible: widget.show,
               child: BackdropFilter(
                 filter: ImageFilter.blur(
-                    sigmaX: 10, sigmaY: 10), // Adjust the blur intensity
+                    sigmaX: 12, sigmaY: 12), // Adjust the blur intensity
                 child: Container(
                   color: Colors.black12.withOpacity(
-                      0.2), // Adjust the background color and opacity
+                    0.5,
+                  ), // Adjust the background color and opacity
                 ),
               ),
             ),
@@ -40,16 +42,9 @@ class _BusyOverlayState extends State<BusyOverlay> {
                 ignoring: !widget.show,
                 child: Visibility(
                   visible: widget.show,
-                  child: Container(
-                    width: Sizer.width(80),
-                    height: Sizer.width(80),
-                    padding: EdgeInsets.all(Sizer.radius(10)),
-                    decoration: BoxDecoration(
-                      color:
-                          widget.bgColor ?? AppColors.black40.withOpacity(0.6),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: const CircularProgressIndicator(),
+                  child: const SpinKitThreeBounce(
+                    color: AppColors.primaryOrange,
+                    size: 60.0,
                   ),
                 ),
               ),

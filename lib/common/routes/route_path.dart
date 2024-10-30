@@ -32,4 +32,10 @@ class RoutePath {
   static const checkoutPaymentScreen = '/checkoutPaymentScreen';
   static const confirmPaymentScreen = '/confirmPaymentScreen';
   static const addCardScreen = '/addCardScreen';
+
+  /// SELLER SCREENS
+  static const sellerDashboardNavScreen = '/sellerDashboardNavScreen';
+  static const allTransactionsScreen = '/allTransactionsScreen';
+  static const createBusinessAccountScreen = '/createBusinessAccountScreen';
+  static const createPasswordScreen = '/createPasswordScreen';
 }

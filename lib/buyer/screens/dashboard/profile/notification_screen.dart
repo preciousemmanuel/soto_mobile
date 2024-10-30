@@ -18,7 +18,7 @@ class NotificationScreen extends StatelessWidget {
             ),
             shrinkWrap: true,
             children: [
-              const YBox(10),
+              const YBox(20),
               const CustomHeader(
                 title: 'Notifications',
                 titleWeight: FontWeight.w500,

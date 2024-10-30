@@ -11,7 +11,7 @@ class CartScreen extends StatelessWidget {
         bottom: false,
         child: ListView(
           children: [
-            const YBox(10),
+            const YBox(20),
             Container(
               padding: EdgeInsets.symmetric(
                 horizontal: Sizer.width(20),

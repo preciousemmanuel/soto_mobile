@@ -1,0 +1,249 @@
+import 'package:soto_ecommerce/common/common.dart';
+import 'package:soto_ecommerce/seller/vm/vm.dart';
+
+class CreateBusinessAccountScreen extends StatefulWidget {
+  const CreateBusinessAccountScreen({super.key});
+
+  @override
+  State<CreateBusinessAccountScreen> createState() =>
+      _CreateBusinessAccountScreenState();
+}
+
+class _CreateBusinessAccountScreenState
+    extends State<CreateBusinessAccountScreen> {
+  bool isExpanded = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<CreateBusinessVM>().getCategories();
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<CreateBusinessVM>(builder: (context, vm, _) {
+      return Scaffold(
+        body: SafeArea(
+          bottom: false,
+          child: Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: Sizer.width(20),
+            ),
+            child: ListView(
+              children: [
+                const YBox(20),
+                CustomHeader(
+                  title: 'Business Details',
+                  titleStyle: AppTypography.text20.copyWith(
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.text12,
+                  ),
+                ),
+                Text(
+                  'Kindly add your business information \nto create an account',
+                  textAlign: TextAlign.center,
+                  style: AppTypography.text12.copyWith(
+                    color: AppColors.text7D,
+                  ),
+                ),
+                const YBox(20),
+                CustomTextField(
+                  labelText: "Business Name",
+                  showLabelHeader: true,
+                  fillColor: AppColors.orangeEA.withOpacity(0.5),
+                  hintText: 'Business Name',
+                  controller: vm.businessNameC,
+                  prefixIcon: Icon(
+                    Iconsax.user,
+                    color: AppColors.iconC4,
+                    size: Sizer.height(20),
+                  ),
+                  onChanged: (val) => vm.reBuildUI(),
+                ),
+                const YBox(20),
+                CustomTextField(
+                    labelText: "Business Email Address",
+                    showLabelHeader: true,
+                    fillColor: AppColors.orangeEA.withOpacity(0.5),
+                    hintText: 'Enter Email Address',
+                    controller: vm.businessEmailC,
+                    errorText: vm.isValidEmail == false &&
+                            vm.businessEmailC.text.isNotEmpty
+                        ? 'Invalid Email Address'
+                        : null,
+                    prefixIcon: Icon(
+                      Iconsax.sms,
+                      color: AppColors.iconC4,
+                      size: Sizer.height(20),
+                    ),
+                    onChanged: (val) {
+                      vm.emailIsValid();
+                    }),
+                const YBox(20),
+                CustomTextField(
+                  labelText: "Phone Number",
+                  showLabelHeader: true,
+                  fillColor: AppColors.orangeEA.withOpacity(0.5),
+                  hintText: 'Enter Phone Number',
+                  controller: vm.businessPhoneC,
+                  prefixIcon: Icon(
+                    Iconsax.call,
+                    color: AppColors.iconC4,
+                    size: Sizer.height(20),
+                  ),
+                  onChanged: (val) => vm.reBuildUI(),
+                ),
+                const YBox(20),
+                CustomTextField(
+                  labelText: "Business Address",
+                  showLabelHeader: true,
+                  fillColor: AppColors.orangeEA.withOpacity(0.5),
+                  hintText: 'Enter Address',
+                  controller: vm.businessAddressC,
+                  prefixIcon: Icon(
+                    Iconsax.location,
+                    color: AppColors.iconC4,
+                    size: Sizer.height(20),
+                  ),
+                  onChanged: (val) => vm.reBuildUI(),
+                ),
+                const YBox(20),
+                Text(
+                  'Business Categpry',
+                  style: TextStyle(
+                    color: AppColors.text5C,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const YBox(6),
+                SelectCategoryField(
+                  text: vm.businessCategoryC.text.isEmpty
+                      ? 'Select Category'
+                      : vm.businessCategoryC.text,
+                  isExpanded: isExpanded,
+                  isLoading: vm.isBusy,
+                  hasBeenSelected: vm.businessCategoryC.text.isNotEmpty,
+                  onSelect: () {
+                    isExpanded = !isExpanded;
+                    vm.reBuildUI();
+                  },
+                  children: List.generate(
+                    vm.businessCategories.length,
+                    (i) {
+                      return InkWell(
+                        onTap: () {
+                          vm.businessCategoryC.text =
+                              vm.businessCategories[i].name ?? '';
+                          isExpanded = false;
+                          vm.reBuildUI();
+                        },
+                        child: Container(
+                          padding: EdgeInsets.only(
+                            top: Sizer.height(i == 0 ? 30 : 14),
+                            bottom: Sizer.height(
+                                i == vm.businessCategories.length - 1 ? 0 : 14),
+                          ),
+                          child: Text(
+                            vm.businessCategories[i].name ?? '',
+                            style: AppTypography.text14.copyWith(
+                              fontWeight: FontWeight.w500,
+                              color: AppColors.text57,
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                const YBox(20),
+                Text(
+                  'Description',
+                  style: TextStyle(
+                    color: AppColors.text5C,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                Text(
+                  'Add description to make your profile look great',
+                  style: AppTypography.text12.copyWith(
+                    color: AppColors.text7D,
+                  ),
+                ),
+                const YBox(6),
+                CustomTextField(
+                  fillColor: AppColors.transparent,
+                  borderColor: AppColors.grayE0,
+                  controller: vm.businessDescriptionC,
+                  maxLines: 3,
+                  onChanged: (val) => vm.reBuildUI(),
+                ),
+                const YBox(20),
+                Container(
+                  height: Sizer.height(49),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: AppColors.grayE0,
+                    ),
+                    borderRadius: BorderRadius.circular(Sizer.height(14)),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(Sizer.radius(6)),
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryOrange.withOpacity(0.12),
+                          borderRadius: BorderRadius.circular(Sizer.height(8)),
+                        ),
+                        child: Icon(
+                          Iconsax.gallery_add,
+                          color: AppColors.primaryOrange,
+                          size: Sizer.height(14),
+                        ),
+                      ),
+                      const XBox(10),
+                      RichText(
+                          text: TextSpan(children: [
+                        TextSpan(
+                          text: 'Add Business Logo ',
+                          style: AppTypography.text12.copyWith(
+                            color: AppColors.text7D,
+                          ),
+                        ),
+                        TextSpan(
+                          text: '(Optional)',
+                          style: AppTypography.text12.copyWith(
+                            color: AppColors.primaryOrange,
+                          ),
+                        )
+                      ]))
+                    ],
+                  ),
+                ),
+                const YBox(30),
+                CustomBtn.solid(
+                  online: vm.btnIsValid,
+                  onTap: () {
+                    Navigator.pushNamed(
+                        context, RoutePath.createPasswordScreen);
+                  },
+                  text: "Continue",
+                ),
+                const YBox(50),
+              ],
+            ),
+          ),
+        ),
+      );
+    });
+  }
+}

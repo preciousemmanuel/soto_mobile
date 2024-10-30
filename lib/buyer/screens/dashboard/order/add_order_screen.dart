@@ -53,6 +53,8 @@ class _AddOrderScreenState extends State<AddOrderScreen> {
                     height: Sizer.height(40),
                     width: Sizer.width(140),
                     onlineColor: AppColors.black,
+                    textStyle: AppTypography.text14.copyWith(
+                        fontWeight: FontWeight.w500, color: AppColors.white),
                     onTap: () {
                       Navigator.pushNamed(context, RoutePath.reviewOrderScreen);
                     },

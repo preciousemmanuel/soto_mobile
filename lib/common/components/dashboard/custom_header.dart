@@ -7,12 +7,14 @@ class CustomHeader extends StatelessWidget {
     this.color,
     this.titleWeight,
     this.backBtn,
+    this.titleStyle,
   });
 
   final String title;
   final Color? color;
   final VoidCallback? backBtn;
   final FontWeight? titleWeight;
+  final TextStyle? titleStyle;
 
   @override
   Widget build(BuildContext context) {
@@ -35,10 +37,11 @@ class CustomHeader extends StatelessWidget {
           ),
           child: Text(
             title,
-            style: AppTypography.text24.copyWith(
-              fontWeight: titleWeight ?? FontWeight.w600,
-              color: color ?? AppColors.text12,
-            ),
+            style: titleStyle ??
+                AppTypography.text24.copyWith(
+                  fontWeight: titleWeight ?? FontWeight.w600,
+                  color: color ?? AppColors.text12,
+                ),
           ),
         ),
         Container(),

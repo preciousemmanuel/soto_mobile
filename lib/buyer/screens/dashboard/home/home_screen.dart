@@ -15,7 +15,7 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const YBox(10),
+              const YBox(20),
               const HomeNotificationHeader(),
               const YBox(26),
               Container(
@@ -51,6 +51,7 @@ class HomeScreen extends StatelessWidget {
                       child: CustomBtn.withChild(
                         borderRadius: BorderRadius.circular(14),
                         online: true,
+                        height: 44,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
