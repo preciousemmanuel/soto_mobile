@@ -1,4 +1,5 @@
 import 'package:flutter/gestures.dart';
+import 'package:soto_ecommerce/buyer/buyer.dart';
 import 'package:soto_ecommerce/common/common.dart';
 
 class LoginScreenArgs {
@@ -132,7 +133,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: InkWell(
                         onTap: () {
                           Navigator.pushNamed(
-                              context, RoutePath.forgotPasswordScreen);
+                            context,
+                            RoutePath.changeOrForgotPasswordScreen,
+                            arguments: const PasswordScreenArgs(
+                              type: PasswordType.forgotPassword,
+                            ),
+                          );
                         },
                         child: Text(
                           'Forgot Password?',

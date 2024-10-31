@@ -10,12 +10,16 @@ class AuthUserVM extends BaseVM {
   AuthUser? get authUser => _authUser;
   Wallet? get wallet => _authUser?.wallet;
 
-  getUserFromStorage() async {
+  void getUserFromStorage() async {
     var authUser = await StorageService.getUser();
     if (authUser != null) {
       _authUser = authUser;
       reBuildUI();
     }
+  }
+
+  void setHasSeenOnboarding() {
+    StorageService.storeBoolItem(StorageKey.onboarding, true);
   }
 
   Future<ApiResponse> getUserProfile({String? busyObjectName}) async {

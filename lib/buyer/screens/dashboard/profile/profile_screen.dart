@@ -33,10 +33,19 @@ class ProfileScreen extends StatelessWidget {
                       const Spacer(),
                       InkWell(
                         onTap: () {
-                          Navigator.pushNamed(
+                          ModalWrapper.showCustomDialog(
                             context,
-                            RoutePath.loginScreen,
-                            arguments: LoginScreenArgs(isVendor: true),
+                            child: ConfirmModal(
+                              message: 'Are you sure to switch to vendor?',
+                              onConfirm: () {
+                                Navigator.pop(context);
+                                Navigator.pushNamed(
+                                  context,
+                                  RoutePath.loginScreen,
+                                  arguments: LoginScreenArgs(isVendor: true),
+                                );
+                              },
+                            ),
                           );
                         },
                         child: Container(
@@ -96,10 +105,10 @@ class ProfileScreen extends StatelessWidget {
                           trailicon: Iconsax.lock,
                           onTap: () {
                             Navigator.pushNamed(
-                              context,
-                              RoutePath.forgotPasswordScreen,
-                              arguments: true,
-                            );
+                                context, RoutePath.changeOrForgotPasswordScreen,
+                                arguments: const PasswordScreenArgs(
+                                  type: PasswordType.changePassword,
+                                ));
                           },
                         ),
                         const YBox(20),
@@ -158,7 +167,13 @@ class ProfileScreen extends StatelessWidget {
                     onTap: () {
                       ModalWrapper.showCustomDialog(
                         context,
-                        child: const LogoutModal(),
+                        child: ConfirmModal(
+                          message: 'Do you want to Logout?',
+                          confirmText: 'Yes Logout',
+                          onConfirm: () {
+                            context.read<LoginVM>().logout();
+                          },
+                        ),
                       );
                     },
                     child: const ProfileListTile(

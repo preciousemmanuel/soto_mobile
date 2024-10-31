@@ -51,6 +51,7 @@ class OnboardScreenTwo extends StatelessWidget {
                 height: 54,
                 width: Sizer.width(165),
                 onTap: () {
+                  context.read<AuthUserVM>().setHasSeenOnboarding();
                   Navigator.pushNamed(context, RoutePath.dashboardNavScreen);
                 },
                 text: "Get Started",

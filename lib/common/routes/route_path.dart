@@ -4,6 +4,7 @@ class RoutePath {
   static const onboardScreenOne = '/onboardScreenOne';
   static const onboardScreenTwo = '/onboardScreenTwo';
   static const onboardScreenThree = '/onboardScreenThree';
+
   // order
   static const orderScreen = '/orderScreen';
   static const createOrderScreen = '/createOrderScreen';
@@ -23,7 +24,7 @@ class RoutePath {
   // Auth
   static const loginScreen = '/loginScreen';
   static const createAccountScreen = '/createAccountScreen';
-  static const forgotPasswordScreen = '/forgotPasswordScreen';
+  static const changeOrForgotPasswordScreen = '/changeOrForgotPasswordScreen';
   static const shippingAddressScreen = '/shippingAddressScreen';
 
   // Cart
@@ -32,6 +33,9 @@ class RoutePath {
   static const checkoutPaymentScreen = '/checkoutPaymentScreen';
   static const confirmPaymentScreen = '/confirmPaymentScreen';
   static const addCardScreen = '/addCardScreen';
+
+  // Shared
+  static const confirmationScreen = '/confirmationScreen';
 
   /// SELLER SCREENS
   static const sellerDashboardNavScreen = '/sellerDashboardNavScreen';

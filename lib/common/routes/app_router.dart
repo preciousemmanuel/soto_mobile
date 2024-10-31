@@ -26,11 +26,11 @@ class AppRouter {
         ));
       case RoutePath.createAccountScreen:
         return buildRoute(const CreateAccountScreen());
-      case RoutePath.forgotPasswordScreen:
-        bool isChangePassword = args is bool ? args : false;
-        return buildRoute(ForgotPasswordScreen(
-          isChangePassword: isChangePassword,
-        ));
+      case RoutePath.changeOrForgotPasswordScreen:
+        if (args is PasswordScreenArgs) {
+          return buildRoute(ChangeOrForgotPasswordScreen(args: args));
+        }
+        return errorScreen('Incorrect arguments for ${settings.name}');
       case RoutePath.shippingAddressScreen:
         return buildRoute(const ShippingAddressScreen());
 
@@ -62,6 +62,13 @@ class AppRouter {
         return buildRoute(const MyProfileScreenEdit());
       case RoutePath.helpCenterScreen:
         return buildRoute(const HelpCenterScreen());
+
+      // Shared
+      case RoutePath.confirmationScreen:
+        if (args is ConfirmationScreenArgs) {
+          return buildRoute(ConfirmationScreen(args: args));
+        }
+        return errorScreen('Incorrect arguments for ${settings.name}');
 
       /// SELLER ROUTES
       case RoutePath.sellerDashboardNavScreen:

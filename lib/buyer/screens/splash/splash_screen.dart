@@ -29,8 +29,12 @@ class _SplashScreenState extends State<SplashScreen>
 
     _animationController.forward();
 
-    Future.delayed(const Duration(seconds: 4), () {
-      Navigator.pushReplacementNamed(context, RoutePath.onboardScreenOne);
+    Future.delayed(const Duration(seconds: 4), () async {
+      if (await StorageService.getBoolItem(StorageKey.onboarding) == true) {
+        Navigator.pushReplacementNamed(context, RoutePath.dashboardNavScreen);
+      } else {
+        Navigator.pushReplacementNamed(context, RoutePath.onboardScreenOne);
+      }
     });
   }
 

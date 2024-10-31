@@ -14,15 +14,16 @@ class LoginVM extends BaseVM {
   }
 
   Future<ApiResponse> login() async {
-    printty("Login got called");
+    final body = {
+      "email_or_phone_number": emailC.text.trim(),
+      "password": passwordC.text.trim(),
+      "userType": userType.name
+    };
+    printty("Login got called with body: $body");
     return await performApiCall(
       url: "//user/login",
       method: apiService.post,
-      body: {
-        "email_or_phone_number": emailC.text.trim(),
-        "password": passwordC.text.trim(),
-        "userType": userType.name
-      },
+      body: body,
       onSuccess: (data) {
         String token = data["data"]["Token"];
         StorageService.storeAccessToken(token);
@@ -31,33 +32,28 @@ class LoginVM extends BaseVM {
     );
   }
 
-  // Future<ApiResponse> logout() async {
-  //   try {
-  //     setBusy(true);
-  //     await Future.delayed(const Duration(seconds: 1));
-  //     final AuthUser? user = await StorageService.getUser();
-  //     Navigator.pushNamedAndRemoveUntil(
-  //       NavigatorKeys.appNavigatorKey.currentContext!,
-  //       RoutePath.loginScreen,
-  //       (r) => false,
-  //     );
-  //     setBusy(false);
-  //     String url = "/auth/logout";
-  //     apiResponse = await apiService.postWithAuth(body: null, url: url);
+  Future<ApiResponse> logout() async {
+    try {
+      setBusy(true);
+      await Future.delayed(const Duration(seconds: 1));
+      final AuthUser? user = await StorageService.getUser();
+      Navigator.pushNamedAndRemoveUntil(
+        NavKey.appNavigatorKey.currentContext!,
+        RoutePath.loginScreen,
+        (r) => false,
+      );
+      setBusy(false);
 
-  //     await StorageService.logout();
-  //     await StorageService.storeStringItem(StorageKey.email, user?.email ?? "");
+      await StorageService.logout();
+      await StorageService.storeStringItem(StorageKey.email, user?.email ?? "");
 
-  //     apiService = DioApiService(appInterceptors: AppInterceptors());
-  //     printty(apiResponse, logLevel: "Logout Response");
-  //     return apiResponse;
-  //   } catch (e) {
-  //     printty(e.toString(), logLevel: "Logout Error");
-  //     setBusy(false);
-  //     return ApiResponse(success: false, message: e.toString());
-  //     //return errorResponse;
-  //   }
-  // }
+      return ApiResponse(success: true);
+    } catch (e) {
+      printty(e.toString(), logName: "Logout Error");
+      setBusy(false);
+      return ApiResponse(success: false, message: e.toString());
+    }
+  }
 
   clearData() {
     emailC.clear();
