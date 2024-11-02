@@ -9,6 +9,12 @@ class AuthUserVM extends BaseVM {
   AuthUser? _authUser;
   AuthUser? get authUser => _authUser;
   Wallet? get wallet => _authUser?.wallet;
+  Cart? get cart => _authUser?.cart;
+  Business? get business => _authUser?.business;
+  String get shippingADD =>
+      '${authUser?.shippingAddress?.fullAddress}, ${authUser?.shippingAddress?.country}';
+  String get fullname =>
+      '${(authUser?.firstName ?? '').capitalizeFirstLetter()} ${(authUser?.lastName ?? '').capitalizeFirstLetter()}';
 
   void getUserFromStorage() async {
     var authUser = await StorageService.getUser();

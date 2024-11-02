@@ -43,7 +43,7 @@ class Product extends Equatable {
   final String? id;
   final String? productName;
   final String? description;
-  final Category? category;
+  // final Category? category; // TODO: Remind BE to add category id
   final List<String>? images;
   final String? vendor;
   final int? unitPrice;
@@ -51,6 +51,7 @@ class Product extends Equatable {
   final bool? isDiscounted;
   final bool? inStock;
   final bool? isVerified;
+  final bool? isDeleted;
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final int? v;
@@ -59,7 +60,7 @@ class Product extends Equatable {
     this.id,
     this.productName,
     this.description,
-    this.category,
+    // this.category,
     this.images,
     this.vendor,
     this.unitPrice,
@@ -67,6 +68,7 @@ class Product extends Equatable {
     this.isDiscounted,
     this.inStock,
     this.isVerified,
+    this.isDeleted,
     this.createdAt,
     this.updatedAt,
     this.v,
@@ -76,9 +78,9 @@ class Product extends Equatable {
         id: json["_id"],
         productName: json["product_name"],
         description: json["description"],
-        category: json["category"] == null
-            ? null
-            : Category.fromJson(json["category"]),
+        // category: json["category"] == null
+        //     ? null
+        //     : Category.fromJson(json["category"]),
         images: json["images"] == null
             ? []
             : List<String>.from(json["images"]!.map((x) => x)),
@@ -88,6 +90,7 @@ class Product extends Equatable {
         isDiscounted: json["is_discounted"],
         inStock: json["in_stock"],
         isVerified: json["is_verified"],
+        isDeleted: json["is_deleted"],
         createdAt: json["createdAt"] == null
             ? null
             : DateTime.parse(json["createdAt"]),
@@ -101,7 +104,7 @@ class Product extends Equatable {
         "_id": id,
         "product_name": productName,
         "description": description,
-        "category": category?.toJson(),
+        // "category": category?.toJson(),
         "images":
             images == null ? [] : List<dynamic>.from(images!.map((x) => x)),
         "vendor": vendor,
@@ -110,6 +113,7 @@ class Product extends Equatable {
         "is_discounted": isDiscounted,
         "in_stock": inStock,
         "is_verified": isVerified,
+        "is_deleted": isDeleted,
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
         "__v": v,
@@ -120,7 +124,7 @@ class Product extends Equatable {
         id,
         productName,
         description,
-        category,
+        // category,
         images,
         vendor,
         unitPrice,
@@ -128,6 +132,7 @@ class Product extends Equatable {
         isDiscounted,
         inStock,
         isVerified,
+        isDeleted,
         createdAt,
         updatedAt,
         v,
@@ -196,6 +201,53 @@ class Review {
         "product": product,
         "user": user?.toJson(),
         "rating": rating,
+        "createdAt": createdAt?.toIso8601String(),
+        "updatedAt": updatedAt?.toIso8601String(),
+        "__v": v,
+      };
+}
+
+List<WaitlistRes> waitlistResFromJson(String str) => List<WaitlistRes>.from(
+    json.decode(str).map((x) => WaitlistRes.fromJson(x)));
+
+String waitlistResToJson(List<WaitlistRes> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
+class WaitlistRes {
+  final String? id;
+  final Product? product;
+  final String? user;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+  final int? v;
+
+  WaitlistRes({
+    this.id,
+    this.product,
+    this.user,
+    this.createdAt,
+    this.updatedAt,
+    this.v,
+  });
+
+  factory WaitlistRes.fromJson(Map<String, dynamic> json) => WaitlistRes(
+        id: json["_id"],
+        product:
+            json["product"] == null ? null : Product.fromJson(json["product"]),
+        user: json["user"],
+        createdAt: json["createdAt"] == null
+            ? null
+            : DateTime.parse(json["createdAt"]),
+        updatedAt: json["updatedAt"] == null
+            ? null
+            : DateTime.parse(json["updatedAt"]),
+        v: json["__v"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "_id": id,
+        "product": product?.toJson(),
+        "user": user,
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
         "__v": v,

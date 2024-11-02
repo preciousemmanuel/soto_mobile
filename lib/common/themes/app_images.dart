@@ -9,6 +9,7 @@ class AppImages {
   static const logo = "$images/logo.png";
   static const avatar = "$images/avatar.png";
   static const creditCard = "$images/creditCard.png";
+  static const noImage = "$images/noImage.jpg";
 
   // onboarding
   static const ob1 = "$images/onboarding/ob1.png";

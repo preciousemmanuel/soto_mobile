@@ -38,12 +38,9 @@ class ProfileScreen extends StatelessWidget {
                             child: ConfirmModal(
                               message: 'Are you sure to switch to vendor?',
                               onConfirm: () {
-                                Navigator.pop(context);
-                                Navigator.pushNamed(
-                                  context,
-                                  RoutePath.loginScreen,
-                                  arguments: LoginScreenArgs(isVendor: true),
-                                );
+                                context
+                                    .read<LoginVM>()
+                                    .logout(switchToVendor: true);
                               },
                             ),
                           );

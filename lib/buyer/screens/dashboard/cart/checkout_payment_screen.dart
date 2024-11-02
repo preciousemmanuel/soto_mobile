@@ -32,7 +32,9 @@ class CheckoutPaymentScreen extends StatelessWidget {
               isSelected: true,
               title: 'Credit Card',
               icon: AppSvgs.mscard,
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context, RoutePath.confirmPaymentScreen);
+              },
             ),
             const YBox(16),
             PaymentTile(

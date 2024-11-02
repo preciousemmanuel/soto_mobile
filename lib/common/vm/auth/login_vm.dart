@@ -1,3 +1,4 @@
+import 'package:soto_ecommerce/buyer/screens/auth/login_screen.dart';
 import 'package:soto_ecommerce/common/common.dart';
 
 class LoginVM extends BaseVM {
@@ -21,7 +22,7 @@ class LoginVM extends BaseVM {
     };
     printty("Login got called with body: $body");
     return await performApiCall(
-      url: "//user/login",
+      url: "/user/login",
       method: apiService.post,
       body: body,
       onSuccess: (data) {
@@ -32,7 +33,7 @@ class LoginVM extends BaseVM {
     );
   }
 
-  Future<ApiResponse> logout() async {
+  Future<ApiResponse> logout({bool switchToVendor = false}) async {
     try {
       setBusy(true);
       await Future.delayed(const Duration(seconds: 1));
@@ -40,6 +41,7 @@ class LoginVM extends BaseVM {
       Navigator.pushNamedAndRemoveUntil(
         NavKey.appNavigatorKey.currentContext!,
         RoutePath.loginScreen,
+        arguments: LoginScreenArgs(isVendor: switchToVendor),
         (r) => false,
       );
       setBusy(false);

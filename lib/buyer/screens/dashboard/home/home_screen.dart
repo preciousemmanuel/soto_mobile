@@ -1,9 +1,27 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:soto_ecommerce/buyer/buyer.dart';
 import 'package:soto_ecommerce/common/common.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _init();
+    });
+    super.initState();
+  }
+
+  _init() {
+    context.read<ProductVM>().getProductList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -152,31 +170,49 @@ class HomeScreen extends StatelessWidget {
                 sellAllBtn: () {},
               ),
               const YBox(12),
-              GridView.custom(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                padding: EdgeInsets.only(
-                  left: Sizer.width(20),
-                ),
-                gridDelegate: SliverStairedGridDelegate(
-                  crossAxisSpacing: Sizer.width(20),
-                  mainAxisSpacing: Sizer.width(20),
-                  pattern: [
-                    const StairedGridTile(0.5, 0.74),
-                    const StairedGridTile(0.5, 0.74),
-                  ],
-                ),
-                childrenDelegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                    return RelatedProductCard(
-                      onTap: () {
-                        Navigator.pushNamed(
-                            context, RoutePath.productDetailScreen);
+              Consumer<ProductVM>(
+                builder: (context, vm, _) {
+                  return GridView.custom(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    padding: EdgeInsets.only(
+                      left: Sizer.width(20),
+                    ),
+                    gridDelegate: SliverStairedGridDelegate(
+                      crossAxisSpacing: Sizer.width(20),
+                      mainAxisSpacing: Sizer.width(20),
+                      pattern: [
+                        const StairedGridTile(0.5, 0.74),
+                        const StairedGridTile(0.5, 0.74),
+                      ],
+                    ),
+                    childrenDelegate: SliverChildBuilderDelegate(
+                      (context, index) {
+                        return RelatedProductCard(
+                          productName:
+                              vm.allProductList[index].productName ?? '',
+                          productId: vm.allProductList[index].id ?? '',
+                          unitPrice: '${vm.allProductList[index].unitPrice}',
+                          productImage:
+                              (vm.allProductList[index].images?.isNotEmpty ??
+                                      false)
+                                  ? vm.allProductList[index].images?.first ?? ''
+                                  : '',
+                          onTap: () {
+                            Navigator.pushNamed(
+                              context,
+                              RoutePath.productDetailScreen,
+                              arguments: ProductArgs(
+                                productId: vm.allProductList[index].id ?? '',
+                              ),
+                            );
+                          },
+                        );
                       },
-                    );
-                  },
-                  childCount: 4,
-                ),
+                      childCount: vm.allProductList.length,
+                    ),
+                  );
+                },
               ),
               const YBox(10),
               const BestSellerWidget(),

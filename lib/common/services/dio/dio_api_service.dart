@@ -91,14 +91,14 @@ class DioApiService {
         dio.options.contentType = contentType;
       }
 
-      dynamic data = body;
-      if (body != null) {
-        data = FormData.fromMap(body);
-      }
+      // dynamic data = body;
+      // if (body != null) {
+      //   data = FormData.fromMap(body);
+      // }
       printty(dio.options.baseUrl);
       printty(url, logName: "url full path");
       Response response = await dio
-          .post(url, data: contentType == null ? data : body)
+          .post(url, data: body)
           .timeout(Duration(seconds: timeOutDurationInSeconds));
       return DioResponseHandler.parseResponse(response);
     } on DioException catch (e, s) {

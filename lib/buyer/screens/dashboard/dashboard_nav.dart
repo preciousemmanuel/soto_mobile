@@ -1,13 +1,18 @@
 import 'package:soto_ecommerce/buyer/buyer.dart';
 import 'package:soto_ecommerce/common/common.dart';
 
+class DashArg {
+  final int? index;
+  DashArg({this.index});
+}
+
 class DashboardNav extends StatefulWidget {
   const DashboardNav({
     super.key,
-    this.index,
+    this.args,
   });
 
-  final int? index;
+  final DashArg? args;
 
   @override
   State<DashboardNav> createState() => _DashboardNavState();
@@ -27,6 +32,9 @@ class _DashboardNavState extends State<DashboardNav> {
   @override
   void initState() {
     super.initState();
+    if (widget.args?.index != null) {
+      currentIndex = widget.args!.index!;
+    }
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _init();
     });

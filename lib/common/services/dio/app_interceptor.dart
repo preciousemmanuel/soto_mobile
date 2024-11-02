@@ -16,7 +16,7 @@ class AppInterceptors extends QueuedInterceptorsWrapper {
     printty("url path:===> ${options.path}");
 
     // printty("url headers:===> ${options.headers.toString()}");
-    // printty(token.toString());
+    printty(token.toString());
 
     if (token == null) {
       handler.reject(DioException(requestOptions: options));

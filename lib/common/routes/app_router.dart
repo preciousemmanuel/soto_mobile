@@ -35,11 +35,16 @@ class AppRouter {
         return buildRoute(const ShippingAddressScreen());
 
       case RoutePath.dashboardNavScreen:
-        return buildRoute(const DashboardNav());
+        final DashArg dashArgs =
+            args == null ? DashArg(index: 0) : args as DashArg;
+        return buildRoute(DashboardNav(args: dashArgs));
       case RoutePath.notificationScreen:
         return buildRoute(const NotificationScreen());
       case RoutePath.productDetailScreen:
-        return buildRoute(const ProductDetailsScreen());
+        if (args is ProductArgs) {
+          return buildRoute(ProductDetailsScreen(args: args));
+        }
+        return errorScreen('Incorrect arguments for ${settings.name}');
 
       // Orders
       case RoutePath.createOrderScreen:

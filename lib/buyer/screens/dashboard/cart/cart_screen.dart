@@ -1,3 +1,4 @@
+import 'package:soto_ecommerce/buyer/screens/dashboard/home/product/product_details_screen.dart';
 import 'package:soto_ecommerce/common/common.dart';
 
 class CartScreen extends StatelessWidget {
@@ -5,88 +6,162 @@ class CartScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.bgWhite,
-      body: SafeArea(
-        bottom: false,
-        child: ListView(
-          children: [
-            const YBox(20),
-            Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: Sizer.width(20),
-              ),
-              child: CustomHeader(
-                title: 'Shopping Cart',
-                backBtn: () {},
-              ),
-            ),
-            ListView.separated(
-              padding: EdgeInsets.only(
-                top: Sizer.height(20),
-              ),
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (ctx, i) {
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
+    return Consumer<OrderVM>(builder: (context, vm, _) {
+      return SizedBox(
+        width: Sizer.screenWidth,
+        height: Sizer.screenHeight,
+        child: BusyOverlay(
+          show: vm.isBusy,
+          child: Scaffold(
+            backgroundColor: AppColors.bgWhite,
+            body: SafeArea(
+              bottom: false,
+              child: RefreshIndicator(
+                onRefresh: () async {
+                  context.read<AuthUserVM>().getUserProfile();
+                },
+                child: ListView(
                   children: [
-                    const Divider(
-                      color: AppColors.whiteF7,
-                      thickness: 2,
-                    ),
-                    const ShoppingCartCard(),
-                    if (i == 2)
-                      const Divider(
-                        color: AppColors.whiteF7,
-                        thickness: 2,
+                    const YBox(20),
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: Sizer.width(20),
                       ),
+                      child: CustomHeader(
+                        title: 'Shopping Cart',
+                        backBtn: () {},
+                      ),
+                    ),
+                    Consumer<AuthUserVM>(
+                      builder: (context, authVM, _) {
+                        if (authVM.cart?.items == null ||
+                            authVM.cart?.items?.isEmpty == true) {
+                          return SizedBox(
+                            height: Sizer.height(500),
+                            width: Sizer.screenWidth,
+                            child: Center(
+                              child: Text(
+                                'Cart is empty, add some products',
+                                style: AppTypography.text16
+                                    .copyWith(color: AppColors.text28),
+                              ),
+                            ),
+                          );
+                        }
+                        return Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            ListView.separated(
+                              padding: EdgeInsets.only(
+                                top: Sizer.height(20),
+                              ),
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemBuilder: (ctx, i) {
+                                final cartItem = authVM.cart?.items?[i];
+                                return Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const Divider(
+                                      color: AppColors.whiteF7,
+                                      thickness: 2,
+                                    ),
+                                    ShoppingCartCard(
+                                      cartItem: cartItem,
+                                    ),
+                                    if (i ==
+                                        (authVM.cart?.items?.length ?? 0 - 1))
+                                      const Divider(
+                                        color: AppColors.whiteF7,
+                                        thickness: 2,
+                                      ),
+                                  ],
+                                );
+                              },
+                              separatorBuilder: (ctx, i) => const YBox(6),
+                              itemCount: authVM.cart?.items?.length ?? 0,
+                            ),
+                            const YBox(26),
+                            Container(
+                              alignment: Alignment.centerLeft,
+                              padding: EdgeInsets.symmetric(
+                                horizontal: Sizer.width(20),
+                              ),
+                              child: Text(
+                                'You may the like ',
+                                style: AppTypography.text16.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                            const YBox(20),
+                            Consumer<ProductVM>(
+                                builder: (context, productVM, _) {
+                              final relatedProducts =
+                                  productVM.allProductList.take(2).toList();
+                              return GridView.count(
+                                crossAxisCount: 2,
+                                shrinkWrap: true,
+                                crossAxisSpacing: Sizer.width(20),
+                                mainAxisSpacing: Sizer.width(20),
+                                physics: const NeverScrollableScrollPhysics(),
+                                childAspectRatio: 0.74,
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: Sizer.width(20),
+                                ),
+                                children: [
+                                  for (int i = 0;
+                                      i < relatedProducts.length;
+                                      i++)
+                                    RelatedProductCard(
+                                      productName:
+                                          relatedProducts[i].productName ?? '',
+                                      productId: relatedProducts[i].id ?? '',
+                                      unitPrice:
+                                          '${relatedProducts[i].unitPrice}',
+                                      productImage: (relatedProducts[i]
+                                                  .images
+                                                  ?.isNotEmpty ??
+                                              false)
+                                          ? relatedProducts[i].images?.first ??
+                                              ''
+                                          : '',
+                                      onTap: () {
+                                        Navigator.pushNamed(
+                                          context,
+                                          RoutePath.productDetailScreen,
+                                          arguments: ProductArgs(
+                                            productId:
+                                                relatedProducts[i].id ?? '',
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                ],
+                              );
+                            }),
+                            const YBox(48),
+                            CartAmountTotal(
+                              total:
+                                  '${AppUtils.nairaSymbol}${AppUtils.formatAmountString('${authVM.cart?.totalAmount ?? 0.0}')}',
+                              btnText: 'Proceed to checkout',
+                              btnOntap: () {
+                                Navigator.pushNamed(
+                                    context, RoutePath.checkoutScreen);
+                              },
+                            ),
+                            const YBox(100),
+                          ],
+                        );
+                      },
+                    ),
                   ],
-                );
-              },
-              separatorBuilder: (ctx, i) => const YBox(6),
-              itemCount: 3,
-            ),
-            const YBox(26),
-            Container(
-              alignment: Alignment.centerLeft,
-              padding: EdgeInsets.symmetric(
-                horizontal: Sizer.width(20),
-              ),
-              child: Text(
-                'You may the like ',
-                style: AppTypography.text16.copyWith(
-                  fontWeight: FontWeight.w600,
                 ),
               ),
             ),
-            const YBox(20),
-            GridView.count(
-              crossAxisCount: 2,
-              shrinkWrap: true,
-              crossAxisSpacing: Sizer.width(20),
-              mainAxisSpacing: Sizer.width(20),
-              physics: const NeverScrollableScrollPhysics(),
-              childAspectRatio: 0.74,
-              padding: EdgeInsets.symmetric(
-                horizontal: Sizer.width(20),
-              ),
-              children: [
-                for (int i = 0; i < 2; i++) const RelatedProductCard(),
-              ],
-            ),
-            const YBox(48),
-            CartAmountTotal(
-              total: 'N1,000,000',
-              btnText: 'Proceed to checkout',
-              btnOntap: () {
-                Navigator.pushNamed(context, RoutePath.checkoutScreen);
-              },
-            ),
-            const YBox(100),
-          ],
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 }

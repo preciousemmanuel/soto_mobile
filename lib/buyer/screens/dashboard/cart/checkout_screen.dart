@@ -32,32 +32,37 @@ class CheckoutScreen extends StatelessWidget {
               subText: '+234 803900000',
               subText2: 'preciousruchi@gmail.com',
             ),
-            ListView.separated(
-              padding: EdgeInsets.only(
-                top: Sizer.height(20),
-              ),
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (ctx, i) {
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Divider(
-                      color: AppColors.whiteF7,
-                      thickness: 2,
-                    ),
-                    const ShoppingCartCard(),
-                    if (i == 2)
+            Consumer<AuthUserVM>(builder: (context, authVM, _) {
+              return ListView.separated(
+                padding: EdgeInsets.only(
+                  top: Sizer.height(20),
+                ),
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (ctx, i) {
+                  final cartItem = authVM.cart?.items?[i];
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
                       const Divider(
                         color: AppColors.whiteF7,
                         thickness: 2,
                       ),
-                  ],
-                );
-              },
-              separatorBuilder: (ctx, i) => const YBox(6),
-              itemCount: 3,
-            ),
+                      ShoppingCartCard(
+                        cartItem: cartItem,
+                      ),
+                      if (i == (authVM.cart?.items?.length ?? 0 - 1))
+                        const Divider(
+                          color: AppColors.whiteF7,
+                          thickness: 2,
+                        ),
+                    ],
+                  );
+                },
+                separatorBuilder: (ctx, i) => const YBox(6),
+                itemCount: authVM.cart?.items?.length ?? 0,
+              );
+            }),
             const YBox(20),
             Container(
               padding: EdgeInsets.symmetric(
@@ -93,7 +98,8 @@ class CheckoutScreen extends StatelessWidget {
             ),
             const YBox(24),
             CartAmountTotal(
-              total: 'N500,000',
+              total:
+                  '${AppUtils.nairaSymbol}${AppUtils.formatAmountString('${context.read<AuthUserVM>().cart?.totalAmount ?? 0.0}')}',
               btnText: 'Pay',
               btnOntap: () {
                 Navigator.pushNamed(context, RoutePath.checkoutPaymentScreen);

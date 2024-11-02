@@ -3,7 +3,10 @@ import 'package:soto_ecommerce/common/common.dart';
 class ShoppingCartCard extends StatelessWidget {
   const ShoppingCartCard({
     super.key,
+    this.cartItem,
   });
+
+  final Item? cartItem;
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +27,12 @@ class ShoppingCartCard extends StatelessWidget {
             width: Sizer.width(84),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(Sizer.width(8)),
-              child: imageHelper(
-                AppImages.product,
+              child: MyCachedNetworkImage(
+                imageUrl:
+                    '${cartItem?.images?.isNotEmpty ?? false ? cartItem?.images?.first : ''}',
+                fadeInDuration: const Duration(milliseconds: 50),
                 fit: BoxFit.cover,
+                width: MediaQuery.of(context).size.width,
               ),
             ),
           ),
@@ -36,12 +42,12 @@ class ShoppingCartCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Wooden chair',
+                  cartItem?.productName ?? '',
                   style: AppTypography.text12,
                 ),
                 const YBox(4),
                 Text(
-                  'Qty: 1',
+                  'Qty: ${cartItem?.quantity}',
                   style: AppTypography.text12.copyWith(
                     fontWeight: FontWeight.w500,
                     color: AppColors.textAA,
@@ -74,13 +80,31 @@ class ShoppingCartCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Icon(
-                Iconsax.close_circle,
-                color: AppColors.text57,
-                size: Sizer.radius(24),
+              InkWell(
+                onTap: () {
+                  context
+                      .read<OrderVM>()
+                      .removeProductFromCart(cartItem?.productId ?? '')
+                      .then((val) {
+                    if (val.success) {
+                      if (context.mounted) {
+                        context.read<AuthUserVM>().getUserProfile();
+                      }
+
+                      FlushBarToast.fLSnackBar(
+                          snackBarType: SnackBarType.success,
+                          message: val.message ?? '');
+                    }
+                  });
+                },
+                child: Icon(
+                  Iconsax.close_circle,
+                  color: AppColors.text57,
+                  size: Sizer.radius(24),
+                ),
               ),
               Text(
-                'N150.00',
+                '${AppUtils.nairaSymbol}${AppUtils.formatAmountString(cartItem?.unitPrice.toString() ?? '0.00')}',
                 style: AppTypography.text16.copyWith(
                   fontWeight: FontWeight.w600,
                   color: AppColors.primaryOrange,
@@ -89,37 +113,6 @@ class ShoppingCartCard extends StatelessWidget {
             ],
           ),
         ],
-      ),
-    );
-  }
-}
-
-class AddSubtractBtn extends StatelessWidget {
-  const AddSubtractBtn({
-    super.key,
-    required this.icon,
-    this.onTap,
-  });
-
-  final IconData icon;
-  final VoidCallback? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(Sizer.radius(6)),
-            border: Border.all(
-              color: AppColors.primaryOrange,
-              width: 1.5,
-            )),
-        child: Icon(
-          icon,
-          size: Sizer.radius(20),
-          color: AppColors.primaryOrange,
-        ),
       ),
     );
   }

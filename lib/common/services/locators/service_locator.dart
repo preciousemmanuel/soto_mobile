@@ -8,7 +8,10 @@ final allProviders = <SingleChildWidget>[
   ChangeNotifierProvider(create: (_) => SignupVM()),
   ChangeNotifierProvider(create: (_) => PasswordVM()),
   ChangeNotifierProvider(create: (_) => AuthUserVM()),
+
   ChangeNotifierProvider(create: (_) => ProductVM()),
+  ChangeNotifierProvider(create: (_) => WishlistVM()),
+  ChangeNotifierProvider(create: (_) => OrderVM()),
 
   // Seller
   ChangeNotifierProvider(create: (_) => CreateBusinessVM()),

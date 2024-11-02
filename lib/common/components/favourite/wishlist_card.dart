@@ -3,7 +3,10 @@ import 'package:soto_ecommerce/common/common.dart';
 class WishlistCard extends StatelessWidget {
   const WishlistCard({
     super.key,
+    this.product,
   });
+
+  final Product? product;
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +26,13 @@ class WishlistCard extends StatelessWidget {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(Sizer.width(8)),
-                  child: imageHelper(
-                    AppImages.product,
+                  child: MyCachedNetworkImage(
+                    imageUrl:
+                        '${product?.images?.isNotEmpty ?? false ? product?.images?.first : ''}',
+                    fadeInDuration: const Duration(milliseconds: 50),
                     fit: BoxFit.cover,
+                    width: MediaQuery.of(context).size.width,
+                    height: Sizer.height(160),
                   ),
                 ),
                 Positioned(
@@ -53,7 +60,7 @@ class WishlistCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Deck Chair Twill',
+                  product?.productName ?? '',
                   style: AppTypography.text12,
                 ),
                 const YBox(4),
@@ -104,7 +111,7 @@ class WishlistCard extends StatelessWidget {
                 size: Sizer.radius(24),
               ),
               Text(
-                '\$ 150.00',
+                ' ${AppUtils.nairaSymbol}${AppUtils.formatAmountString('${product?.unitPrice ?? 0.0}')}',
                 style: AppTypography.text14.copyWith(
                   fontWeight: FontWeight.w600,
                   color: AppColors.primaryOrange,

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
+import 'package:soto_ecommerce/common/models/cart.dart';
 
 AuthUser authUserFromJson(String str) => AuthUser.fromJson(json.decode(str));
 
@@ -22,6 +23,7 @@ class AuthUser extends Equatable {
   final int? v;
   final String? token;
   final Wallet? wallet;
+  final Cart? cart;
   final Business? business;
 
   const AuthUser({
@@ -40,6 +42,7 @@ class AuthUser extends Equatable {
     this.v,
     this.token,
     this.wallet,
+    this.cart,
     this.business,
   });
 
@@ -65,6 +68,7 @@ class AuthUser extends Equatable {
         v: json["__v"],
         token: json["Token"],
         wallet: json["wallet"] == null ? null : Wallet.fromJson(json["wallet"]),
+        cart: json["cart"] == null ? null : Cart.fromJson(json["cart"]),
         business: json["business"] == null
             ? null
             : Business.fromJson(json["business"]),
@@ -86,12 +90,13 @@ class AuthUser extends Equatable {
         "__v": v,
         "Token": token,
         "wallet": wallet?.toJson(),
+        "cart": cart?.toJson(),
         "business": business?.toJson(),
       };
 
   @override
   String toString() {
-    return 'AuthUser(shippingAddress: $shippingAddress, id: $id, firstName: $firstName, lastName: $lastName, email: $email, password: $password, phoneNumber: $phoneNumber, userType: $userType, signupChannel: $signupChannel, isVerified: $isVerified, createdAt: $createdAt, updatedAt: $updatedAt, v: $v, token: $token, wallet: $wallet, business: $business)';
+    return 'AuthUser(shippingAddress: $shippingAddress, id: $id, firstName: $firstName, lastName: $lastName, email: $email, password: $password, phoneNumber: $phoneNumber, userType: $userType, signupChannel: $signupChannel, isVerified: $isVerified, createdAt: $createdAt, updatedAt: $updatedAt, v: $v, token: $token, wallet: $wallet, cart: $cart, business: $business)';
   }
 
   @override
@@ -111,6 +116,7 @@ class AuthUser extends Equatable {
         v,
         token,
         wallet,
+        cart,
         business
       ];
 }
@@ -174,19 +180,18 @@ class Business {
 
 class ShippingAddress {
   final String? country;
+  final String? fullAddress;
 
-  ShippingAddress({
-    this.country,
-  });
+  ShippingAddress({this.country, this.fullAddress});
 
   factory ShippingAddress.fromJson(Map<String, dynamic> json) =>
       ShippingAddress(
         country: json["country"],
+        fullAddress: json["full_address"],
       );
 
-  Map<String, dynamic> toJson() => {
-        "country": country,
-      };
+  Map<String, dynamic> toJson() =>
+      {"country": country, "full_address": fullAddress};
 }
 
 class Wallet {

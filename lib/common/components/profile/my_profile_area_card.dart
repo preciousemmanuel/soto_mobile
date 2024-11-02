@@ -32,7 +32,7 @@ class MyProfileAreaCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '${(vm.authUser?.firstName ?? '').capitalizeFirstLetter()} ${(vm.authUser?.lastName ?? '').capitalizeFirstLetter()}',
+                    vm.fullname,
                     style: AppTypography.text20.copyWith(
                       fontWeight: FontWeight.w500,
                     ),
