@@ -82,7 +82,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           child: SocialsCTA(
                             icon: AppSvgs.fb,
                             text: 'Facebook',
-                            onTap: () {},
+                            onTap: () {
+                              // Navigator.pushNamed(
+                              //     context, RoutePath.approvalScreen);
+                            },
                           ),
                         ),
                         const XBox(25),
@@ -213,12 +216,11 @@ class _LoginScreenState extends State<LoginScreen> {
     final vm = context.read<LoginVM>();
     vm.login().then((value) {
       if (value.success) {
+        vm.clearData();
+        gotorDashboard();
         FlushBarToast.fLSnackBar(
             snackBarType: SnackBarType.success,
             message: value.message ?? 'Login successful');
-
-        vm.clearData();
-        gotorDashboard();
       } else {
         FlushBarToast.fLSnackBar(
             message: value.message ?? "Something went wrong");

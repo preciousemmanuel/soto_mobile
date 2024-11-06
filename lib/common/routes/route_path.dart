@@ -42,4 +42,5 @@ class RoutePath {
   static const allTransactionsScreen = '/allTransactionsScreen';
   static const createBusinessAccountScreen = '/createBusinessAccountScreen';
   static const createPasswordScreen = '/createPasswordScreen';
+  static const approvalScreen = '/approvalScreen';
 }

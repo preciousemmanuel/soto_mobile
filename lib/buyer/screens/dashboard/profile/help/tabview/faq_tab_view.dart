@@ -10,7 +10,7 @@ class FAQTabView extends StatefulWidget {
 }
 
 class _FAQTabViewState extends State<FAQTabView> {
-  int currentIndex = 0;
+  int currentIndex = -1;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -20,59 +20,23 @@ class _FAQTabViewState extends State<FAQTabView> {
       ),
       child: Column(
         children: [
-          FAQAccordion(
-            title: 'Do I have to sign up?',
-            descrption:
-                'Soto offers you the opportunity to explore the amazing features on the platform before your decision to sign up.',
-            isExpanded: currentIndex == 0,
-            onTap: () {
-              currentIndex = 0;
-              setState(() {});
-            },
-          ),
-          const YBox(24),
-          FAQAccordion(
-            title: 'How do I get started?',
-            descrption:
-                'Soto offers you the opportunity to explore the amazing features on the platform before your decision to sign up.',
-            isExpanded: currentIndex == 1,
-            onTap: () {
-              currentIndex = 1;
-              setState(() {});
-            },
-          ),
-          const YBox(24),
-          FAQAccordion(
-            title: 'How do I get started?',
-            descrption:
-                'Soto offers you the opportunity to explore the amazing features on the platform before your decision to sign up.',
-            isExpanded: currentIndex == 2,
-            onTap: () {
-              currentIndex = 2;
-              setState(() {});
-            },
-          ),
-          const YBox(24),
-          FAQAccordion(
-            title: 'How do I get started?',
-            descrption:
-                'Soto offers you the opportunity to explore the amazing features on the platform before your decision to sign up.',
-            isExpanded: currentIndex == 3,
-            onTap: () {
-              currentIndex = 3;
-              setState(() {});
-            },
-          ),
-          const YBox(24),
-          FAQAccordion(
-            title: 'How do I get started?',
-            descrption:
-                'Soto offers you the opportunity to explore the amazing features on the platform before your decision to sign up.',
-            isExpanded: currentIndex == 4,
-            onTap: () {
-              currentIndex = 4;
-              setState(() {});
-            },
+          ListView.separated(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemBuilder: (ctx, i) => FAQAccordion(
+                title: AppText.faqs[i]['title'],
+                descrption: AppText.faqs[i]['subTitle'],
+                isExpanded: i == currentIndex,
+                onTap: () {
+                  if (i == currentIndex) {
+                    currentIndex = -1;
+                  } else {
+                    currentIndex = i;
+                  }
+                  setState(() {});
+                }),
+            separatorBuilder: (_, __) => const YBox(20),
+            itemCount: AppText.faqs.length,
           ),
         ],
       ),

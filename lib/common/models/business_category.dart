@@ -10,6 +10,7 @@ String businessCategoryToJson(List<BusinessCategory> data) =>
 class BusinessCategory {
   final String? id;
   final String? name;
+  final String? image;
   final int? v;
   final DateTime? createdAt;
   final DateTime? updatedAt;
@@ -17,6 +18,7 @@ class BusinessCategory {
   BusinessCategory({
     this.id,
     this.name,
+    this.image,
     this.v,
     this.createdAt,
     this.updatedAt,
@@ -26,6 +28,7 @@ class BusinessCategory {
       BusinessCategory(
         id: json["_id"],
         name: json["name"],
+        image: json["image"],
         v: json["__v"],
         createdAt: json["createdAt"] == null
             ? null
@@ -38,6 +41,7 @@ class BusinessCategory {
   Map<String, dynamic> toJson() => {
         "_id": id,
         "name": name,
+        "image": image,
         "__v": v,
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),

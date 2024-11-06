@@ -14,4 +14,5 @@ class StorageKey {
   static const String appVersion = "appVersion";
 
   static const String onboarding = "onboarding";
+  static const String vendorUser = "vendorUser";
 }

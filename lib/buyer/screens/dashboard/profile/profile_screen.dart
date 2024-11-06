@@ -1,8 +1,25 @@
 import 'package:soto_ecommerce/buyer/buyer.dart';
 import 'package:soto_ecommerce/common/common.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  bool _isVendor = false;
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (await StorageService.getBoolItem(StorageKey.vendorUser) != null) {
+        _isVendor = true;
+        setState(() {});
+      }
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,11 +53,15 @@ class ProfileScreen extends StatelessWidget {
                           ModalWrapper.showCustomDialog(
                             context,
                             child: ConfirmModal(
-                              message: 'Are you sure to switch to vendor?',
+                              message: _isVendor
+                                  ? 'Are you sure to switch to user?'
+                                  : 'Are you sure to switch to vendor?',
                               onConfirm: () {
-                                context
-                                    .read<LoginVM>()
-                                    .logout(switchToVendor: true);
+                                _isVendor
+                                    ? vm.removeVendorUser()
+                                    : vm.setVendorUser();
+                                context.read<LoginVM>().logout(
+                                    switchToVendor: _isVendor ? false : true);
                               },
                             ),
                           );
@@ -65,7 +86,9 @@ class ProfileScreen extends StatelessWidget {
                               ),
                               const XBox(4),
                               Text(
-                                'Switch to vendor',
+                                _isVendor
+                                    ? 'Switch to user'
+                                    : 'Switch to vendor',
                                 style: AppTypography.text12.copyWith(
                                   color: AppColors.white,
                                   fontWeight: FontWeight.w500,
@@ -168,6 +191,7 @@ class ProfileScreen extends StatelessWidget {
                           message: 'Do you want to Logout?',
                           confirmText: 'Yes Logout',
                           onConfirm: () {
+                            vm.removeVendorUser();
                             context.read<LoginVM>().logout();
                           },
                         ),

@@ -99,6 +99,15 @@ class StorageService {
     return null;
   }
 
+  static Future<bool> removeBoolItem(String key) async {
+    var sharedPreferences = await SharedPreferences.getInstance();
+    if (sharedPreferences.containsKey(key) &&
+        sharedPreferences.getBool(key) != null) {
+      return sharedPreferences.remove(key);
+    }
+    return false;
+  }
+
   static Future<bool> removeStringItem(String key) async {
     var sharedPreferences = await SharedPreferences.getInstance();
     if (sharedPreferences.containsKey(key) &&

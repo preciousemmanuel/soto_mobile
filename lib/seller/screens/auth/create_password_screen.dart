@@ -99,6 +99,8 @@ class _CreatePasswordScreenState extends State<CreatePasswordScreen> {
     final vm = context.read<CreateBusinessVM>();
     vm.createBusinessAccount().then((value) {
       if (value.success) {
+        vm.clearData();
+        gotoApprovalScreen();
         FlushBarToast.fLSnackBar(
             snackBarType: SnackBarType.success,
             message: 'Account created successfully');
@@ -109,11 +111,10 @@ class _CreatePasswordScreenState extends State<CreatePasswordScreen> {
     });
   }
 
-  void gotoSellerDashboard() {
-    Navigator.pushNamedAndRemoveUntil(
+  void gotoApprovalScreen() {
+    Navigator.pushNamed(
       context,
-      RoutePath.sellerDashboardNavScreen,
-      (route) => false,
+      RoutePath.approvalScreen,
     );
   }
 }

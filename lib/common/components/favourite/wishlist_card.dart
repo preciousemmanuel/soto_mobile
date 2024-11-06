@@ -1,3 +1,4 @@
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:soto_ecommerce/common/common.dart';
 
 class WishlistCard extends StatelessWidget {
@@ -66,8 +67,13 @@ class WishlistCard extends StatelessWidget {
                 const YBox(4),
                 Row(
                   children: [
-                    svgHelper(
-                      AppSvgs.star,
+                    Skeleton.replace(
+                      replacement: const Bone.circle(
+                        size: 14,
+                      ),
+                      child: svgHelper(
+                        AppSvgs.star,
+                      ),
                     ),
                     const XBox(5),
                     Text(
@@ -105,10 +111,21 @@ class WishlistCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Icon(
-                Iconsax.trash,
-                color: AppColors.text57,
-                size: Sizer.radius(24),
+              InkWell(
+                onTap: () {
+                  ModalWrapper.showCustomDialog(
+                    context,
+                    child: ConfirmModal(
+                      message: 'Are you sure you want to remove this item?',
+                      onConfirm: () {},
+                    ),
+                  );
+                },
+                child: Icon(
+                  Iconsax.trash,
+                  color: AppColors.text57,
+                  size: Sizer.radius(24),
+                ),
               ),
               Text(
                 ' ${AppUtils.nairaSymbol}${AppUtils.formatAmountString('${product?.unitPrice ?? 0.0}')}',

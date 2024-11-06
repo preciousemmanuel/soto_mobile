@@ -95,20 +95,24 @@ class _OtpPageviewState extends State<OtpPageview> {
                 CustomBtn.solid(
                   online: vm.otpC.text.length == 4,
                   onTap: () {
-                    vm.validateOtp().then((value) {
-                      if (value.success) {
-                        widget.controller.nextPage(
-                            duration: const Duration(seconds: 1),
-                            curve: Curves.ease);
+                    widget.controller.nextPage(
+                        duration: const Duration(seconds: 1),
+                        curve: Curves.ease);
 
-                        FlushBarToast.fLSnackBar(
-                            snackBarType: SnackBarType.success,
-                            message: value.message ?? 'Operation successful');
-                      } else {
-                        FlushBarToast.fLSnackBar(
-                            message: value.message ?? "Something went wrong");
-                      }
-                    });
+                    // vm.validateOtp().then((value) {
+                    //   if (value.success) {
+                    //     widget.controller.nextPage(
+                    //         duration: const Duration(seconds: 1),
+                    //         curve: Curves.ease);
+
+                    //     FlushBarToast.fLSnackBar(
+                    //         snackBarType: SnackBarType.success,
+                    //         message: value.message ?? 'Operation successful');
+                    //   } else {
+                    //     FlushBarToast.fLSnackBar(
+                    //         message: value.message ?? "Something went wrong");
+                    //   }
+                    // });
                   },
                   text: "Continue",
                 ),

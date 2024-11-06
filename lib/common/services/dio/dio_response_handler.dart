@@ -64,16 +64,16 @@ class DioResponseHandler {
             return _parseBadRequestError(dioError.response);
           }
 
-          if (dioError.response!.data["message"]?.contains(deviceErrorMsg) ||
-              AppText.errorMsg.contains(deviceErrorMsg)) {
-            return ApiResponse(
-                code: 409,
-                success: false,
-                message: dioError.response!.data["message"] ??
-                    dioError.message ??
-                    dioError.response?.statusMessage ??
-                    AppText.errorMsg);
-          }
+          // if (dioError.response!.data["message"]?.contains(deviceErrorMsg) ||
+          //     AppText.errorMsg.contains(deviceErrorMsg)) {
+          //   return ApiResponse(
+          //       code: 409,
+          //       success: false,
+          //       message: dioError.response!.data["message"] ??
+          //           dioError.message ??
+          //           dioError.response?.statusMessage ??
+          //           AppText.errorMsg);
+          // }
 
           printty(dioError.response!.data["message"]);
           return ApiResponse(

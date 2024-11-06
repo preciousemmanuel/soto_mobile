@@ -1,5 +1,6 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:soto_ecommerce/buyer/buyer.dart';
 import 'package:soto_ecommerce/common/common.dart';
 
@@ -20,7 +21,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   _init() {
-    context.read<ProductVM>().getProductList();
+    context.read<ProductVM>()
+      ..getCategories()
+      ..getProductList();
   }
 
   @override
@@ -105,36 +108,76 @@ class _HomeScreenState extends State<HomeScreen> {
               const YBox(12),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    ...List.generate(
-                      5,
-                      (i) => Container(
-                        padding: EdgeInsets.only(
-                          left: Sizer.width(12),
-                          top: Sizer.height(18),
-                        ),
-                        margin: EdgeInsets.only(
-                          right: Sizer.width(8),
-                          left: i == 0 ? Sizer.width(20) : 0,
-                        ),
-                        width: Sizer.width(125),
-                        height: Sizer.height(56),
-                        decoration: BoxDecoration(
+                child: Consumer<ProductVM>(builder: (context, ref, _) {
+                  if (ref.isBusy) {
+                    return Row(
+                      children: List.generate(
+                        4,
+                        (i) {
+                          return Skeletonizer(
+                            enabled: true,
+                            child: Container(
+                              margin: EdgeInsets.only(
+                                right: Sizer.width(8),
+                                left: i == 0 ? Sizer.width(20) : 0,
+                              ),
+                              child: Skeleton.replace(
+                                replacement: Bone(
+                                  width: Sizer.width(125),
+                                  height: Sizer.height(56),
+                                  uniRadius: 10,
+                                ),
+                                child: const SizedBox(),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  }
+                  return Row(
+                    children: [
+                      ...List.generate(
+                        ref.productCategories.length,
+                        (i) => ClipRRect(
                           borderRadius: BorderRadius.circular(Sizer.radius(8)),
-                          image: const DecorationImage(
-                              image: AssetImage(AppImages.cat)),
-                        ),
-                        child: Text(
-                          'Furniture',
-                          style: AppTypography.text12.copyWith(
-                            fontWeight: FontWeight.w500,
+                          child: Container(
+                            padding: EdgeInsets.only(
+                              left: Sizer.width(12),
+                              right: Sizer.width(12),
+                              // top: Sizer.height(18),
+                            ),
+                            margin: EdgeInsets.only(
+                              right: Sizer.width(8),
+                              left: i == 0 ? Sizer.width(20) : 0,
+                            ),
+                            width: Sizer.width(125),
+                            height: Sizer.height(56),
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.circular(Sizer.radius(8)),
+                              image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: ref.productCategories[i].image == null
+                                      ? const AssetImage(AppImages.noImage)
+                                      : NetworkImage(
+                                          ref.productCategories[i].image ?? '',
+                                        )),
+                            ),
+                            child: Center(
+                              child: Text(
+                                ref.productCategories[i].name ?? '',
+                                style: AppTypography.text12.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    )
-                  ],
-                ),
+                      )
+                    ],
+                  );
+                }),
               ),
               const YBox(26),
               SizedBox(
@@ -145,17 +188,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   autoplayDelay: 5000,
                   duration: 1000,
                   itemBuilder: (BuildContext context, int i) {
-                    return Container(
-                      margin: EdgeInsets.only(
-                        left: Sizer.width(20),
-                        right: Sizer.width(20),
-                      ),
-                      decoration: BoxDecoration(
-                        // color: AppColors.gray400,
-                        borderRadius: BorderRadius.circular(Sizer.radius(8)),
-                        image: const DecorationImage(
-                          image: AssetImage(AppImages.banner),
-                          fit: BoxFit.cover,
+                    return Skeletonizer(
+                      enabled: context.watch<ProductVM>().isBusy,
+                      child: Container(
+                        margin: EdgeInsets.only(
+                          left: Sizer.width(20),
+                          right: Sizer.width(20),
+                        ),
+                        decoration: BoxDecoration(
+                          // color: AppColors.gray400,
+                          borderRadius: BorderRadius.circular(Sizer.radius(8)),
+                          image: const DecorationImage(
+                            image: AssetImage(AppImages.banner),
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                     );
@@ -172,6 +218,37 @@ class _HomeScreenState extends State<HomeScreen> {
               const YBox(12),
               Consumer<ProductVM>(
                 builder: (context, vm, _) {
+                  if (vm.isBusy) {
+                    return GridView.custom(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      padding: EdgeInsets.only(
+                        left: Sizer.width(20),
+                      ),
+                      gridDelegate: SliverStairedGridDelegate(
+                        crossAxisSpacing: Sizer.width(20),
+                        mainAxisSpacing: Sizer.width(20),
+                        pattern: [
+                          const StairedGridTile(0.5, 0.74),
+                          const StairedGridTile(0.5, 0.74),
+                        ],
+                      ),
+                      childrenDelegate:
+                          SliverChildBuilderDelegate((context, index) {
+                        return const Skeletonizer(
+                          enabled: true,
+                          child: RelatedProductCard(
+                            productName: 'Gucci Product',
+                            productId: '2777378388ddbdbd',
+                            unitPrice: '1000',
+                            productImage:
+                                'https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg',
+                            onTap: null,
+                          ),
+                        );
+                      }, childCount: 6),
+                    );
+                  }
                   return GridView.custom(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
@@ -188,6 +265,19 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     childrenDelegate: SliverChildBuilderDelegate(
                       (context, index) {
+                        if (vm.isBusy) {
+                          return const Skeletonizer(
+                            enabled: true,
+                            child: RelatedProductCard(
+                              productName: 'Gucci Product',
+                              productId: '2777378388ddbdbd',
+                              unitPrice: '1000',
+                              productImage:
+                                  'https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg',
+                              onTap: null,
+                            ),
+                          );
+                        }
                         return RelatedProductCard(
                           productName:
                               vm.allProductList[index].productName ?? '',

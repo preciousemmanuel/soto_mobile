@@ -135,7 +135,7 @@ class CreateBusinessVM extends BaseVM {
     }
   }
 
-  void resetData() {
+  void clearData() {
     _selectedImage = null;
     _isValidEmail = false;
 

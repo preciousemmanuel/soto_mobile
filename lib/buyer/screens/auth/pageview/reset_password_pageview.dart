@@ -108,7 +108,7 @@ class _ResetPasswordPageviewState extends State<ResetPasswordPageview> {
 
   void _changePassword() {
     final vm = context.read<PasswordVM>();
-    vm.changePassword().then((value) {
+    vm.newPassword().then((value) {
       if (value.success) {
         vm.clearData();
         FlushBarToast.fLSnackBar(

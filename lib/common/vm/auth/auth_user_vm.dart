@@ -28,6 +28,14 @@ class AuthUserVM extends BaseVM {
     StorageService.storeBoolItem(StorageKey.onboarding, true);
   }
 
+  void setVendorUser() {
+    StorageService.storeBoolItem(StorageKey.vendorUser, true);
+  }
+
+  void removeVendorUser() {
+    StorageService.removeBoolItem(StorageKey.vendorUser);
+  }
+
   Future<ApiResponse> getUserProfile({String? busyObjectName}) async {
     return await performApiCall(
       url: "/user/profile",

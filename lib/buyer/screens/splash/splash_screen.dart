@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:soto_ecommerce/buyer/screens/auth/login_screen.dart';
 import 'package:soto_ecommerce/common/common.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -32,6 +33,13 @@ class _SplashScreenState extends State<SplashScreen>
     Future.delayed(const Duration(seconds: 4), () async {
       if (await StorageService.getBoolItem(StorageKey.onboarding) == true) {
         Navigator.pushReplacementNamed(context, RoutePath.dashboardNavScreen);
+        if (await StorageService.getBoolItem(StorageKey.vendorUser) != null) {
+          Navigator.pushReplacementNamed(
+            context,
+            RoutePath.loginScreen,
+            arguments: LoginScreenArgs(isVendor: true),
+          );
+        }
       } else {
         Navigator.pushReplacementNamed(context, RoutePath.onboardScreenOne);
       }

@@ -57,6 +57,8 @@ class PasswordVM extends BaseVM {
       method: apiService.post,
       body: {
         "new_password": passwordC.text.trim(),
+        "otp": otpC.text.trim(),
+        "otp_purpose": PasswordType.changePassword.name,
       },
       onSuccess: (data) {
         return apiResponse;

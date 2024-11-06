@@ -20,6 +20,21 @@ class ForgetPasswordPageview extends StatefulWidget {
 
 class _ForgetPasswordPageviewState extends State<ForgetPasswordPageview> {
   @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _init();
+    });
+    super.initState();
+  }
+
+  _init() {
+    final vm = context.read<PasswordVM>();
+    final authVM = context.read<AuthUserVM>();
+    vm.emailC.text = authVM.authUser?.email ?? '';
+    vm.emailIsValid();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Consumer<PasswordVM>(builder: (context, vm, _) {
       return Container(

@@ -84,6 +84,8 @@ class AppRouter {
         return buildRoute(const CreateBusinessAccountScreen());
       case RoutePath.createPasswordScreen:
         return buildRoute(const CreatePasswordScreen());
+      case RoutePath.approvalScreen:
+        return buildRoute(const ApprovalScreen());
 
       default:
         return errorScreen('No route defined for ${settings.name}');

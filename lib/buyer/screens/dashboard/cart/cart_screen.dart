@@ -36,16 +36,8 @@ class CartScreen extends StatelessWidget {
                       builder: (context, authVM, _) {
                         if (authVM.cart?.items == null ||
                             authVM.cart?.items?.isEmpty == true) {
-                          return SizedBox(
-                            height: Sizer.height(500),
-                            width: Sizer.screenWidth,
-                            child: Center(
-                              child: Text(
-                                'Cart is empty, add some products',
-                                style: AppTypography.text16
-                                    .copyWith(color: AppColors.text28),
-                              ),
-                            ),
+                          return const EmptyListState(
+                            text: 'Cart is empty, add some products',
                           );
                         }
                         return Column(

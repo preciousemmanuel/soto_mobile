@@ -43,4 +43,32 @@ class AppText {
       "subTitle": "Well done! Now you can enter a new password to continue",
     },
   ];
+
+  static const List faqs = [
+    {
+      "title": "What is Soto?",
+      "subTitle":
+          "Soto is a secure eCommerce platform that caters to customers, vendors, and administrators.",
+    },
+    {
+      "title": "Do I have to sign up?",
+      "subTitle":
+          "Soto offers you the opportunity to explore the amazing features on the platform before your decision to sign up.",
+    },
+    {
+      "title": "How do I make payment?",
+      "subTitle":
+          "There are three seamless payment gateways on Soto which you can make a choice from depending on your preference",
+    },
+    {
+      "title": "Can I cancel my order?",
+      "subTitle":
+          "Yes, you can cancel your order, however, there are easy steps to follow for a successful cancelation.",
+    },
+    {
+      "title": "Can customer become a vendor?",
+      "subTitle":
+          "Yes, customers can easily switch from their profile to become vendors with their business information.",
+    },
+  ];
 }
