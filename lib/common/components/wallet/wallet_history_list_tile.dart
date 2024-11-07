@@ -4,9 +4,15 @@ class WalletHistoryListTile extends StatelessWidget {
   const WalletHistoryListTile({
     super.key,
     this.isSend = false,
+    required this.naration,
+    required this.date,
+    required this.amount,
   });
 
   final bool isSend;
+  final String naration;
+  final String date;
+  final String amount;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +39,7 @@ class WalletHistoryListTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Order Payment',
+                naration,
                 style: AppTypography.text14.copyWith(
                   color: AppColors.black33,
                 ),
@@ -52,7 +58,7 @@ class WalletHistoryListTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'N50,000',
+                '${AppUtils.nairaSymbol}${AppUtils.formatAmountString(amount)}',
                 style: AppTypography.text15.copyWith(
                   color: isSend ? AppColors.red3B : AppColors.green78,
                   fontWeight: FontWeight.w500,
@@ -60,7 +66,7 @@ class WalletHistoryListTile extends StatelessWidget {
               ),
               const YBox(2),
               Text(
-                'October 25th, 2024',
+                date,
                 style: AppTypography.text12.copyWith(
                   color: AppColors.black66,
                 ),

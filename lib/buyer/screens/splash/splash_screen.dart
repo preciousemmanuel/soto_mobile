@@ -31,15 +31,16 @@ class _SplashScreenState extends State<SplashScreen>
     _animationController.forward();
 
     Future.delayed(const Duration(seconds: 4), () async {
+      if (await StorageService.getBoolItem(StorageKey.vendorUser) != null) {
+        Navigator.pushReplacementNamed(
+          context,
+          RoutePath.loginScreen,
+          arguments: LoginScreenArgs(isVendor: true),
+        );
+        return;
+      }
       if (await StorageService.getBoolItem(StorageKey.onboarding) == true) {
         Navigator.pushReplacementNamed(context, RoutePath.dashboardNavScreen);
-        if (await StorageService.getBoolItem(StorageKey.vendorUser) != null) {
-          Navigator.pushReplacementNamed(
-            context,
-            RoutePath.loginScreen,
-            arguments: LoginScreenArgs(isVendor: true),
-          );
-        }
       } else {
         Navigator.pushReplacementNamed(context, RoutePath.onboardScreenOne);
       }

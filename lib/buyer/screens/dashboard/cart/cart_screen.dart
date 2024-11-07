@@ -11,7 +11,7 @@ class CartScreen extends StatelessWidget {
         width: Sizer.screenWidth,
         height: Sizer.screenHeight,
         child: BusyOverlay(
-          show: vm.isBusy,
+          show: vm.isBusy || context.watch<AuthUserVM>().isBusy,
           child: Scaffold(
             backgroundColor: AppColors.bgWhite,
             body: SafeArea(

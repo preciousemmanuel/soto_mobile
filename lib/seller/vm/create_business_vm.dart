@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:soto_ecommerce/common/common.dart';
@@ -18,8 +17,8 @@ class CreateBusinessVM extends BaseVM {
   TextEditingController businessCategoryC = TextEditingController();
   TextEditingController businessDescriptionC = TextEditingController();
 
-  List<BusinessCategory> _businessCategories = [];
-  List<BusinessCategory> get businessCategories => _businessCategories;
+  // List<BusinessCategory> _businessCategories = [];
+  // List<BusinessCategory> get businessCategories => _businessCategories;
 
   File? _selectedImage;
   File? get selectedImage => _selectedImage;
@@ -79,17 +78,17 @@ class CreateBusinessVM extends BaseVM {
     );
   }
 
-  Future<ApiResponse> getCategories() async {
-    return await performApiCall(
-      url: "/category/fetch?limit=10&page=1",
-      method: apiService.get,
-      onSuccess: (data) {
-        _businessCategories =
-            businessCategoryFromJson(json.encode(data['data']['data']));
-        return apiResponse;
-      },
-    );
-  }
+  // Future<ApiResponse> getCategories() async {
+  //   return await performApiCall(
+  //     url: "/category/fetch?limit=10&page=1",
+  //     method: apiService.get,
+  //     onSuccess: (data) {
+  //       _businessCategories =
+  //           businessCategoryFromJson(json.encode(data['data']['data']));
+  //       return apiResponse;
+  //     },
+  //   );
+  // }
 
   Future<ApiResponse> pickImage() async {
     try {

@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:soto_ecommerce/common/common.dart';
 
 class OrderVM extends BaseVM {
-  List<OrderRes> _myOrder = [];
-  List<OrderRes> get myOrder => _myOrder;
+  List<OrderRes> _vendorOrder = [];
+  List<OrderRes> get vendorOrder => _vendorOrder;
 
   int _productQty = 1;
   int get productQty => _productQty;
@@ -78,13 +78,13 @@ class OrderVM extends BaseVM {
     );
   }
 
-  Future<ApiResponse> fetchMyOrders() async {
+  Future<ApiResponse> fetchBuyerOrders() async {
     printty("add to cart call");
     return await performApiCall(
-      url: "/order/fetch/by-vendor?limit=10&page=1",
+      url: "/order/fetch/by-buyer?limit=10&page=1",
       method: apiService.getWithAuth,
       onSuccess: (data) {
-        _myOrder = orderResFromJson(jsonEncode(data["data"]["data"]));
+        _vendorOrder = orderResFromJson(jsonEncode(data["data"]["data"]));
         return apiResponse;
       },
     );
@@ -92,6 +92,8 @@ class OrderVM extends BaseVM {
 
   void clearData() {
     _productQty = 1;
+
+    reBuildUI();
   }
 }
 

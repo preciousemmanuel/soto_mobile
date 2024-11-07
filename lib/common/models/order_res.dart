@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:soto_ecommerce/common/models/vendor_inventory.dart';
+
 List<OrderRes> orderResFromJson(String str) =>
     List<OrderRes>.from(json.decode(str).map((x) => OrderRes.fromJson(x)));
 
@@ -65,30 +67,6 @@ class OrderRes {
         "__v": v,
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
-      };
-}
-
-class Buyer {
-  final String? id;
-  final String? firstName;
-  final String? lastName;
-
-  Buyer({
-    this.id,
-    this.firstName,
-    this.lastName,
-  });
-
-  factory Buyer.fromJson(Map<String, dynamic> json) => Buyer(
-        id: json["_id"],
-        firstName: json["FirstName"],
-        lastName: json["LastName"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "_id": id,
-        "FirstName": firstName,
-        "LastName": lastName,
       };
 }
 

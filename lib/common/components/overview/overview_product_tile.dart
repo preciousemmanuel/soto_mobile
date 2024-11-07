@@ -3,7 +3,10 @@ import 'package:soto_ecommerce/common/common.dart';
 class OverviewProductTile extends StatelessWidget {
   const OverviewProductTile({
     super.key,
+    this.product,
   });
+
+  final Product? product;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +20,13 @@ class OverviewProductTile extends StatelessWidget {
           width: Sizer.width(60),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(Sizer.radius(8)),
-            child: imageHelper(AppImages.product2),
+            child: MyCachedNetworkImage(
+              imageUrl:
+                  '${product?.images?.isNotEmpty ?? false ? product?.images?.first : ''}',
+              fadeInDuration: const Duration(milliseconds: 50),
+              fit: BoxFit.cover,
+              width: MediaQuery.of(context).size.width,
+            ),
           ),
         ),
         const XBox(8),
@@ -26,7 +35,7 @@ class OverviewProductTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Ladies Hand Bag',
+                product?.productName ?? '',
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: AppTypography.text12.copyWith(
@@ -35,7 +44,9 @@ class OverviewProductTile extends StatelessWidget {
               ),
               const YBox(4),
               Text(
-                'N10,000',
+                '${AppUtils.nairaSymbol}${AppUtils.formatAmountString(
+                  (product?.unitPrice ?? 0).toString(),
+                )}',
                 style: AppTypography.text12.copyWith(
                   color: AppColors.black66,
                 ),
@@ -53,7 +64,7 @@ class OverviewProductTile extends StatelessWidget {
             borderRadius: BorderRadius.circular(Sizer.radius(4)),
           ),
           child: Text(
-            'Qty: 34',
+            'Qty: ${product?.productQuantity ?? 0}',
             style: AppTypography.text12.copyWith(
               color: AppColors.primaryOrange,
               fontWeight: FontWeight.w500,

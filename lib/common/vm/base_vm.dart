@@ -51,9 +51,13 @@ class BaseVM extends ChangeNotifier {
 
   Future<ApiResponse> performApiCall({
     required String url,
-    required Future<ApiResponse> Function({dynamic body, required String url})
-        method,
+    required Future<ApiResponse> Function({
+      dynamic body,
+      required String url,
+      bool isFormData,
+    }) method,
     Map<String, dynamic>? body,
+    bool isFormData = false,
     required ApiResponse Function(Map<String, dynamic> data) onSuccess,
     ApiResponse Function(String errorMessage)? onError,
     String? busyObjectName,
@@ -65,6 +69,7 @@ class BaseVM extends ChangeNotifier {
       apiResponse = await method(
         url: url,
         body: body,
+        isFormData: isFormData,
       ); // Assuming canRetry is always true for simplicity
 
       if (!apiResponse.success) {

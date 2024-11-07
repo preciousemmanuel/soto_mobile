@@ -17,7 +17,7 @@ class _CreateBusinessAccountScreenState
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<CreateBusinessVM>().getCategories();
+      context.read<ProductVM>().getCategories();
     });
   }
 
@@ -93,6 +93,10 @@ class _CreateBusinessAccountScreenState
                   fillColor: AppColors.orangeEA.withOpacity(0.5),
                   hintText: 'Enter Phone Number',
                   controller: vm.businessPhoneC,
+                  errorText: vm.businessPhoneC.text.isNotEmpty &&
+                          vm.businessPhoneC.text.length < 11
+                      ? 'Phone Number must be at least 11 characters'
+                      : null,
                   prefixIcon: Icon(
                     Iconsax.call,
                     color: AppColors.iconC4,
@@ -124,45 +128,49 @@ class _CreateBusinessAccountScreenState
                   ),
                 ),
                 const YBox(6),
-                SelectCategoryField(
-                  text: vm.businessCategoryC.text.isEmpty
-                      ? 'Select Category'
-                      : vm.businessCategoryC.text,
-                  isExpanded: isExpanded,
-                  isLoading: vm.isBusy,
-                  hasBeenSelected: vm.businessCategoryC.text.isNotEmpty,
-                  onSelect: () {
-                    isExpanded = !isExpanded;
-                    vm.reBuildUI();
-                  },
-                  children: List.generate(
-                    vm.businessCategories.length,
-                    (i) {
-                      return InkWell(
-                        onTap: () {
-                          vm.businessCategoryC.text =
-                              vm.businessCategories[i].name ?? '';
-                          isExpanded = false;
-                          vm.reBuildUI();
-                        },
-                        child: Container(
-                          padding: EdgeInsets.only(
-                            top: Sizer.height(i == 0 ? 30 : 14),
-                            bottom: Sizer.height(
-                                i == vm.businessCategories.length - 1 ? 0 : 14),
-                          ),
-                          child: Text(
-                            vm.businessCategories[i].name ?? '',
-                            style: AppTypography.text14.copyWith(
-                              fontWeight: FontWeight.w500,
-                              color: AppColors.text57,
+                Consumer<ProductVM>(builder: (context, catRef, _) {
+                  return SelectCategoryField(
+                    text: vm.businessCategoryC.text.isEmpty
+                        ? 'Select Category'
+                        : vm.businessCategoryC.text,
+                    isExpanded: isExpanded,
+                    isLoading: vm.isBusy,
+                    hasBeenSelected: vm.businessCategoryC.text.isNotEmpty,
+                    onSelect: () {
+                      isExpanded = !isExpanded;
+                      vm.reBuildUI();
+                    },
+                    children: List.generate(
+                      catRef.productCategories.length,
+                      (i) {
+                        return InkWell(
+                          onTap: () {
+                            vm.businessCategoryC.text =
+                                catRef.productCategories[i].name ?? '';
+                            isExpanded = false;
+                            vm.reBuildUI();
+                          },
+                          child: Container(
+                            padding: EdgeInsets.only(
+                              top: Sizer.height(i == 0 ? 30 : 14),
+                              bottom: Sizer.height(
+                                  i == catRef.productCategories.length - 1
+                                      ? 0
+                                      : 14),
+                            ),
+                            child: Text(
+                              catRef.productCategories[i].name ?? '',
+                              style: AppTypography.text14.copyWith(
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.text57,
+                              ),
                             ),
                           ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
+                        );
+                      },
+                    ),
+                  );
+                }),
                 const YBox(20),
                 Text(
                   'Description',

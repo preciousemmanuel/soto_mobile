@@ -7,6 +7,8 @@ class SelectCategoryField extends StatelessWidget {
     this.isExpanded = false,
     this.hasBeenSelected = false,
     this.isLoading = false,
+    this.bgColor,
+    this.borderColor,
     this.children = const <Widget>[],
     this.onSelect,
   });
@@ -15,6 +17,8 @@ class SelectCategoryField extends StatelessWidget {
   final bool isExpanded;
   final bool hasBeenSelected;
   final bool isLoading;
+  final Color? bgColor;
+  final Color? borderColor;
   final List<Widget> children; // const <Widget>[],
   final Function()? onSelect;
 
@@ -28,7 +32,10 @@ class SelectCategoryField extends StatelessWidget {
           vertical: Sizer.height(14),
         ),
         decoration: BoxDecoration(
-          color: AppColors.orangeEA.withOpacity(0.5),
+          color: bgColor ?? AppColors.orangeEA.withOpacity(0.5),
+          border: Border.all(
+            color: borderColor ?? AppColors.transparent,
+          ),
           borderRadius: BorderRadius.circular(Sizer.width(10)),
         ),
         child: Column(

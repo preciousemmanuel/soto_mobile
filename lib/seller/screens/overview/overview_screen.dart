@@ -66,32 +66,38 @@ class _OverviewScreenState extends State<OverviewScreen> {
                       Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: Sizer.width(10),
-                              vertical: Sizer.height(7),
-                            ),
-                            decoration: BoxDecoration(
-                              color: AppColors.black,
-                              borderRadius: BorderRadius.circular(
-                                Sizer.radius(100),
+                          InkWell(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                  context, RoutePath.addProductScreen);
+                            },
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: Sizer.width(10),
+                                vertical: Sizer.height(7),
                               ),
-                            ),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Iconsax.note_2,
-                                  color: AppColors.white,
-                                  size: Sizer.width(14),
+                              decoration: BoxDecoration(
+                                color: AppColors.black,
+                                borderRadius: BorderRadius.circular(
+                                  Sizer.radius(100),
                                 ),
-                                const XBox(2),
-                                Text(
-                                  'Add Product',
-                                  style: AppTypography.text10.copyWith(
+                              ),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Iconsax.note_2,
                                     color: AppColors.white,
+                                    size: Sizer.width(14),
                                   ),
-                                ),
-                              ],
+                                  const XBox(2),
+                                  Text(
+                                    'Add Product',
+                                    style: AppTypography.text10.copyWith(
+                                      color: AppColors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                           const XBox(10),
@@ -143,23 +149,28 @@ class _OverviewScreenState extends State<OverviewScreen> {
             ),
           ),
           floatingActionButton: categoryType == OverviewCategoryType.overview
-              ? Container(
-                  height: Sizer.height(60),
-                  width: Sizer.width(60),
-                  decoration: BoxDecoration(
-                      gradient: AppColors.fabGradient,
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black12.withOpacity(0.1),
-                          blurRadius: 20,
-                          offset: const Offset(0, 10),
-                        ),
-                      ]),
-                  child: Icon(
-                    Icons.add,
-                    color: AppColors.white,
-                    size: Sizer.radius(30),
+              ? InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, RoutePath.addProductScreen);
+                  },
+                  child: Container(
+                    height: Sizer.height(60),
+                    width: Sizer.width(60),
+                    decoration: BoxDecoration(
+                        gradient: AppColors.fabGradient,
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black12.withOpacity(0.1),
+                            blurRadius: 20,
+                            offset: const Offset(0, 10),
+                          ),
+                        ]),
+                    child: Icon(
+                      Icons.add,
+                      color: AppColors.white,
+                      size: Sizer.radius(30),
+                    ),
                   ),
                 )
               : null,

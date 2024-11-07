@@ -1,9 +1,23 @@
 import 'package:soto_ecommerce/common/common.dart';
+import 'package:soto_ecommerce/seller/vm/vendor_product_vm.dart';
 
-class OverviewTab extends StatelessWidget {
+class OverviewTab extends StatefulWidget {
   const OverviewTab({
     super.key,
   });
+
+  @override
+  State<OverviewTab> createState() => _OverviewTabState();
+}
+
+class _OverviewTabState extends State<OverviewTab> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<VendorProductVM>().getProductsByVendor();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,17 +65,30 @@ class OverviewTab extends StatelessWidget {
             sellAllBtn: () {},
           ),
           const YBox(16),
-          ListView.separated(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemBuilder: (_, __) {
-              return const OverviewProductTile();
-            },
-            separatorBuilder: (_, __) => const Divider(
-              color: AppColors.whiteF7,
-            ),
-            itemCount: 6,
-          ),
+          Consumer<VendorProductVM>(builder: (context, ref, _) {
+            if (ref.isBusy) {
+              return const SizerLoader();
+            }
+            if (ref.productsByVendor.isEmpty) {
+              return const EmptyListState(
+                height: 200,
+                text: 'No products found',
+              );
+            }
+            return ListView.separated(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemBuilder: (_, i) {
+                return OverviewProductTile(
+                  product: ref.productsByVendor[i],
+                );
+              },
+              separatorBuilder: (_, __) => const Divider(
+                color: AppColors.whiteF7,
+              ),
+              itemCount: ref.productsByVendor.length,
+            );
+          }),
           const YBox(100),
         ],
       ),

@@ -21,46 +21,56 @@ class CheckoutScreen extends StatelessWidget {
               ),
             ),
             const YBox(24),
-            const CheckoutShippingContact(
-              title: 'Shipping Address',
-              subText:
-                  '39 Ada George Road by Wimp Junction, off GRA Phase 4, Port Harcourt',
-            ),
-            const YBox(20),
-            const CheckoutShippingContact(
-              title: 'Contact Information',
-              subText: '+234 803900000',
-              subText2: 'preciousruchi@gmail.com',
-            ),
             Consumer<AuthUserVM>(builder: (context, authVM, _) {
-              return ListView.separated(
-                padding: EdgeInsets.only(
-                  top: Sizer.height(20),
-                ),
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (ctx, i) {
-                  final cartItem = authVM.cart?.items?[i];
-                  return Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Divider(
-                        color: AppColors.whiteF7,
-                        thickness: 2,
-                      ),
-                      ShoppingCartCard(
-                        cartItem: cartItem,
-                      ),
-                      if (i == (authVM.cart?.items?.length ?? 0 - 1))
-                        const Divider(
-                          color: AppColors.whiteF7,
-                          thickness: 2,
-                        ),
-                    ],
-                  );
-                },
-                separatorBuilder: (ctx, i) => const YBox(6),
-                itemCount: authVM.cart?.items?.length ?? 0,
+              return Column(
+                children: [
+                  CheckoutShippingContact(
+                    onTap: () {
+                      ModalWrapper.bottomSheet(
+                        context: context,
+                        widget: const ShippingAddressModal(),
+                      );
+                    },
+                    title: 'Shipping Address',
+                    subText:
+                        '${authVM.authUser?.shippingAddress?.fullAddress}, ${authVM.authUser?.shippingAddress?.country}',
+                  ),
+                  const YBox(20),
+                  CheckoutShippingContact(
+                    title: 'Contact Information',
+                    subText: authVM.authUser?.phoneNumber ?? '',
+                    subText2: authVM.authUser?.email ?? '',
+                  ),
+                  ListView.separated(
+                    padding: EdgeInsets.only(
+                      top: Sizer.height(20),
+                    ),
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (ctx, i) {
+                      final cartItem = authVM.cart?.items?[i];
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Divider(
+                            color: AppColors.whiteF7,
+                            thickness: 2,
+                          ),
+                          ShoppingCartCard(
+                            cartItem: cartItem,
+                          ),
+                          if (i == (authVM.cart?.items?.length ?? 0 - 1))
+                            const Divider(
+                              color: AppColors.whiteF7,
+                              thickness: 2,
+                            ),
+                        ],
+                      );
+                    },
+                    separatorBuilder: (ctx, i) => const YBox(6),
+                    itemCount: authVM.cart?.items?.length ?? 0,
+                  ),
+                ],
               );
             }),
             const YBox(20),

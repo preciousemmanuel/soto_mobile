@@ -50,10 +50,8 @@ class DioApiService {
     }
   }
 
-  Future<ApiResponse> get({
-    var body,
-    required String url,
-  }) async {
+  Future<ApiResponse> get(
+      {var body, required String url, bool isFormData = false}) async {
     try {
       // options.headers = await getDeviceHeaders();
       Response response = await Dio(options)
@@ -66,7 +64,8 @@ class DioApiService {
     }
   }
 
-  Future<ApiResponse> putWithAuth({dynamic body, required String url}) async {
+  Future<ApiResponse> putWithAuth(
+      {dynamic body, required String url, bool isFormData = false}) async {
     try {
       Response response = await dio
           .put(url, data: body)
@@ -78,11 +77,13 @@ class DioApiService {
     }
   }
 
-  Future<ApiResponse> postWithAuth(
-      {var body,
-      required String url,
-      bool canRetry = true,
-      String? contentType}) async {
+  Future<ApiResponse> postWithAuth({
+    var body,
+    required String url,
+    bool canRetry = true,
+    bool isFormData = false,
+    String? contentType,
+  }) async {
     try {
       // await HeaderService().getDeviceInfo();
       // dio.options.headers.addAll(await getDeviceHeaders());
@@ -91,19 +92,19 @@ class DioApiService {
         dio.options.contentType = contentType;
       }
 
-      // dynamic data = body;
-      // if (body != null) {
-      //   data = FormData.fromMap(body);
-      // }
+      dynamic data = body;
+      if (body != null) {
+        data = FormData.fromMap(body);
+      }
       printty(dio.options.baseUrl);
       printty(url, logName: "url full path");
       Response response = await dio
-          .post(url, data: body)
+          .post(url, data: data)
           .timeout(Duration(seconds: timeOutDurationInSeconds));
       return DioResponseHandler.parseResponse(response);
     } on DioException catch (e, s) {
-      printty(e.toString());
-      printty(s.toString());
+      printty('${e.toString()} $s', logName: "postWithAuth error");
+
       return DioResponseHandler.dioErrorHandler(e);
     } catch (e) {
       printty("flsjfklskf: $e");
@@ -145,11 +146,13 @@ class DioApiService {
     }
   }
 
-  Future<ApiResponse> deleteWithAuth(
-      {var body,
-      required String url,
-      bool canRetry = true,
-      String? contentType}) async {
+  Future<ApiResponse> deleteWithAuth({
+    var body,
+    required String url,
+    bool canRetry = true,
+    String? contentType,
+    bool isFormData = false,
+  }) async {
     try {
       // await HeaderService().getDeviceInfo();
       // dio.options.headers.addAll(await getDeviceHeaders());
@@ -177,8 +180,12 @@ class DioApiService {
     }
   }
 
-  Future<ApiResponse> getWithAuth(
-      {var body, required String url, bool canRetry = true}) async {
+  Future<ApiResponse> getWithAuth({
+    var body,
+    required String url,
+    bool canRetry = true,
+    bool isFormData = false,
+  }) async {
     try {
       // await HeaderService().getDeviceInfo();
       // dio.options.headers.addAll(await getDeviceHeaders());

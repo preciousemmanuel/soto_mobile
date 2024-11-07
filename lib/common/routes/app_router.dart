@@ -87,6 +87,9 @@ class AppRouter {
       case RoutePath.approvalScreen:
         return buildRoute(const ApprovalScreen());
 
+      case RoutePath.addProductScreen:
+        return buildRoute(const AddProductScreen());
+
       default:
         return errorScreen('No route defined for ${settings.name}');
     }

@@ -50,4 +50,27 @@ class AuthUserVM extends BaseVM {
       },
     );
   }
+
+  Future<ApiResponse> userUpdateShippingAddress({
+    String? address,
+    String? city,
+    String? state,
+    String? country,
+    String? postalCode,
+  }) async {
+    return await performApiCall(
+      url: "/user/add-shipping-address",
+      method: apiService.putWithAuth,
+      body: {
+        "address": address,
+        "city": city,
+        "postal_code": postalCode,
+        "state": state,
+        "country": country
+      },
+      onSuccess: (data) {
+        return apiResponse;
+      },
+    );
+  }
 }

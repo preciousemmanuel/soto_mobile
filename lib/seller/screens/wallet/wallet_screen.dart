@@ -1,7 +1,21 @@
 import 'package:soto_ecommerce/common/common.dart';
+import 'package:soto_ecommerce/seller/vm/vm.dart';
 
-class WalletScreen extends StatelessWidget {
+class WalletScreen extends StatefulWidget {
   const WalletScreen({super.key});
+
+  @override
+  State<WalletScreen> createState() => _WalletScreenState();
+}
+
+class _WalletScreenState extends State<WalletScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<VendorDashboardVM>().getTransactions();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -215,16 +229,39 @@ class WalletScreen extends StatelessWidget {
                             ),
                           ),
                           const YBox(20),
-                          ListView.separated(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemBuilder: (_, __) =>
-                                const WalletHistoryListTile(),
-                            separatorBuilder: (_, __) => const Divider(
-                              color: AppColors.dividerColor,
-                            ),
-                            itemCount: 5,
-                          )
+                          Consumer<VendorDashboardVM>(
+                              builder: (context, ref, _) {
+                            if (ref.isBusy) {
+                              return const SizerLoader();
+                            }
+                            if (ref.transactionList.isEmpty) {
+                              return const EmptyListState(
+                                height: 200,
+                                text: 'No transactions yet',
+                              );
+                            }
+                            return ListView.separated(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemBuilder: (_, i) {
+                                final transaction = ref.transactionList[i];
+                                return WalletHistoryListTile(
+                                  isSend: false,
+                                  naration: transaction.narration ?? '',
+                                  amount:
+                                      (transaction.amount ?? 0.0).toString(),
+                                  date: AppUtils.formatDateTime(
+                                      (transaction.createdAt ?? DateTime.now())
+                                          .toLocal()
+                                          .toString()),
+                                );
+                              },
+                              separatorBuilder: (_, __) => const Divider(
+                                color: AppColors.dividerColor,
+                              ),
+                              itemCount: ref.transactionList.take(5).length,
+                            );
+                          })
                         ],
                       ),
                     ),

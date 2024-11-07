@@ -56,57 +56,21 @@ class _BusyOverlayState extends State<BusyOverlay> {
   }
 }
 
-class BusyOverlayWhiteBg extends StatefulWidget {
-  const BusyOverlayWhiteBg({
+class SizerLoader extends StatelessWidget {
+  const SizerLoader({
     super.key,
-    required this.child,
-    this.show = false,
+    this.height,
   });
 
-  final Widget child;
-  final bool show;
+  final double? height;
 
-  @override
-  State<BusyOverlayWhiteBg> createState() => _BusyOverlayWhiteBgState();
-}
-
-class _BusyOverlayWhiteBgState extends State<BusyOverlayWhiteBg> {
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: SizedBox(
-        width: Sizer.screenWidth,
-        height: Sizer.screenWidth,
-        child: Stack(
-          children: <Widget>[
-            widget.child,
-            Visibility(
-                visible: widget.show,
-                child: Container(
-                  color: AppColors.bgWhite,
-                )),
-            Visibility(
-              visible: widget.show,
-              child: Container(
-                color: AppColors.bgWhite,
-                child: Center(
-                  child: IgnorePointer(
-                    ignoring: !widget.show,
-                    child: Container(
-                      width: Sizer.width(80),
-                      height: Sizer.width(80),
-                      padding: EdgeInsets.all(Sizer.radius(10)),
-                      decoration: BoxDecoration(
-                        color: AppColors.black40.withOpacity(0.6),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: const CircularProgressIndicator(),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
+    return SizedBox(
+      height: Sizer.height(height ?? 200),
+      child: const Center(
+        child: CircularProgressIndicator(
+          color: AppColors.primaryOrange,
         ),
       ),
     );

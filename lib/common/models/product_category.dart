@@ -1,13 +1,13 @@
 import 'dart:convert';
 
-List<BusinessCategory> businessCategoryFromJson(String str) =>
-    List<BusinessCategory>.from(
-        json.decode(str).map((x) => BusinessCategory.fromJson(x)));
+List<ProductCategory> productCategoryFromJson(String str) =>
+    List<ProductCategory>.from(
+        json.decode(str).map((x) => ProductCategory.fromJson(x)));
 
-String businessCategoryToJson(List<BusinessCategory> data) =>
+String productCategoryToJson(List<ProductCategory> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class BusinessCategory {
+class ProductCategory {
   final String? id;
   final String? name;
   final String? image;
@@ -15,7 +15,7 @@ class BusinessCategory {
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
-  BusinessCategory({
+  ProductCategory({
     this.id,
     this.name,
     this.image,
@@ -24,8 +24,8 @@ class BusinessCategory {
     this.updatedAt,
   });
 
-  factory BusinessCategory.fromJson(Map<String, dynamic> json) =>
-      BusinessCategory(
+  factory ProductCategory.fromJson(Map<String, dynamic> json) =>
+      ProductCategory(
         id: json["_id"],
         name: json["name"],
         image: json["image"],

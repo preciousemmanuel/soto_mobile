@@ -5,8 +5,8 @@ import 'package:soto_ecommerce/common/common.dart';
 class ProductVM extends BaseVM {
   List<Product> _allProductList = [];
   List<Product> get allProductList => _allProductList;
-  List<BusinessCategory> _productCategories = [];
-  List<BusinessCategory> get productCategories => _productCategories;
+  List<ProductCategory> _productCategories = [];
+  List<ProductCategory> get productCategories => _productCategories;
 
   Future<ApiResponse> getCategories() async {
     return await performApiCall(
@@ -14,7 +14,7 @@ class ProductVM extends BaseVM {
       method: apiService.get,
       onSuccess: (data) {
         _productCategories =
-            businessCategoryFromJson(json.encode(data['data']['data']));
+            productCategoryFromJson(json.encode(data['data']['data']));
         return apiResponse;
       },
     );
