@@ -67,6 +67,10 @@ class AppRouter {
         return buildRoute(const MyProfileScreenEdit());
       case RoutePath.helpCenterScreen:
         return buildRoute(const HelpCenterScreen());
+      case RoutePath.paymentMethodScreen:
+        return buildRoute(const PaymentMethodScreen());
+      case RoutePath.addCardScreen:
+        return buildRoute(const AddCardScreen());
 
       // Shared
       case RoutePath.confirmationScreen:

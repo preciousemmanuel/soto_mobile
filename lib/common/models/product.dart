@@ -43,7 +43,7 @@ class Product extends Equatable {
   final String? id;
   final String? productName;
   final String? description;
-  final Category? category; // TODO: Remind BE to add category id
+  // final Category? category; // TODO: Remind BE to add category id
   final List<dynamic>? images;
   final String? vendor;
   final int? unitPrice;
@@ -60,7 +60,7 @@ class Product extends Equatable {
     this.id,
     this.productName,
     this.description,
-    this.category,
+    // this.category,
     this.images,
     this.vendor,
     this.unitPrice,
@@ -78,9 +78,9 @@ class Product extends Equatable {
         id: json["_id"],
         productName: json["product_name"],
         description: json["description"],
-        category: json["category"] == null
-            ? null
-            : Category.fromJson(json["category"]),
+        // category: json["category"] == null
+        //     ? null
+        //     : Category.fromJson(json["category"]),
         images: json["images"] == null || json["images"]?.isEmpty
             ? []
             : List<dynamic>.from(json["images"]!.map((x) => x)),
@@ -104,7 +104,7 @@ class Product extends Equatable {
         "_id": id,
         "product_name": productName,
         "description": description,
-        "category": category?.toJson(),
+        // "category": category?.toJson(),
         "images":
             images == null ? [] : List<dynamic>.from(images!.map((x) => x)),
         "vendor": vendor,
@@ -124,7 +124,7 @@ class Product extends Equatable {
         id,
         productName,
         description,
-        category,
+        // category,
         images,
         vendor,
         unitPrice,

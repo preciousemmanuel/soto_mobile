@@ -20,6 +20,7 @@ class RoutePath {
   static const profileScreen = '/profileScreen';
   static const editMyProfileScreen = '/editMyProfileScreen';
   static const helpCenterScreen = '/helpCenterScreen';
+  static const paymentMethodScreen = '/paymentMethodScreen';
 
   // Auth
   static const loginScreen = '/loginScreen';

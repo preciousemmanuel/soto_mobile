@@ -4,14 +4,16 @@ class ProfileListTile extends StatelessWidget {
   const ProfileListTile({
     super.key,
     required this.title,
-    required this.trailicon,
+    required this.leadicon,
+    this.trailWidget,
     this.textColor,
     this.onTap,
   });
 
   final String title;
-  final dynamic trailicon;
+  final dynamic leadicon;
   final Color? textColor;
+  final Widget? trailWidget;
   final VoidCallback? onTap;
 
   @override
@@ -26,14 +28,14 @@ class ProfileListTile extends StatelessWidget {
               color: AppColors.orangeE8,
               borderRadius: BorderRadiusDirectional.circular(Sizer.radius(50)),
             ),
-            child: trailicon is String
+            child: leadicon is String
                 ? svgHelper(
-                    trailicon,
+                    leadicon,
                     height: Sizer.height(20),
                     color: AppColors.primaryOrange,
                   )
                 : Icon(
-                    trailicon,
+                    leadicon,
                     color: textColor ?? AppColors.primaryOrange,
                   ),
           ),
@@ -47,10 +49,11 @@ class ProfileListTile extends StatelessWidget {
               ),
             ),
           ),
-          Icon(
-            Icons.arrow_forward_ios,
-            size: Sizer.radius(10),
-          ),
+          trailWidget ??
+              Icon(
+                Icons.arrow_forward_ios,
+                size: Sizer.radius(10),
+              ),
         ],
       ),
     );

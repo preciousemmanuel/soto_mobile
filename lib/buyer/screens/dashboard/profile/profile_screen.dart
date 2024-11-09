@@ -10,6 +10,8 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   bool _isVendor = false;
+  bool _enableBiometric = false;
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -122,7 +124,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       children: [
                         ProfileListTile(
                           title: 'Change Password',
-                          trailicon: Iconsax.lock,
+                          leadicon: Iconsax.lock,
                           onTap: () {
                             Navigator.pushNamed(
                                 context, RoutePath.changeOrForgotPasswordScreen,
@@ -134,7 +136,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         const YBox(20),
                         ProfileListTile(
                           title: 'Change Address',
-                          trailicon: Iconsax.location,
+                          leadicon: Iconsax.location,
                           onTap: () {
                             ModalWrapper.bottomSheet(
                               context: context,
@@ -145,18 +147,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         const YBox(20),
                         ProfileListTile(
                           title: 'Enable biometric',
-                          trailicon: Iconsax.finger_cricle,
-                          onTap: () {},
+                          leadicon: Iconsax.finger_cricle,
+                          trailWidget: CustomSwitch(
+                            value: _enableBiometric,
+                            onChanged: (val) {
+                              _enableBiometric = val;
+                              vm.reBuildUI();
+                            },
+                          ),
                         ),
                       ],
                     ),
                   ),
                   const YBox(16),
                   DecorationContainer(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.pushNamed(
+                          context, RoutePath.paymentMethodScreen);
+                    },
                     child: const ProfileListTile(
                       title: 'Payment Methods',
-                      trailicon: Iconsax.card_add,
+                      leadicon: Iconsax.card_add,
                     ),
                   ),
                   const YBox(10),
@@ -169,7 +180,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     },
                     child: const ProfileListTile(
                       title: 'Feedback',
-                      trailicon: Iconsax.sms_edit,
+                      leadicon: Iconsax.sms_edit,
                     ),
                   ),
                   const YBox(10),
@@ -179,7 +190,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     },
                     child: const ProfileListTile(
                       title: 'Help Center',
-                      trailicon: AppSvgs.chatHelp,
+                      leadicon: AppSvgs.chatHelp,
                     ),
                   ),
                   const YBox(10),
@@ -199,7 +210,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     },
                     child: const ProfileListTile(
                       title: 'Logout',
-                      trailicon: Iconsax.logout,
+                      leadicon: Iconsax.logout,
                       textColor: AppColors.red49,
                     ),
                   ),
