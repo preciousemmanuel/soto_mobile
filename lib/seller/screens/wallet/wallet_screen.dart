@@ -161,8 +161,8 @@ class _WalletScreenState extends State<WalletScreen> {
                                       ],
                                     ),
                                     onTap: () {
-                                      // Navigator.pushNamed(
-                                      //     context, RoutePath.addOrderScreen);
+                                      Navigator.pushNamed(context,
+                                          RoutePath.withdrawToBankScreen);
                                     },
                                   ),
                                 ),
@@ -191,8 +191,8 @@ class _WalletScreenState extends State<WalletScreen> {
                                       ],
                                     ),
                                     onTap: () {
-                                      // Navigator.pushNamed(
-                                      //     context, RoutePath.addOrderScreen);
+                                      Navigator.pushNamed(context,
+                                          RoutePath.withdrawToBankScreen);
                                     },
                                   ),
                                 ),

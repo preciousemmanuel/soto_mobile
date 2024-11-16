@@ -95,6 +95,7 @@ class AppColors {
   static const text3E = Color(0xFF413F3E);
   static const text28 = Color(0xFF272728);
   static const textE70 = Color(0xFF6E6E70);
+  static const text66 = Color(0xFF636466);
 
   static const opacityRed100 = Color(0xFFFFF8F7);
   static const opacityGreen200 = Color(0xFFF0FFF9);

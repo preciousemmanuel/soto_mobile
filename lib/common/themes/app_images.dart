@@ -29,6 +29,8 @@ class AppImages {
   static const bestSeller = "$images/archive/bestSeller.png";
   static const product = "$images/archive/product.png";
   static const product2 = "$images/archive/product2.png";
+
+  static const moniePoint = "$images/moniePoint.png";
 }
 
 // Image Helper

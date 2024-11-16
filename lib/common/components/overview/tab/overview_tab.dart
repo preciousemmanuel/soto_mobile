@@ -62,7 +62,9 @@ class _OverviewTabState extends State<OverviewTab> {
             headerName: 'Products',
             addPadding: false,
             headerFontSize: Sizer.text(16),
-            sellAllBtn: () {},
+            sellAllBtn: () {
+              Navigator.pushNamed(context, RoutePath.vendorProductListScreen);
+            },
           ),
           const YBox(16),
           Consumer<VendorProductVM>(builder: (context, ref, _) {

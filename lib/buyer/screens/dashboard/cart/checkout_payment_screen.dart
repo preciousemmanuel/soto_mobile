@@ -7,65 +7,61 @@ class CheckoutPaymentScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.bgFB,
-      body: SafeArea(
-        bottom: false,
-        child: ListView(
-          padding: EdgeInsets.symmetric(
-            horizontal: Sizer.width(20),
-          ),
-          children: [
-            const YBox(10),
-            const CustomHeader(
-              title: 'Payment',
-            ),
-            const YBox(7),
-            Text(
-              'Kindly choose a payment method \nto proceed',
-              textAlign: TextAlign.center,
-              style: AppTypography.text12.copyWith(
-                color: AppColors.text56,
-              ),
-            ),
-            const YBox(30),
-            PaymentTile(
-              isSelected: true,
-              title: 'Credit Card',
-              icon: AppSvgs.mscard,
-              onTap: () {
-                Navigator.pushNamed(context, RoutePath.confirmPaymentScreen);
-              },
-            ),
-            const YBox(16),
-            PaymentTile(
-              title: 'PayStack',
-              icon: AppSvgs.paystack,
-              onTap: () {},
-            ),
-            const YBox(16),
-            PaymentTile(
-              title: 'Paypal',
-              icon: AppSvgs.paypal,
-              onTap: () {},
-            ),
-            const YBox(16),
-            const PaymentAddCard(),
-            const YBox(40),
-            Text(
-              'History',
-              style: AppTypography.text20.copyWith(
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            const YBox(16),
-            ListView.separated(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (_, __) => const PaymentProductHistoryTile(),
-                separatorBuilder: (_, __) => const YBox(16),
-                itemCount: 3),
-            const YBox(100),
-          ],
+      appBar: const CustomHeader(
+        title: 'Payment',
+      ),
+      body: ListView(
+        padding: EdgeInsets.symmetric(
+          horizontal: Sizer.width(20),
         ),
+        children: [
+          const YBox(7),
+          Text(
+            'Kindly choose a payment method \nto proceed',
+            textAlign: TextAlign.center,
+            style: AppTypography.text12.copyWith(
+              color: AppColors.text56,
+            ),
+          ),
+          const YBox(30),
+          PaymentTile(
+            isSelected: true,
+            title: 'Credit Card',
+            icon: AppSvgs.mscard,
+            onTap: () {
+              Navigator.pushNamed(context, RoutePath.confirmPaymentScreen);
+            },
+          ),
+          const YBox(16),
+          PaymentTile(
+            title: 'PayStack',
+            icon: AppSvgs.paystack,
+            onTap: () {},
+          ),
+          const YBox(16),
+          PaymentTile(
+            title: 'Paypal',
+            icon: AppSvgs.paypal,
+            onTap: () {},
+          ),
+          const YBox(16),
+          const PaymentAddCard(),
+          const YBox(40),
+          Text(
+            'History',
+            style: AppTypography.text20.copyWith(
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          const YBox(16),
+          ListView.separated(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemBuilder: (_, __) => const PaymentProductHistoryTile(),
+              separatorBuilder: (_, __) => const YBox(16),
+              itemCount: 3),
+          const YBox(100),
+        ],
       ),
     );
   }

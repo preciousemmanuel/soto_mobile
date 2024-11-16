@@ -10,7 +10,7 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   bool _isVendor = false;
-  bool _enableBiometric = false;
+  final bool _enableBiometric = false;
 
   @override
   void initState() {
@@ -144,18 +144,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             );
                           },
                         ),
-                        const YBox(20),
-                        ProfileListTile(
-                          title: 'Enable biometric',
-                          leadicon: Iconsax.finger_cricle,
-                          trailWidget: CustomSwitch(
-                            value: _enableBiometric,
-                            onChanged: (val) {
-                              _enableBiometric = val;
-                              vm.reBuildUI();
-                            },
-                          ),
-                        ),
+                        // ProfileListTile(
+                        //   title: 'Enable biometric',
+                        //   leadicon: Iconsax.finger_cricle,
+                        //   trailWidget: CustomSwitch(
+                        //     value: _enableBiometric,
+                        //     onChanged: (val) {
+                        //       _enableBiometric = val;
+                        //       vm.reBuildUI();
+                        //     },
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),

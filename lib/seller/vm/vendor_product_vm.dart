@@ -62,17 +62,16 @@ class VendorProductVM extends BaseVM {
     };
 
     printty('addNewproduct body: $body');
-    return ApiResponse(success: false, message: "Something went wrong");
-    // return await performApiCall(
-    //   url: "/product/add-new",
-    //   method: apiService.postWithAuth,
-    //   isFormData: true,
-    //   body: body,
-    //   onSuccess: (data) {
-    //     //
-    //     return apiResponse;
-    //   },
-    // );
+    return await performApiCall(
+      url: "/product/add-new",
+      method: apiService.postWithAuth,
+      isFormData: true,
+      body: body,
+      onSuccess: (data) {
+        //
+        return apiResponse;
+      },
+    );
   }
 
   Future<ApiResponse> getProductsByVendor() async {

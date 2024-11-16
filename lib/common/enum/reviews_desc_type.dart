@@ -1,0 +1,4 @@
+enum ReviewsDescType {
+  description,
+  review,
+}

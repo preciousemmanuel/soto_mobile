@@ -213,7 +213,9 @@ class _HomeScreenState extends State<HomeScreen> {
               const YBox(20),
               Homeheader(
                 headerName: 'Popular',
-                sellAllBtn: () {},
+                sellAllBtn: () {
+                  Navigator.pushNamed(context, RoutePath.allProductsScreen);
+                },
               ),
               const YBox(12),
               Consumer<ProductVM>(
@@ -304,7 +306,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
                 },
               ),
-              const YBox(10),
+              const YBox(30),
               const BestSellerWidget(),
               const YBox(100),
             ],

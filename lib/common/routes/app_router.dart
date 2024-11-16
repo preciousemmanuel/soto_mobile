@@ -45,6 +45,8 @@ class AppRouter {
           return buildRoute(ProductDetailsScreen(args: args));
         }
         return errorScreen('Incorrect arguments for ${settings.name}');
+      case RoutePath.allProductsScreen:
+        return buildRoute(const AllProductsScreen());
 
       // Orders
       case RoutePath.createOrderScreen:
@@ -53,6 +55,8 @@ class AppRouter {
         return buildRoute(const AddOrderScreen());
       case RoutePath.reviewOrderScreen:
         return buildRoute(const ReviewOrderScreen());
+      case RoutePath.trackMyOrderScreen:
+        return buildRoute(const TrackMyOrderScreen());
 
       // Cart
       case RoutePath.checkoutScreen:
@@ -93,6 +97,15 @@ class AppRouter {
 
       case RoutePath.addProductScreen:
         return buildRoute(const AddProductScreen());
+      case RoutePath.vendorProductListScreen:
+        return buildRoute(const VendorProductListScreen());
+
+      case RoutePath.withdrawToBankScreen:
+        return buildRoute(const WithdrawToBankScreen());
+      case RoutePath.withdrawChooseAccount:
+        return buildRoute(const WithdrawChooseAccount());
+      case RoutePath.walletPaymentMethodScreen:
+        return buildRoute(const WalletPaymentMethodScreen());
 
       default:
         return errorScreen('No route defined for ${settings.name}');

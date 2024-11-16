@@ -7,76 +7,71 @@ class NotificationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.bgWhite,
-      body: SafeArea(
-        bottom: false,
-        child: SizedBox(
-          width: Sizer.screenWidth,
-          height: Sizer.screenHeight,
-          child: ListView(
-            padding: EdgeInsets.symmetric(
-              horizontal: Sizer.width(20),
-            ),
-            shrinkWrap: true,
-            children: [
-              const YBox(20),
-              const CustomHeader(
-                title: 'Notifications',
-                titleWeight: FontWeight.w500,
-              ),
-              const YBox(14),
-              Container(
-                decoration: BoxDecoration(
-                  color: AppColors.bgWhite,
-                  borderRadius: BorderRadius.circular(Sizer.radius(14)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black12.withOpacity(0.1),
-                      blurRadius: 30,
-                      offset: const Offset(0, 10),
-                    ),
-                  ],
-                ),
-                child: ListView(
-                  padding: EdgeInsets.zero,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  children: [
-                    Container(
-                      padding: EdgeInsets.only(
-                        left: Sizer.width(16),
-                        right: Sizer.width(16),
-                        top: Sizer.height(20),
-                        bottom: Sizer.height(8),
-                      ),
-                      child: Text(
-                        'Updates',
-                        style: AppTypography.text14.copyWith(
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.text5C,
-                        ),
-                      ),
-                    ),
-                    const Divider(
-                      color: AppColors.dividerColor,
-                      thickness: 0.5,
-                    ),
-                    ListView.separated(
-                      padding: EdgeInsets.zero,
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemBuilder: (_, __) {
-                        return const NotificationCard();
-                      },
-                      separatorBuilder: (_, __) =>
-                          const Divider(thickness: 0.5),
-                      itemCount: 5,
-                    ),
-                    const YBox(70),
-                  ],
-                ),
-              )
-            ],
+      appBar: const CustomHeader(
+        title: 'Notifications',
+        titleWeight: FontWeight.w500,
+      ),
+      body: SizedBox(
+        width: Sizer.screenWidth,
+        height: Sizer.screenHeight,
+        child: ListView(
+          padding: EdgeInsets.symmetric(
+            horizontal: Sizer.width(20),
           ),
+          shrinkWrap: true,
+          children: [
+            const YBox(14),
+            Container(
+              decoration: BoxDecoration(
+                color: AppColors.bgWhite,
+                borderRadius: BorderRadius.circular(Sizer.radius(14)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black12.withOpacity(0.1),
+                    blurRadius: 30,
+                    offset: const Offset(0, 10),
+                  ),
+                ],
+              ),
+              child: ListView(
+                padding: EdgeInsets.zero,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(
+                      left: Sizer.width(16),
+                      right: Sizer.width(16),
+                      top: Sizer.height(20),
+                      bottom: Sizer.height(8),
+                    ),
+                    child: Text(
+                      'Updates',
+                      style: AppTypography.text14.copyWith(
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.text5C,
+                      ),
+                    ),
+                  ),
+                  const Divider(
+                    color: AppColors.dividerColor,
+                    thickness: 0.5,
+                  ),
+                  ListView.separated(
+                    padding: EdgeInsets.zero,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (_, __) {
+                      return const NotificationCard();
+                    },
+                    separatorBuilder: (_, __) => const Divider(thickness: 0.5),
+                    itemCount: 5,
+                  ),
+                  const YBox(70),
+                ],
+              ),
+            )
+          ],
         ),
       ),
     );

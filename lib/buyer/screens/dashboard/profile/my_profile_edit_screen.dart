@@ -48,17 +48,16 @@ class _MyProfileScreenEditState extends State<MyProfileScreenEdit> {
       builder: (context, ref, _) {
         return Scaffold(
           backgroundColor: AppColors.bgF5,
+          appBar: const CustomHeader(
+            title: 'My Profile',
+            titleWeight: FontWeight.w500,
+          ),
           body: SafeArea(
             bottom: false,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Column(
                 children: [
-                  const YBox(10),
-                  const CustomHeader(
-                    title: 'My Profile',
-                    titleWeight: FontWeight.w500,
-                  ),
                   const YBox(45),
                   ProfileAvatar(
                     width: 80,

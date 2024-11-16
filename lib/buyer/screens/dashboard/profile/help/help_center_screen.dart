@@ -29,20 +29,14 @@ class _HelpCenterScreenState extends State<HelpCenterScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.bgF5,
+      appBar: const CustomHeader(
+        title: 'Help Center',
+        titleWeight: FontWeight.w500,
+      ),
       body: SafeArea(
         bottom: false,
         child: Column(
           children: [
-            const YBox(10),
-            Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: Sizer.width(20),
-              ),
-              child: const CustomHeader(
-                title: 'Help Center',
-                titleWeight: FontWeight.w500,
-              ),
-            ),
             const YBox(25),
             Container(
               padding: EdgeInsets.symmetric(horizontal: Sizer.width(20)),

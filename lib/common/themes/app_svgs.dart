@@ -41,6 +41,10 @@ class AppSvgs {
   static const String receive = "$svgIcon/receive.svg";
   static const String send = "$svgIcon/send.svg";
   static const String activity = "$svgIcon/activity.svg";
+
+  static const String copy = "$svgIcon/copy.svg";
+  static const String bulletActive = "$svgIcon/bulletActive.svg";
+  static const String bulletInactive = "$svgIcon/bulletInactive.svg";
 }
 
 SizedBox svgHelper(
