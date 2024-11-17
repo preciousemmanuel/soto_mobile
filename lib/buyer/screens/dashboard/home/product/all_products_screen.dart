@@ -1,21 +1,38 @@
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:soto_ecommerce/buyer/screens/dashboard/home/product/product_details_screen.dart';
 import 'package:soto_ecommerce/common/common.dart';
 
 class AllProductsScreen extends StatefulWidget {
-  const AllProductsScreen({super.key});
+  const AllProductsScreen({
+    super.key,
+    this.args,
+  });
+
+  final AllProductArgs? args;
 
   @override
   State<AllProductsScreen> createState() => _AllProductsScreenState();
 }
 
 class _AllProductsScreenState extends State<AllProductsScreen> {
+  TextEditingController searchC = TextEditingController();
+  FocusNode searchF = FocusNode();
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (widget.args?.isSearch == true) {
+        searchF.requestFocus();
+      }
       context.read<ProductVM>().getProductList();
     });
+  }
+
+  @override
+  void dispose() {
+    searchC.dispose();
+    searchF.dispose();
+    super.dispose();
   }
 
   @override
@@ -28,7 +45,44 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
       body: ListView(
         shrinkWrap: true,
         children: [
-          const YBox(40),
+          const YBox(30),
+          if (widget.args?.isSearch == true)
+            Padding(
+              padding: EdgeInsets.only(
+                left: Sizer.width(20),
+                right: Sizer.width(20),
+                bottom: Sizer.width(20),
+              ),
+              child: CustomTextField(
+                focusNode: searchF,
+                controller: searchC,
+                hintText: 'I’m looking for...',
+                showfillColor: false,
+                borderColor: AppColors.grayDE,
+                prefixIcon: Icon(
+                  Iconsax.search_normal_1,
+                  color: AppColors.iconC4,
+                  size: Sizer.height(20),
+                ),
+                showSuffixIcon: true,
+
+                suffixIcon: InkWell(
+                  onTap: () {
+                    ModalWrapper.bottomSheet(
+                      context: context,
+                      widget: const ProductFilterModal(),
+                    );
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    child: svgHelper(AppSvgs.filter),
+                  ),
+                ),
+                // controller: vm.passwordC,
+                onChanged: (val) {},
+                onSubmitted: (p0) {},
+              ),
+            ),
           Consumer<ProductVM>(builder: (context, ref, _) {
             if (ref.isBusy) {
               return GridView.count(

@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:soto_ecommerce/common/common.dart';
 
+const String favouriteState = 'favouriteState';
+
 class WishlistVM extends BaseVM {
   List<WaitlistRes> _wishListProduct = [];
   List<WaitlistRes> get wishListProduct => _wishListProduct;

@@ -1,7 +1,6 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:soto_ecommerce/buyer/buyer.dart';
 import 'package:soto_ecommerce/common/common.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -57,6 +56,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           size: Sizer.height(20),
                         ),
                         showSuffixIcon: true,
+                        isReadOnly: true,
+                        onTap: () {
+                          Navigator.pushNamed(
+                              context, RoutePath.allProductsScreen,
+                              arguments: AllProductArgs(isSearch: true));
+                        },
                         suffixIcon: Container(
                           padding: const EdgeInsets.all(8),
                           child: svgHelper(AppSvgs.filter),
@@ -101,9 +106,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               const YBox(20),
-              Homeheader(
+              const Homeheader(
                 headerName: 'Categories',
-                sellAllBtn: () {},
               ),
               const YBox(12),
               SingleChildScrollView(

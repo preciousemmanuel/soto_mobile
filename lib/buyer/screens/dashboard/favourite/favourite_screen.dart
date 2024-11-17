@@ -21,7 +21,6 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
   Widget build(BuildContext context) {
     return Consumer<WishlistVM>(
       builder: (context, vm, _) {
-        printty('wishlist ${vm.wishListProduct}');
         return Scaffold(
           backgroundColor: AppColors.bgWhite,
           appBar: CustomHeader(

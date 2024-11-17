@@ -337,16 +337,13 @@ class _AddProductScreenState extends State<AddProductScreen> {
   _addProduct() async {
     final vm = context.read<VendorProductVM>();
     ApiResponse apiResponse = await vm.addNewproduct(isInstock: inStock);
-    if (apiResponse.success) {
-      vm.clearData();
-      _pop();
-      FlushBarToast.fLSnackBar(
-          snackBarType: SnackBarType.success,
-          message: apiResponse.message ?? "Product added successfully");
-    } else {
-      FlushBarToast.fLSnackBar(
-          message: apiResponse.message ?? "Something went wrong");
-    }
+
+    handleApiResponse(
+        response: apiResponse,
+        onSuccess: () {
+          vm.clearData();
+          _pop();
+        });
   }
 
   _pop() {

@@ -16,17 +16,13 @@ class CustomCheckbox extends StatelessWidget {
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
-        width: isSelected ? Sizer.width(24) : Sizer.width(16),
-        height: isSelected ? Sizer.height(24) : Sizer.height(16),
+        width: isSelected ? Sizer.width(28) : Sizer.width(26),
+        height: isSelected ? Sizer.height(28) : Sizer.height(26),
         decoration: BoxDecoration(
-          // color: AppColors.white,
-          borderRadius: BorderRadius.circular(Sizer.radius(20)),
-          border: isSelected
-              ? null
-              : Border.all(
-                  color:
-                      isSelected ? AppColors.primaryOrange : AppColors.grayCC,
-                ),
+          color: isSelected
+              ? AppColors.primaryOrange
+              : AppColors.primaryOrange.withOpacity(0.2),
+          borderRadius: BorderRadius.circular(Sizer.radius(8)),
         ),
         child: isSelected ? svgHelper(AppSvgs.check) : const SizedBox(),
       ),

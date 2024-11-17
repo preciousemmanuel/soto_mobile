@@ -7,9 +7,8 @@ class TrackMyOrderScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.bgWhite,
-      appBar: CustomHeader(
+      appBar: const CustomHeader(
         title: 'Track Order',
-        backBtn: () {},
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(

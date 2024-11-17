@@ -3,11 +3,6 @@
 import 'package:soto_ecommerce/buyer/buyer.dart';
 import 'package:soto_ecommerce/common/common.dart';
 
-class ProductArgs {
-  final String productId;
-  ProductArgs({required this.productId});
-}
-
 class ProductDetailsScreen extends StatefulWidget {
   const ProductDetailsScreen({
     super.key,

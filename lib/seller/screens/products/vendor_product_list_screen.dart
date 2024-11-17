@@ -40,6 +40,15 @@ class VendorProductListScreen extends StatelessWidget {
           itemBuilder: (_, i) {
             return OverviewProductTile(
               product: ref.productsByVendor[i],
+              onTap: () {
+                Navigator.pushNamed(
+                  context,
+                  RoutePath.vendorProductDetailsScreen,
+                  arguments: ProductArgs(
+                    productId: ref.productsByVendor[i].id ?? '',
+                  ),
+                );
+              },
             );
           },
           separatorBuilder: (_, __) => const Divider(

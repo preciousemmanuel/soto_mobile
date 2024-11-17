@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:soto_ecommerce/buyer/buyer.dart';
 import 'package:soto_ecommerce/common/common.dart';
+import 'package:soto_ecommerce/seller/screens/products/vendor_product_details_screen.dart';
 import 'package:soto_ecommerce/seller/seller.dart';
 
 class AppRouter {
@@ -46,7 +47,8 @@ class AppRouter {
         }
         return errorScreen('Incorrect arguments for ${settings.name}');
       case RoutePath.allProductsScreen:
-        return buildRoute(const AllProductsScreen());
+        AllProductArgs? allProductArgs = args as AllProductArgs?;
+        return buildRoute(AllProductsScreen(args: allProductArgs));
 
       // Orders
       case RoutePath.createOrderScreen:
@@ -99,6 +101,11 @@ class AppRouter {
         return buildRoute(const AddProductScreen());
       case RoutePath.vendorProductListScreen:
         return buildRoute(const VendorProductListScreen());
+      case RoutePath.vendorProductDetailsScreen:
+        if (args is ProductArgs) {
+          return buildRoute(VendorProductDetailsScreen(args: args));
+        }
+        return errorScreen('Incorrect arguments for ${settings.name}');
 
       case RoutePath.withdrawToBankScreen:
         return buildRoute(const WithdrawToBankScreen());

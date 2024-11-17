@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:dio/dio.dart';
+import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:soto_ecommerce/common/common.dart';
 import 'package:soto_ecommerce/env/env_init.dart';
 
@@ -16,9 +17,19 @@ class DioApiService {
     receiveTimeout: const Duration(seconds: 3000),
   );
 
+  final prettyLogger = PrettyDioLogger(
+    requestHeader: true,
+    requestBody: true,
+    responseBody: true,
+    responseHeader: false,
+    error: true,
+    compact: true,
+    maxWidth: 10090,
+  );
   DioApiService({required this.appInterceptors}) {
     dio = Dio(options);
     dio.interceptors.add(appInterceptors);
+    dio.interceptors.add(prettyLogger);
     Map<String, dynamic> headers = {'Accept': 'application/json'};
     dio.options.headers = headers;
   }
@@ -30,14 +41,13 @@ class DioApiService {
   }) async {
     try {
       printty(options.baseUrl, logName: "custom options");
-
-      // options.headers = await getDeviceHeaders();
-
-      printty(dio.options.baseUrl);
       printty(url);
       printty(options.headers.toString(), logName: 'custom headers');
       printty("headers===>");
-      Response response = await Dio(options)
+
+      final dio = Dio(options);
+      dio.interceptors.add(prettyLogger);
+      Response response = await dio
           .post(
             url,
             data: isFormData ? FormData.fromMap(body) : body,
@@ -53,8 +63,9 @@ class DioApiService {
   Future<ApiResponse> get(
       {var body, required String url, bool isFormData = false}) async {
     try {
-      // options.headers = await getDeviceHeaders();
-      Response response = await Dio(options)
+      final dio = Dio(options);
+      dio.interceptors.add(prettyLogger);
+      Response response = await dio
           .get(url)
           .timeout(Duration(seconds: timeOutDurationInSeconds));
       return DioResponseHandler.parseResponse(response);
@@ -93,7 +104,7 @@ class DioApiService {
       }
 
       dynamic data = body;
-      if (body != null) {
+      if (body != null && isFormData) {
         data = FormData.fromMap(body);
       }
       printty(dio.options.baseUrl);

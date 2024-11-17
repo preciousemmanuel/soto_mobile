@@ -19,6 +19,13 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   TextEditingController phoneC = TextEditingController();
   TextEditingController passwordC = TextEditingController();
 
+  unFocusAll() {
+    fullNameFocusNode.unfocus();
+    emailFocusNode.unfocus();
+    phoneFocusNode.unfocus();
+    passwordFocusNode.unfocus();
+  }
+
   @override
   void dispose() {
     fullnameC.dispose();
@@ -218,6 +225,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   }
 
   void _createNewAccount() {
+    unFocusAll();
     final vm = context.read<SignupVM>();
     vm
         .signUp(
@@ -228,17 +236,11 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
     )
         .then(
       (value) {
-        if (value.success) {
-          FlushBarToast.fLSnackBar(
-            snackBarType: SnackBarType.success,
-            message: value.message ?? '',
-          );
-          gotoShippingAddress();
-        } else {
-          FlushBarToast.fLSnackBar(
-            message: value.message ?? '',
-          );
-        }
+        handleApiResponse(
+            response: value,
+            onSuccess: () {
+              gotoShippingAddress();
+            });
       },
     );
   }

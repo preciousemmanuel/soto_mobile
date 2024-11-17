@@ -22,6 +22,9 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  FocusNode emailFocus = FocusNode();
+  FocusNode passwordFocus = FocusNode();
+
   @override
   void initState() {
     _init();
@@ -33,6 +36,19 @@ class _LoginScreenState extends State<LoginScreen> {
     vm.init(
       userType: widget.args?.isVendor == true ? UserType.vendor : UserType.user,
     );
+  }
+
+  unFocusAll() {
+    emailFocus.unfocus();
+    passwordFocus.unfocus();
+  }
+
+  @override
+  void dispose() {
+    emailFocus.dispose();
+    passwordFocus.dispose();
+
+    super.dispose();
   }
 
   @override
@@ -102,6 +118,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     const OrWidget(),
                     const YBox(16),
                     CustomTextField(
+                      focusNode: emailFocus,
                       labelText: "Name/Email",
                       showLabelHeader: true,
                       fillColor: AppColors.orangeEA.withOpacity(0.5),
@@ -116,6 +133,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const YBox(16),
                     CustomTextField(
+                      focusNode: passwordFocus,
                       labelText: "Password",
                       showLabelHeader: true,
                       fillColor: AppColors.orangeEA.withOpacity(0.5),
@@ -195,8 +213,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                     recognizer: TapGestureRecognizer()
                                       ..onTap = () {
-                                        Navigator.pushNamed(context,
-                                            RoutePath.createAccountScreen);
+                                        Navigator.pushNamed(
+                                            context,
+                                            RoutePath
+                                                .createBusinessAccountScreen);
                                       },
                                   ),
                           ],
@@ -213,18 +233,15 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void login() {
+    unFocusAll();
     final vm = context.read<LoginVM>();
     vm.login().then((value) {
-      if (value.success) {
-        vm.clearData();
-        gotorDashboard();
-        FlushBarToast.fLSnackBar(
-            snackBarType: SnackBarType.success,
-            message: value.message ?? 'Login successful');
-      } else {
-        FlushBarToast.fLSnackBar(
-            message: value.message ?? "Something went wrong");
-      }
+      handleApiResponse(
+          response: value,
+          onSuccess: () {
+            vm.clearData();
+            gotorDashboard();
+          });
     });
   }
 

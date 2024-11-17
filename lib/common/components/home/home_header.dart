@@ -24,34 +24,36 @@ class Homeheader extends StatelessWidget {
           : EdgeInsets.zero,
       child: Row(
         children: [
-          Text(
-            headerName,
-            style: AppTypography.text20.copyWith(
-              fontSize: headerFontSize,
-              fontWeight: FontWeight.w600,
+          Expanded(
+            child: Text(
+              headerName,
+              style: AppTypography.text20.copyWith(
+                fontSize: headerFontSize,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
-          const Spacer(),
-          InkWell(
-            onTap: sellAllBtn,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  'See all',
-                  style: AppTypography.text12.copyWith(
-                    color: AppColors.primaryOrange,
+          if (sellAllBtn != null)
+            InkWell(
+              onTap: sellAllBtn,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'See all',
+                    style: AppTypography.text12.copyWith(
+                      color: AppColors.primaryOrange,
+                    ),
                   ),
-                ),
-                const XBox(4),
-                Icon(
-                  Iconsax.arrow_right_1,
-                  color: AppColors.primaryOrange,
-                  size: Sizer.height(20),
-                ),
-              ],
+                  const XBox(4),
+                  Icon(
+                    Iconsax.arrow_right_1,
+                    color: AppColors.primaryOrange,
+                    size: Sizer.height(20),
+                  ),
+                ],
+              ),
             ),
-          ),
         ],
       ),
     );

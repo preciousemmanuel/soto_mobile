@@ -75,15 +75,12 @@ class BaseVM extends ChangeNotifier {
       if (!apiResponse.success) {
         // setBusy(false);
         setBusyForObject(busyObjectName ?? this, false);
-        printty(apiResponse.message, logName: url.toString());
+
         return apiResponse;
       }
 
-      printty(apiResponse.data, logName: url.toString());
       return onSuccess(apiResponse.data);
     } catch (e, s) {
-      printty(e, logName: url.toString());
-      printty(s.toString());
       setError(true);
       if (onError != null) {
         return onError(e.toString());

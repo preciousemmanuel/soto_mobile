@@ -60,23 +60,9 @@ class _OrderScreenState extends State<OrderScreen> {
                       return const SizerLoader();
                     }
                     if (vm.vendorOrder.isEmpty) {
-                      return Column(
-                        children: [
-                          StatusWidget(
-                            text: 'Track Order',
-                            isSelected: false,
-                            onTap: () {
-                              Navigator.pushNamed(
-                                context,
-                                RoutePath.trackMyOrderScreen,
-                              );
-                            },
-                          ),
-                          const EmptyListState(
-                            height: 500,
-                            text: 'No order yet',
-                          ),
-                        ],
+                      return const EmptyListState(
+                        height: 500,
+                        text: 'No order yet',
                       );
                     }
                     return Expanded(
