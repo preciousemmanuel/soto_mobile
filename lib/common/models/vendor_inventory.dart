@@ -40,7 +40,7 @@ class VendorInventory {
 }
 
 class InventoryRecords {
-  final List<Datum>? data;
+  final List<InventoryRecordData>? data;
   final Pagination? pagination;
 
   InventoryRecords({
@@ -52,7 +52,8 @@ class InventoryRecords {
       InventoryRecords(
         data: json["data"] == null
             ? []
-            : List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
+            : List<InventoryRecordData>.from(
+                json["data"]!.map((x) => InventoryRecordData.fromJson(x))),
         pagination: json["pagination"] == null
             ? null
             : Pagination.fromJson(json["pagination"]),
@@ -66,7 +67,7 @@ class InventoryRecords {
       };
 }
 
-class Datum {
+class InventoryRecordData {
   final String? id;
   final String? productId;
   final String? productName;
@@ -82,7 +83,7 @@ class Datum {
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
-  Datum({
+  InventoryRecordData({
     this.id,
     this.productId,
     this.productName,
@@ -99,7 +100,8 @@ class Datum {
     this.updatedAt,
   });
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory InventoryRecordData.fromJson(Map<String, dynamic> json) =>
+      InventoryRecordData(
         id: json["_id"],
         productId: json["product_id"],
         productName: json["product_name"],

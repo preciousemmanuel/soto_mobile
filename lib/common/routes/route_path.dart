@@ -39,6 +39,7 @@ class RoutePath {
 
   // Shared
   static const confirmationScreen = '/confirmationScreen';
+  static const customWebviewScreen = '/customWebviewScreen';
 
   /// SELLER SCREENS
   static const sellerDashboardNavScreen = '/sellerDashboardNavScreen';

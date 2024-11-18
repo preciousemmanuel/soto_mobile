@@ -62,7 +62,7 @@ class ShoppingCartCard extends StatelessWidget {
                     ),
                     const XBox(16),
                     Text(
-                      '1',
+                      '${cartItem?.quantity}',
                       style: AppTypography.text12,
                     ),
                     const XBox(16),
@@ -106,6 +106,7 @@ class ShoppingCartCard extends StatelessWidget {
               Text(
                 '${AppUtils.nairaSymbol}${AppUtils.formatAmountString(cartItem?.unitPrice.toString() ?? '0.00')}',
                 style: AppTypography.text16.copyWith(
+                  fontFamily: '',
                   fontWeight: FontWeight.w600,
                   color: AppColors.primaryOrange,
                 ),

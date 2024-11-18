@@ -104,7 +104,9 @@ class CheckoutScreen extends StatelessWidget {
                 '${AppUtils.nairaSymbol}${AppUtils.formatAmountString('${context.read<AuthUserVM>().cart?.totalAmount ?? 0.0}')}',
             btnText: 'Pay',
             btnOntap: () {
-              Navigator.pushNamed(context, RoutePath.checkoutPaymentScreen);
+              // TODO: check this out later
+              // Navigator.pushNamed(context, RoutePath.checkoutPaymentScreen);
+              Navigator.pushNamed(context, RoutePath.confirmPaymentScreen);
             },
           ),
           const YBox(50),

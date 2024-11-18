@@ -6,14 +6,6 @@ class OrderVM extends BaseVM {
   List<OrderRes> _vendorOrder = [];
   List<OrderRes> get vendorOrder => _vendorOrder;
 
-  int _productQty = 1;
-  int get productQty => _productQty;
-
-  void setProductQty(int qty) {
-    _productQty = qty;
-    reBuildUI();
-  }
-
   Future<ApiResponse> addproductToCart(
       {required List<ProductCart> items}) async {
     printty("add to cart call");
@@ -73,7 +65,31 @@ class OrderVM extends BaseVM {
       method: apiService.postWithAuth,
       body: body,
       onSuccess: (data) {
-        return apiResponse;
+        return ApiResponse(success: true, data: data["data"]["_id"]);
+      },
+    );
+  }
+
+  Future<ApiResponse> generatePaymentLink({
+    required int amount,
+    required String orderId,
+    PaymentNarration narration = PaymentNarration.order,
+  }) async {
+    final body = {
+      "amount": amount,
+      "narration": narration.text, // ORDER | PAYOUT | REFUND | WITHDRAWAL
+      "narration_id": orderId
+    };
+    printty("add to cart call with body: $body");
+    return await performApiCall(
+      url: "/transaction/generate-payment-link",
+      method: apiService.postWithAuth,
+      body: body,
+      onSuccess: (data) {
+        return ApiResponse(
+          success: true,
+          data: data["data"]["data"]["authorization_url"],
+        );
       },
     );
   }
@@ -88,12 +104,6 @@ class OrderVM extends BaseVM {
         return apiResponse;
       },
     );
-  }
-
-  void clearData() {
-    _productQty = 1;
-
-    reBuildUI();
   }
 }
 

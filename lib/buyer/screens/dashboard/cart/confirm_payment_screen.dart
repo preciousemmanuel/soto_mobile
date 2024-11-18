@@ -1,6 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:soto_ecommerce/buyer/screens/confirmation/confirmation_screen.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:soto_ecommerce/common/common.dart';
 
 class ConfirmPaymentScreen extends StatefulWidget {
@@ -66,7 +66,8 @@ class _ConfirmPaymentScreenState extends State<ConfirmPaymentScreen> {
                 leftStyle: AppTypography.text16.copyWith(
                   color: AppColors.primaryOrange,
                 ),
-                rightStyle: AppTypography.text16.copyWith(
+                rightStyle: GoogleFonts.roboto(
+                  fontSize: Sizer.text(16),
                   fontWeight: FontWeight.w600,
                   color: AppColors.primaryOrange,
                 ),
@@ -79,7 +80,8 @@ class _ConfirmPaymentScreenState extends State<ConfirmPaymentScreen> {
                 leftStyle: AppTypography.text20.copyWith(
                   color: AppColors.primaryOrange,
                 ),
-                rightStyle: AppTypography.text20.copyWith(
+                rightStyle: GoogleFonts.roboto(
+                  fontSize: Sizer.text(20),
                   fontWeight: FontWeight.w700,
                   color: AppColors.primaryOrange,
                 ),
@@ -165,15 +167,29 @@ class _ConfirmPaymentScreenState extends State<ConfirmPaymentScreen> {
     )
         .then((val) {
       if (val.success) {
-        authVM.getUserProfile();
-        FlushBarToast.fLSnackBar(
-          snackBarType: SnackBarType.success,
-          message: val.message ?? 'Order created successfully',
-        );
-        Navigator.pushReplacementNamed(context, RoutePath.confirmationScreen,
-            arguments: ConfirmationScreenArgs(
-              msg: val.message ?? 'Order created \nsuccessfully',
-            ));
+        orderVM
+            .generatePaymentLink(
+                amount: authVM.cart?.totalAmount ?? 0, orderId: val.data ?? '')
+            .then((value) {
+          if (value.success) {
+            Navigator.pushNamed(
+              context,
+              RoutePath.customWebviewScreen,
+              arguments: WebViewArg(
+                webURL: value.data ?? '',
+              ),
+            );
+          } else {
+            FlushBarToast.fLSnackBar(
+              message: value.message ?? "Something went wrong",
+            );
+          }
+        });
+
+        // Navigator.pushReplacementNamed(context, RoutePath.confirmationScreen,
+        //     arguments: ConfirmationScreenArgs(
+        //       msg: val.message ?? 'Order created \nsuccessfully',
+        //     ));
       } else {
         FlushBarToast.fLSnackBar(
           message: val.message ?? "Something went wrong",

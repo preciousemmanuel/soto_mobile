@@ -1,3 +1,4 @@
+import 'package:google_fonts/google_fonts.dart';
 import 'package:soto_ecommerce/common/common.dart';
 
 class CustomPaymentListTile extends StatelessWidget {
@@ -34,7 +35,8 @@ class CustomPaymentListTile extends StatelessWidget {
           Text(
             rightText,
             style: rightStyle ??
-                AppTypography.text16.copyWith(
+                GoogleFonts.roboto(
+                  fontSize: Sizer.text(16),
                   fontWeight: FontWeight.w600,
                   color: AppColors.text28,
                 ),

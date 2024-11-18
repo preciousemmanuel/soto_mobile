@@ -8,13 +8,29 @@ class ShippingAddressScreen extends StatefulWidget {
 }
 
 class _ShippingAddressScreenState extends State<ShippingAddressScreen> {
-  FocusNode addressNode = FocusNode();
   TextEditingController addressC = TextEditingController();
+  TextEditingController cityC = TextEditingController();
+  TextEditingController stateC = TextEditingController();
+
+  FocusNode addressN = FocusNode();
+  FocusNode cityN = FocusNode();
+  FocusNode stateN = FocusNode();
+
+  unFocuaAll() {
+    addressN.unfocus();
+    cityN.unfocus();
+    stateN.unfocus();
+  }
 
   @override
   void dispose() {
-    addressNode.dispose();
+    cityC.dispose();
+    stateC.dispose();
     addressC.dispose();
+
+    cityN.dispose();
+    stateN.dispose();
+    addressN.dispose();
 
     super.dispose();
   }
@@ -38,8 +54,7 @@ class _ShippingAddressScreenState extends State<ShippingAddressScreen> {
           ),
           child: SafeArea(
             bottom: false,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: ListView(
               children: [
                 const YBox(20),
                 Row(
@@ -54,7 +69,7 @@ class _ShippingAddressScreenState extends State<ShippingAddressScreen> {
                     ),
                   ],
                 ),
-                const Spacer(),
+                // const YBox(20),
                 imageHelper(
                   AppImages.ob4,
                   height: Sizer.height(373),
@@ -81,13 +96,37 @@ class _ShippingAddressScreenState extends State<ShippingAddressScreen> {
                 ),
                 const YBox(29),
                 CustomTextField(
-                  focusNode: addressNode,
+                  focusNode: addressN,
                   controller: addressC,
                   fillColor: AppColors.orangeEA.withOpacity(0.5),
                   hintText: 'Enter your address',
                   errorText: addressC.text.trim().isNotEmpty &&
                           !(addressC.text.trim().length > 7)
                       ? "Address must be more than 7 characters"
+                      : null,
+                  onChanged: (val) => setState(() {}),
+                ),
+                const YBox(10),
+                CustomTextField(
+                  focusNode: cityN,
+                  controller: cityC,
+                  fillColor: AppColors.orangeEA.withOpacity(0.5),
+                  hintText: 'Enter your City',
+                  errorText: cityC.text.trim().isNotEmpty &&
+                          cityC.text.trim().length < 2
+                      ? "City is required"
+                      : null,
+                  onChanged: (val) => setState(() {}),
+                ),
+                const YBox(10),
+                CustomTextField(
+                  focusNode: stateN,
+                  controller: stateC,
+                  fillColor: AppColors.orangeEA.withOpacity(0.5),
+                  hintText: 'Enter your State',
+                  errorText: stateC.text.trim().isNotEmpty &&
+                          stateC.text.trim().length < 2
+                      ? "State is required"
                       : null,
                   onChanged: (val) => setState(() {}),
                 ),
@@ -107,18 +146,20 @@ class _ShippingAddressScreenState extends State<ShippingAddressScreen> {
   }
 
   void updateAddress() {
+    unFocuaAll();
     final vm = context.read<SignupVM>();
-    vm.updateShippingAddress(address: addressC.text.trim()).then((value) {
-      if (value.success) {
-        FlushBarToast.fLSnackBar(
-            snackBarType: SnackBarType.success,
-            message: value.message ?? 'Shipping address updated');
-
-        gotorDashboard();
-      } else {
-        FlushBarToast.fLSnackBar(
-            message: value.message ?? "Something went wrong");
-      }
+    vm
+        .updateShippingAddress(
+      address: addressC.text.trim(),
+      city: cityC.text.trim(),
+      state: stateC.text.trim(),
+    )
+        .then((value) {
+      handleApiResponse(
+          response: value,
+          onSuccess: () {
+            gotorDashboard();
+          });
     });
   }
 

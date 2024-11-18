@@ -1,41 +1,55 @@
-class Cart {
+import 'dart:convert';
+
+OrderResponse orderResponseFromJson(String str) =>
+    OrderResponse.fromJson(json.decode(str));
+
+String orderResponseToJson(OrderResponse data) => json.encode(data.toJson());
+
+class OrderResponse {
   final String? id;
+  final List<OrderItem>? items;
   final String? user;
+  final String? status;
   final int? totalAmount;
   final int? deliveryAmount;
+  final String? shippingAddress;
   final String? orderItinerary;
   final int? grandTotal;
   final String? paymentType;
-  final List<Item>? items;
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final int? v;
 
-  Cart({
+  OrderResponse({
     this.id,
+    this.items,
     this.user,
+    this.status,
     this.totalAmount,
     this.deliveryAmount,
+    this.shippingAddress,
     this.orderItinerary,
     this.grandTotal,
     this.paymentType,
-    this.items,
     this.createdAt,
     this.updatedAt,
     this.v,
   });
 
-  factory Cart.fromJson(Map<String, dynamic> json) => Cart(
+  factory OrderResponse.fromJson(Map<String, dynamic> json) => OrderResponse(
         id: json["_id"],
+        items: json["items"] == null
+            ? []
+            : List<OrderItem>.from(
+                json["items"]!.map((x) => OrderItem.fromJson(x))),
         user: json["user"],
+        status: json["status"],
         totalAmount: json["total_amount"],
         deliveryAmount: json["delivery_amount"],
+        shippingAddress: json["shipping_address"],
         orderItinerary: json["order_itinerary"],
         grandTotal: json["grand_total"],
         paymentType: json["payment_type"],
-        items: json["items"] == null
-            ? []
-            : List<Item>.from(json["items"]!.map((x) => Item.fromJson(x))),
         createdAt: json["createdAt"] == null
             ? null
             : DateTime.parse(json["createdAt"]),
@@ -47,33 +61,35 @@ class Cart {
 
   Map<String, dynamic> toJson() => {
         "_id": id,
-        "user": user,
-        "total_amount": totalAmount,
-        "delivery_amount": deliveryAmount,
-        "order_itinerary": orderItinerary,
-        "grand_total": grandTotal,
-        "payment_type": paymentType,
         "items": items == null
             ? []
             : List<dynamic>.from(items!.map((x) => x.toJson())),
+        "user": user,
+        "status": status,
+        "total_amount": totalAmount,
+        "delivery_amount": deliveryAmount,
+        "shipping_address": shippingAddress,
+        "order_itinerary": orderItinerary,
+        "grand_total": grandTotal,
+        "payment_type": paymentType,
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
         "__v": v,
       };
 }
 
-class Item {
+class OrderItem {
   final String? productId;
   final String? productName;
   final String? description;
   final String? vendor;
-  final List<dynamic>? images;
+  final List<String>? images;
   final int? quantity;
   final int? unitPrice;
   final bool? isDiscounted;
   final String? id;
 
-  Item({
+  OrderItem({
     this.productId,
     this.productName,
     this.description,
@@ -85,14 +101,14 @@ class Item {
     this.id,
   });
 
-  factory Item.fromJson(Map<String, dynamic> json) => Item(
+  factory OrderItem.fromJson(Map<String, dynamic> json) => OrderItem(
         productId: json["product_id"],
         productName: json["product_name"],
         description: json["description"],
         vendor: json["vendor"],
         images: json["images"] == null
             ? []
-            : List<dynamic>.from(json["images"]!.map((x) => x)),
+            : List<String>.from(json["images"]!.map((x) => x)),
         quantity: json["quantity"],
         unitPrice: json["unit_price"],
         isDiscounted: json["is_discounted"],
@@ -110,5 +126,60 @@ class Item {
         "unit_price": unitPrice,
         "is_discounted": isDiscounted,
         "_id": id,
+      };
+}
+
+OrderPaymentRes orderPaymentResFromJson(String str) =>
+    OrderPaymentRes.fromJson(json.decode(str));
+
+String orderPaymentResToJson(OrderPaymentRes data) =>
+    json.encode(data.toJson());
+
+class OrderPaymentRes {
+  final bool? status;
+  final String? message;
+  final Data? data;
+
+  OrderPaymentRes({
+    this.status,
+    this.message,
+    this.data,
+  });
+
+  factory OrderPaymentRes.fromJson(Map<String, dynamic> json) =>
+      OrderPaymentRes(
+        status: json["status"],
+        message: json["message"],
+        data: json["data"] == null ? null : Data.fromJson(json["data"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "status": status,
+        "message": message,
+        "data": data?.toJson(),
+      };
+}
+
+class Data {
+  final String? authorizationUrl;
+  final String? accessCode;
+  final String? reference;
+
+  Data({
+    this.authorizationUrl,
+    this.accessCode,
+    this.reference,
+  });
+
+  factory Data.fromJson(Map<String, dynamic> json) => Data(
+        authorizationUrl: json["authorization_url"],
+        accessCode: json["access_code"],
+        reference: json["reference"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "authorization_url": authorizationUrl,
+        "access_code": accessCode,
+        "reference": reference,
       };
 }

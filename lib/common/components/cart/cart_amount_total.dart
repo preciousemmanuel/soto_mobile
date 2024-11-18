@@ -47,6 +47,7 @@ class CartAmountTotal extends StatelessWidget {
               Text(
                 total,
                 style: AppTypography.text20.copyWith(
+                  fontFamily: '',
                   color: AppColors.primaryOrange,
                   fontWeight: FontWeight.w600,
                 ),

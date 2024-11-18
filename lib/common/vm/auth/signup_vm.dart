@@ -39,9 +39,13 @@ class SignupVM extends BaseVM {
 
   Future<ApiResponse> updateShippingAddress({
     required String address,
+    required String state,
+    required String city,
   }) async {
     var body = {
       "address": address,
+      "state": state,
+      "city": city,
     };
 
     printty(body, logName: "updateShippingAddress call");

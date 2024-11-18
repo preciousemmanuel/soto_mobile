@@ -78,7 +78,7 @@ class _RelatedProductCardState extends State<RelatedProductCard> {
                         text: widget.salesPrice ?? '',
                         style: AppTypography.text12.copyWith(
                             color: AppColors.textAA,
-                            fontFamily: 'Poppins',
+                            fontFamily: '',
                             decoration: TextDecoration.lineThrough),
                       ),
                     TextSpan(
@@ -89,7 +89,7 @@ class _RelatedProductCardState extends State<RelatedProductCard> {
                             ? AppColors.primaryOrange
                             : AppColors.text12,
                         fontWeight: FontWeight.w600,
-                        fontFamily: 'Poppins',
+                        fontFamily: '',
                       ),
                     ),
                   ],

@@ -15,3 +15,11 @@ class AllProductArgs {
   final String? searchQuery;
   final bool isSearch;
 }
+
+// for webview
+class WebViewArg {
+  final String? appBarText;
+  final String webURL;
+
+  WebViewArg({this.appBarText, required this.webURL});
+}

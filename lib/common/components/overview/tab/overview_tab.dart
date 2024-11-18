@@ -1,3 +1,4 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:soto_ecommerce/common/common.dart';
 import 'package:soto_ecommerce/seller/vm/vendor_product_vm.dart';
 
@@ -37,23 +38,76 @@ class _OverviewTabState extends State<OverviewTab> {
             ],
           ),
           const YBox(24),
-          Container(
+          SizedBox(
             height: Sizer.height(176),
-            width: double.infinity,
-            decoration: BoxDecoration(
-                border: Border.all(
-                  color: AppColors.grayE8,
+            width: Sizer.screenWidth,
+            // decoration: BoxDecoration(
+            //     border: Border.all(
+            //       color: AppColors.grayE8,
+            //     ),
+            //     borderRadius: BorderRadius.circular(
+            //       Sizer.radius(6),
+            //     )),
+            child: LineChart(
+              LineChartData(
+                gridData: const FlGridData(show: false),
+                titlesData: FlTitlesData(
+                  leftTitles: const AxisTitles(
+                    sideTitles: SideTitles(showTitles: false),
+                  ),
+                  bottomTitles: AxisTitles(
+                    sideTitles: SideTitles(
+                        showTitles: true,
+                        getTitlesWidget: (value, meta) {
+                          const tiles = [
+                            'Aug.',
+                            'Sept.',
+                            'Oct.',
+                            'Nov.',
+                            'Dec.',
+                            'Jan.',
+                            'Feb.'
+                          ];
+                          final index = value.toInt();
+                          if (index >= 0 && index < tiles.length) {
+                            return Text(
+                              tiles[index],
+                              style: const TextStyle(color: Colors.grey),
+                            );
+                          }
+                          return const Text("");
+                        },
+                        reservedSize: 22,
+                        interval: 1),
+                  ),
+                  rightTitles: const AxisTitles(
+                    sideTitles: SideTitles(showTitles: false),
+                  ),
+                  topTitles: const AxisTitles(
+                    sideTitles: SideTitles(showTitles: false),
+                  ),
                 ),
-                borderRadius: BorderRadius.circular(
-                  Sizer.radius(6),
-                )),
-            child: Center(
-              child: Text(
-                'Income stats',
-                style: AppTypography.text14.copyWith(
-                  color: AppColors.text57,
-                  fontWeight: FontWeight.w500,
-                ),
+                borderData: FlBorderData(show: false),
+                lineBarsData: [
+                  LineChartBarData(
+                    spots: [
+                      const FlSpot(0, 2),
+                      const FlSpot(1, 1),
+                      const FlSpot(2, 4),
+                      const FlSpot(4, 3),
+                      const FlSpot(5, 4),
+                      const FlSpot(6, 6),
+                    ],
+                    isCurved: true,
+                    color: AppColors.primaryOrange,
+                    barWidth: 3,
+                    dotData: const FlDotData(show: false),
+                    belowBarData: BarAreaData(
+                      show: true,
+                      color: AppColors.primaryOrange.withOpacity(0.07),
+                    ),
+                  )
+                ],
               ),
             ),
           ),

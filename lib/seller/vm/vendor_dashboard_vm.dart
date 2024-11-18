@@ -12,6 +12,8 @@ class VendorDashboardVM extends BaseVM {
   SalesAnalytics? get salesAnalytics => _salesAnalytics;
   VendorInventory? _vendorInventory;
   VendorInventory? get vendorInventory => _vendorInventory;
+  List<InventoryRecordData> get inventoryRecords =>
+      _vendorInventory?.inventoryRecords?.data ?? [];
 
   Future<ApiResponse> getVendorInventory() async {
     return await performApiCall(

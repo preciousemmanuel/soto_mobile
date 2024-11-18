@@ -19,6 +19,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   Product? _singleProduct;
   ReviewsDescType _reviewsDescType = ReviewsDescType.description;
 
+  int _productQty = 1;
+
   @override
   void initState() {
     super.initState();
@@ -124,36 +126,32 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           ),
                         ),
                         const Spacer(),
-                        Consumer<OrderVM>(
-                          builder: (context, orderVM, _) {
-                            return Row(
-                              children: [
-                                AddSubtractBtn(
-                                  icon: Iconsax.minus,
-                                  onTap: () {
-                                    if (orderVM.productQty > 1) {
-                                      orderVM.setProductQty(
-                                          orderVM.productQty - 1);
-                                    }
-                                  },
-                                ),
-                                const XBox(16),
-                                Text(
-                                  '${orderVM.productQty}',
-                                  style: AppTypography.text12,
-                                ),
-                                const XBox(16),
-                                AddSubtractBtn(
-                                  icon: Iconsax.add,
-                                  onTap: () {
-                                    orderVM
-                                        .setProductQty(orderVM.productQty + 1);
-                                  },
-                                ),
-                              ],
-                            );
-                          },
-                        )
+                        Row(
+                          children: [
+                            AddSubtractBtn(
+                              icon: Iconsax.minus,
+                              onTap: () {
+                                if (_productQty > 1) {
+                                  _productQty--;
+                                }
+                                setState(() {});
+                              },
+                            ),
+                            const XBox(16),
+                            Text(
+                              '$_productQty',
+                              style: AppTypography.text12,
+                            ),
+                            const XBox(16),
+                            AddSubtractBtn(
+                              icon: Iconsax.add,
+                              onTap: () {
+                                _productQty++;
+                                setState(() {});
+                              },
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ),
@@ -258,7 +256,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     orderVM.addproductToCart(items: [
                       ProductCart(
                         productId: _singleProduct?.id ?? '',
-                        qty: orderVM.productQty,
+                        qty: _productQty,
                       )
                     ]).then((value) {
                       handleApiResponse(

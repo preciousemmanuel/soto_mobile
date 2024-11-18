@@ -213,10 +213,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                     recognizer: TapGestureRecognizer()
                                       ..onTap = () {
-                                        Navigator.pushNamed(
-                                            context,
-                                            RoutePath
-                                                .createBusinessAccountScreen);
+                                        Navigator.pushNamed(context,
+                                            RoutePath.createAccountScreen);
                                       },
                                   ),
                           ],

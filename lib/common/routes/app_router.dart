@@ -84,6 +84,11 @@ class AppRouter {
           return buildRoute(ConfirmationScreen(args: args));
         }
         return errorScreen('Incorrect arguments for ${settings.name}');
+      case RoutePath.customWebviewScreen:
+        if (args is WebViewArg) {
+          return buildRoute(CustomWebviewScreen(arg: args));
+        }
+        return errorScreen('Incorrect arguments for ${settings.name}');
 
       /// SELLER ROUTES
       case RoutePath.sellerDashboardNavScreen:
