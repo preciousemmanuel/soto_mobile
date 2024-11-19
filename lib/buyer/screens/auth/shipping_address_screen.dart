@@ -16,10 +16,26 @@ class _ShippingAddressScreenState extends State<ShippingAddressScreen> {
   FocusNode cityN = FocusNode();
   FocusNode stateN = FocusNode();
 
+  StateModel? stateModel;
+
   unFocuaAll() {
     addressN.unfocus();
     cityN.unfocus();
     stateN.unfocus();
+  }
+
+  clearData() {
+    addressC.clear();
+    cityC.clear();
+    stateC.clear();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<AuthUserVM>().getStates();
+    });
   }
 
   @override
@@ -95,6 +111,64 @@ class _ShippingAddressScreenState extends State<ShippingAddressScreen> {
                   ],
                 ),
                 const YBox(29),
+
+                CustomTextField(
+                  focusNode: stateN,
+                  controller: stateC,
+                  fillColor: AppColors.orangeEA.withOpacity(0.5),
+                  hintText: 'Enter your State',
+                  isReadOnly: true,
+                  errorText: stateC.text.trim().isNotEmpty &&
+                          stateC.text.trim().length < 2
+                      ? "State is required"
+                      : null,
+                  onChanged: (val) => setState(() {}),
+                  onTap: () async {
+                    stateModel = await ModalWrapper.bottomSheet(
+                      context: context,
+                      widget: StatesModal(stateNamel: stateC.text),
+                    );
+
+                    if (stateModel?.name?.isNotEmpty ?? false) {
+                      stateC.text = stateModel?.name ?? '';
+                      setState(() {});
+                    }
+                  },
+                ),
+                const YBox(10),
+                CustomTextField(
+                  focusNode: cityN,
+                  controller: cityC,
+                  isReadOnly: true,
+                  fillColor: AppColors.orangeEA.withOpacity(0.5),
+                  hintText: 'Enter your City',
+                  errorText: cityC.text.trim().isNotEmpty &&
+                          cityC.text.trim().length < 2
+                      ? "City is required"
+                      : null,
+                  onChanged: (val) => setState(() {}),
+                  onTap: () async {
+                    if (stateModel == null) {
+                      FlushBarToast.fLSnackBar(
+                          snackBarType: SnackBarType.warning,
+                          message: 'Please select a state first');
+                      return;
+                    }
+
+                    final String? city = await ModalWrapper.bottomSheet(
+                        context: context,
+                        widget: CityModal(
+                          stateModel: stateModel,
+                          cityNamel: cityC.text,
+                        ));
+
+                    if (city?.isNotEmpty ?? false) {
+                      cityC.text = city ?? '';
+                      setState(() {});
+                    }
+                  },
+                ),
+                const YBox(10),
                 CustomTextField(
                   focusNode: addressN,
                   controller: addressC,
@@ -106,30 +180,7 @@ class _ShippingAddressScreenState extends State<ShippingAddressScreen> {
                       : null,
                   onChanged: (val) => setState(() {}),
                 ),
-                const YBox(10),
-                CustomTextField(
-                  focusNode: cityN,
-                  controller: cityC,
-                  fillColor: AppColors.orangeEA.withOpacity(0.5),
-                  hintText: 'Enter your City',
-                  errorText: cityC.text.trim().isNotEmpty &&
-                          cityC.text.trim().length < 2
-                      ? "City is required"
-                      : null,
-                  onChanged: (val) => setState(() {}),
-                ),
-                const YBox(10),
-                CustomTextField(
-                  focusNode: stateN,
-                  controller: stateC,
-                  fillColor: AppColors.orangeEA.withOpacity(0.5),
-                  hintText: 'Enter your State',
-                  errorText: stateC.text.trim().isNotEmpty &&
-                          stateC.text.trim().length < 2
-                      ? "State is required"
-                      : null,
-                  onChanged: (val) => setState(() {}),
-                ),
+
                 const YBox(35),
                 CustomBtn.solid(
                   online: addressC.text.trim().length > 7,
@@ -158,6 +209,7 @@ class _ShippingAddressScreenState extends State<ShippingAddressScreen> {
       handleApiResponse(
           response: value,
           onSuccess: () {
+            clearData();
             gotorDashboard();
           });
     });

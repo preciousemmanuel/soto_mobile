@@ -13,8 +13,8 @@ class ConfirmPaymentScreen extends StatefulWidget {
 class _ConfirmPaymentScreenState extends State<ConfirmPaymentScreen> {
   @override
   Widget build(BuildContext context) {
-    return Consumer<AuthUserVM>(
-      builder: (context, authVM, _) {
+    return Consumer<OrderVM>(
+      builder: (context, orderVm, _) {
         return Scaffold(
           backgroundColor: AppColors.bgFB,
           appBar: const CustomHeader(
@@ -30,30 +30,26 @@ class _ConfirmPaymentScreenState extends State<ConfirmPaymentScreen> {
                   horizontal: Sizer.width(20),
                 ),
                 child: Wrap(
-                  spacing: 30,
-                  runSpacing: 20,
-                  children: authVM.cart?.items
-                          ?.map((item) => ConfirmPaymentProduct(
-                                image: item.images?.isNotEmpty ?? false
-                                    ? item.images?.first
-                                    : '',
-                                name: item.productName ?? '',
-                                onTap: () {},
-                              ))
-                          .toList() ??
-                      [],
-                ),
+                    spacing: 30,
+                    runSpacing: 20,
+                    children: orderVm.cartItems
+                        .map((item) => ConfirmPaymentProduct(
+                              image: item.productImage ?? '',
+                              name: item.productName ?? '',
+                              onTap: () {},
+                            ))
+                        .toList()),
               ),
               const YBox(10),
               const Divider(color: AppColors.dividerColor),
               CustomPaymentListTile(
                 leftText: 'Number of items',
-                rightText: '${authVM.cart?.items?.length ?? 0}',
+                rightText: '${orderVm.cartItems.length}',
               ),
               CustomPaymentListTile(
                 leftText: 'Total Amount',
                 rightText:
-                    '${AppUtils.nairaSymbol}${AppUtils.formatAmountString(authVM.cart?.totalAmount.toString() ?? '0.00')}',
+                    '${AppUtils.nairaSymbol}${AppUtils.formatAmountString(orderVm.cartTotalAmount.toString())}',
               ),
               const CustomPaymentListTile(
                 leftText: 'Vats',
@@ -62,7 +58,7 @@ class _ConfirmPaymentScreenState extends State<ConfirmPaymentScreen> {
               CustomPaymentListTile(
                 leftText: 'Shipping',
                 rightText:
-                    '${AppUtils.nairaSymbol}${AppUtils.formatAmountString(authVM.cart?.deliveryAmount.toString() ?? '0.00')}',
+                    '${AppUtils.nairaSymbol}${AppUtils.formatAmountString('0.00')}',
                 leftStyle: AppTypography.text16.copyWith(
                   color: AppColors.primaryOrange,
                 ),
@@ -76,7 +72,7 @@ class _ConfirmPaymentScreenState extends State<ConfirmPaymentScreen> {
               CustomPaymentListTile(
                 leftText: 'Total',
                 rightText:
-                    '${AppUtils.nairaSymbol}${AppUtils.formatAmountString(authVM.cart?.totalAmount.toString() ?? '0.00')}',
+                    '${AppUtils.nairaSymbol}${AppUtils.formatAmountString(orderVm.cartTotalAmount.toString())}',
                 leftStyle: AppTypography.text20.copyWith(
                   color: AppColors.primaryOrange,
                 ),
@@ -88,59 +84,61 @@ class _ConfirmPaymentScreenState extends State<ConfirmPaymentScreen> {
               ),
               const Divider(color: AppColors.dividerColor),
               const YBox(10),
-              Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: Sizer.width(20),
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Order Details',
-                      style: AppTypography.text20.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const YBox(10),
-                    CustomColumnText(
-                      upperText: 'Order Address',
-                      lowerText: authVM.shippingADD,
-                    ),
-                    const YBox(10),
-                    CustomColumnText(
-                      upperText: 'Recipient',
-                      lowerText: authVM.fullname,
-                    ),
-                    const YBox(10),
-                    const CustomColumnText(
-                      upperText: 'Payment method',
-                      lowerText: 'Mastercard ending in 3947',
-                    ),
-                    const YBox(24),
-                    Consumer<OrderVM>(builder: (context, orderVM, _) {
-                      return CustomBtn.solid(
-                        text: "Proceed",
-                        isLoading: orderVM.isBusy,
-                        height: 53,
-                        borderRadius: BorderRadius.circular(Sizer.radius(50)),
-                        onTap: () => _createOrder(),
-                      );
-                    }),
-                    const YBox(16),
-                    Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        'Shipping and return policies',
-                        textAlign: TextAlign.center,
-                        style: AppTypography.text12.copyWith(
-                          color: AppColors.orange71,
+              Consumer<AuthUserVM>(builder: (context, authVM, _) {
+                return Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: Sizer.width(20),
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Order Details',
+                        style: AppTypography.text20.copyWith(
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
-                    )
-                  ],
-                ),
-              ),
+                      const YBox(10),
+                      CustomColumnText(
+                        upperText: 'Order Address',
+                        lowerText: authVM.shippingADD,
+                      ),
+                      const YBox(10),
+                      CustomColumnText(
+                        upperText: 'Recipient',
+                        lowerText: authVM.fullname,
+                      ),
+                      const YBox(10),
+                      const CustomColumnText(
+                        upperText: 'Payment method',
+                        lowerText: 'Mastercard ending in 3947',
+                      ),
+                      const YBox(24),
+                      Consumer<OrderVM>(builder: (context, orderVM, _) {
+                        return CustomBtn.solid(
+                          text: "Proceed",
+                          isLoading: orderVM.isBusy,
+                          height: 53,
+                          borderRadius: BorderRadius.circular(Sizer.radius(50)),
+                          onTap: () => _createOrder(),
+                        );
+                      }),
+                      const YBox(16),
+                      Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          'Shipping and return policies',
+                          textAlign: TextAlign.center,
+                          style: AppTypography.text12.copyWith(
+                            color: AppColors.orange71,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                );
+              }),
               const YBox(100),
             ],
           ),
@@ -149,52 +147,55 @@ class _ConfirmPaymentScreenState extends State<ConfirmPaymentScreen> {
     );
   }
 
-  void _createOrder() {
+  void _createOrder() async {
     final orderVM = context.read<OrderVM>();
     final authVM = context.read<AuthUserVM>();
+    try {
+      final createOrderRes = await orderVM.createOder(
+          items: orderVM.cartItems, address: authVM.shippingADD);
 
-    List<ProductCart> items = [];
-    for (Item item in authVM.cart?.items ?? []) {
-      items.add(ProductCart(
-        productId: item.productId ?? '',
-        qty: item.quantity ?? 0,
-      ));
-    }
-    orderVM
-        .createOder(
-      items: items,
-      address: authVM.shippingADD,
-    )
-        .then((val) {
-      if (val.success) {
-        orderVM
-            .generatePaymentLink(
-                amount: authVM.cart?.totalAmount ?? 0, orderId: val.data ?? '')
-            .then((value) {
-          if (value.success) {
-            Navigator.pushNamed(
-              context,
-              RoutePath.customWebviewScreen,
+      if (createOrderRes.success) {
+        final orderLinkRes = await orderVM.generatePaymentLink(
+            amount: orderVM.cartTotalAmount,
+            orderId: createOrderRes.data ?? '');
+
+        if (orderLinkRes.success) {
+          Navigator.pushReplacementNamed(context, RoutePath.customWebviewScreen,
               arguments: WebViewArg(
-                webURL: value.data ?? '',
-              ),
-            );
-          } else {
-            FlushBarToast.fLSnackBar(
-              message: value.message ?? "Something went wrong",
-            );
-          }
-        });
-
-        // Navigator.pushReplacementNamed(context, RoutePath.confirmationScreen,
-        //     arguments: ConfirmationScreenArgs(
-        //       msg: val.message ?? 'Order created \nsuccessfully',
-        //     ));
-      } else {
-        FlushBarToast.fLSnackBar(
-          message: val.message ?? "Something went wrong",
-        );
+                webURL: orderLinkRes.data ?? '',
+              ));
+        }
       }
-    });
+    } catch (e) {
+      FlushBarToast.fLSnackBar(
+        message: e.toString(),
+      );
+    }
+    //     .then((val) {
+    //   if (val.success) {
+    //     orderVM
+    //         .generatePaymentLink(
+    //             amount: authVM.cart?.totalAmount ?? 0, orderId: val.data ?? '')
+    //         .then((value) {
+    //       if (value.success) {
+    //         Navigator.pushNamed(
+    //           context,
+    //           RoutePath.customWebviewScreen,
+    //           arguments: WebViewArg(
+    //             webURL: value.data ?? '',
+    //           ),
+    //         );
+    //       } else {
+    //         FlushBarToast.fLSnackBar(
+    //           message: value.message ?? "Something went wrong",
+    //         );
+    //       }
+    //     });
+    //   } else {
+    //     FlushBarToast.fLSnackBar(
+    //       message: val.message ?? "Something went wrong",
+    //     );
+    //   }
+    // });
   }
 }

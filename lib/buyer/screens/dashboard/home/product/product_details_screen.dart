@@ -44,7 +44,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Consumer<ProductVM>(builder: (context, vm, _) {
-      // printty("singleProduct images ${vm.singleProduct?.images}");
+      printty("singleProduct images $_singleProduct");
       return BusyOverlay(
         show: vm.isBusy,
         child: Scaffold(
@@ -253,23 +253,26 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       );
                     }
 
-                    orderVM.addproductToCart(items: [
-                      ProductCart(
+                    orderVM
+                        .addproductToCart(
+                      product: ProductCart(
                         productId: _singleProduct?.id ?? '',
+                        productName: _singleProduct?.productName ?? '',
+                        productImage: _singleProduct?.images?.first ?? '',
+                        unitPrice: (_singleProduct?.unitPrice ?? 0).toDouble(),
                         qty: _productQty,
-                      )
-                    ]).then((value) {
-                      handleApiResponse(
-                        response: value,
-                        onSuccess: () {
-                          printty('addproductToCart Message: ${value.message}');
-                          context.read<AuthUserVM>().getUserProfile();
-                          Navigator.pushNamed(
-                            context,
-                            RoutePath.dashboardNavScreen,
-                            arguments: DashArg(index: 2),
-                          );
-                        },
+                      ),
+                    )
+                        .then((_) {
+                      orderVM.getCartFromStorage();
+                      Navigator.pushNamed(
+                        context,
+                        RoutePath.dashboardNavScreen,
+                        arguments: DashArg(index: 2),
+                      );
+                      FlushBarToast.fLSnackBar(
+                        snackBarType: SnackBarType.success,
+                        message: 'Product added to cart',
                       );
                     });
                   },

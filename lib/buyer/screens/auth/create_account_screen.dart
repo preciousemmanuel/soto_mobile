@@ -82,29 +82,29 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                           ),
                         ],
                       ),
-                      const YBox(30),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: SocialsCTA(
-                              icon: AppSvgs.fb,
-                              text: 'Facebook',
-                              onTap: () {},
-                            ),
-                          ),
-                          const XBox(25),
-                          Expanded(
-                            child: SocialsCTA(
-                              icon: AppSvgs.google,
-                              text: 'Google',
-                              onTap: () {},
-                            ),
-                          ),
-                        ],
-                      ),
-                      const YBox(16),
-                      const OrWidget(),
-                      const YBox(16),
+                      const YBox(60),
+                      // Row(
+                      //   children: [
+                      //     Expanded(
+                      //       child: SocialsCTA(
+                      //         icon: AppSvgs.fb,
+                      //         text: 'Facebook',
+                      //         onTap: () {},
+                      //       ),
+                      //     ),
+                      //     const XBox(25),
+                      //     Expanded(
+                      //       child: SocialsCTA(
+                      //         icon: AppSvgs.google,
+                      //         text: 'Google',
+                      //         onTap: () {},
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
+                      // const YBox(16),
+                      // const OrWidget(),
+                      // const YBox(16),
                       CustomTextField(
                         focusNode: fullNameFocusNode,
                         controller: fullnameC,

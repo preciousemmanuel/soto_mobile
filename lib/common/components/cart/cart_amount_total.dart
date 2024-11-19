@@ -1,3 +1,4 @@
+import 'package:google_fonts/google_fonts.dart';
 import 'package:soto_ecommerce/common/common.dart';
 
 class CartAmountTotal extends StatelessWidget {
@@ -46,8 +47,8 @@ class CartAmountTotal extends StatelessWidget {
               const YBox(4),
               Text(
                 total,
-                style: AppTypography.text20.copyWith(
-                  fontFamily: '',
+                style: GoogleFonts.roboto(
+                  fontSize: Sizer.text(20),
                   color: AppColors.primaryOrange,
                   fontWeight: FontWeight.w600,
                 ),

@@ -40,7 +40,7 @@ class CheckoutScreen extends StatelessWidget {
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (ctx, i) {
-                    final cartItem = authVM.cart?.items?[i];
+                    final cartItems = context.watch<OrderVM>().cartItems;
                     return Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -49,9 +49,9 @@ class CheckoutScreen extends StatelessWidget {
                           thickness: 2,
                         ),
                         ShoppingCartCard(
-                          cartItem: cartItem,
+                          cartItem: cartItems[i],
                         ),
-                        if (i == (authVM.cart?.items?.length ?? 0 - 1))
+                        if (i == (cartItems.length - 1))
                           const Divider(
                             color: AppColors.whiteF7,
                             thickness: 2,
@@ -60,7 +60,7 @@ class CheckoutScreen extends StatelessWidget {
                     );
                   },
                   separatorBuilder: (ctx, i) => const YBox(6),
-                  itemCount: authVM.cart?.items?.length ?? 0,
+                  itemCount: context.watch<OrderVM>().cartItems.length,
                 ),
               ],
             );
@@ -101,7 +101,7 @@ class CheckoutScreen extends StatelessWidget {
           const YBox(24),
           CartAmountTotal(
             total:
-                '${AppUtils.nairaSymbol}${AppUtils.formatAmountString('${context.read<AuthUserVM>().cart?.totalAmount ?? 0.0}')}',
+                '${AppUtils.nairaSymbol}${AppUtils.formatAmountString('${context.watch<OrderVM>().cartTotalAmount}')}',
             btnText: 'Pay',
             btnOntap: () {
               // TODO: check this out later
