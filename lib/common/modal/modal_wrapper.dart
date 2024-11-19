@@ -1,4 +1,4 @@
-import 'package:soto_ecommerce/buyer/buyer.dart';
+import 'package:soto_ecommerce/common/common.dart';
 
 class ModalWrapper {
   const ModalWrapper._();
@@ -31,8 +31,11 @@ class ModalWrapper {
     );
   }
 
-  static void showCustomDialog(BuildContext context,
-      {required Widget child, bool? canDismiss}) {
+  static void showCustomDialog(
+    BuildContext context, {
+    required Widget child,
+    bool? canDismiss,
+  }) {
     showGeneralDialog(
       context: context,
       barrierLabel: "Barrier",
@@ -42,12 +45,7 @@ class ModalWrapper {
       pageBuilder: (_, __, ___) {
         return Center(
           child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 50.w),
-              padding: EdgeInsets.symmetric(horizontal: 22.w, vertical: 16.h),
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10.r)),
-              child: child),
+              margin: EdgeInsets.symmetric(horizontal: 30.w), child: child),
         );
       },
       transitionBuilder: (_, anim, __, child) {

@@ -45,5 +45,9 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Allows user to select a preferred profile picture for themselves.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Allows user to snap a preferred profile picture for themselves.</string>
 </dict>
 </plist>
