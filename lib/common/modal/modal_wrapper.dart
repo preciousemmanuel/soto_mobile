@@ -2,7 +2,7 @@ import 'package:soto_ecommerce/common/common.dart';
 
 class ModalWrapper {
   const ModalWrapper._();
-  static void bottomSheet({
+  static Future<T?> bottomSheet<T>({
     required BuildContext context,
     required Widget widget,
     isScrollControlled = true,
@@ -10,7 +10,7 @@ class ModalWrapper {
     double? topRadius,
     Color? color,
   }) {
-    showModalBottomSheet(
+    return showModalBottomSheet<T>(
       backgroundColor: color ?? Colors.transparent,
       isScrollControlled: true,
       isDismissible: canDismiss ?? true,

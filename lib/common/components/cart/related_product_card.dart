@@ -1,3 +1,4 @@
+import 'package:google_fonts/google_fonts.dart';
 import 'package:soto_ecommerce/common/common.dart';
 
 class RelatedProductCard extends StatefulWidget {
@@ -84,12 +85,12 @@ class _RelatedProductCardState extends State<RelatedProductCard> {
                     TextSpan(
                       text:
                           ' ${AppUtils.nairaSymbol}${AppUtils.formatAmountString(widget.unitPrice)}',
-                      style: AppTypography.text14.copyWith(
+                      style: GoogleFonts.roboto(
                         color: widget.salesPrice != null
                             ? AppColors.primaryOrange
                             : AppColors.text12,
                         fontWeight: FontWeight.w600,
-                        fontFamily: '',
+                        fontSize: Sizer.text(14),
                       ),
                     ),
                   ],

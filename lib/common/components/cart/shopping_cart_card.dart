@@ -1,3 +1,4 @@
+import 'package:google_fonts/google_fonts.dart';
 import 'package:soto_ecommerce/common/common.dart';
 
 class ShoppingCartCard extends StatelessWidget {
@@ -6,7 +7,7 @@ class ShoppingCartCard extends StatelessWidget {
     this.cartItem,
   });
 
-  final Item? cartItem;
+  final ProductCart? cartItem;
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +29,7 @@ class ShoppingCartCard extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(Sizer.width(8)),
               child: MyCachedNetworkImage(
-                imageUrl:
-                    '${cartItem?.images?.isNotEmpty ?? false ? cartItem?.images?.first : ''}',
+                imageUrl: cartItem?.productImage ?? '',
                 fadeInDuration: const Duration(milliseconds: 50),
                 fit: BoxFit.cover,
                 width: MediaQuery.of(context).size.width,
@@ -47,31 +47,37 @@ class ShoppingCartCard extends StatelessWidget {
                 ),
                 const YBox(4),
                 Text(
-                  'Qty: ${cartItem?.quantity}',
+                  'Qty: ${cartItem?.qty ?? 0}',
                   style: AppTypography.text12.copyWith(
                     fontWeight: FontWeight.w500,
                     color: AppColors.textAA,
                   ),
                 ),
                 const Spacer(),
-                Row(
-                  children: [
-                    AddSubtractBtn(
-                      icon: Iconsax.minus,
-                      onTap: () {},
-                    ),
-                    const XBox(16),
-                    Text(
-                      '${cartItem?.quantity}',
-                      style: AppTypography.text12,
-                    ),
-                    const XBox(16),
-                    AddSubtractBtn(
-                      icon: Iconsax.add,
-                      onTap: () {},
-                    ),
-                  ],
-                )
+                Consumer<OrderVM>(builder: (context, ref, _) {
+                  return Row(
+                    children: [
+                      AddSubtractBtn(
+                        icon: Iconsax.minus,
+                        onTap: () {
+                          ref.decreaseCartQty(cartItem?.productId ?? '');
+                        },
+                      ),
+                      const XBox(16),
+                      Text(
+                        '${cartItem?.qty ?? 0}',
+                        style: AppTypography.text12,
+                      ),
+                      const XBox(16),
+                      AddSubtractBtn(
+                        icon: Iconsax.add,
+                        onTap: () {
+                          ref.increaseCartQty(cartItem?.productId ?? '');
+                        },
+                      ),
+                    ],
+                  );
+                })
               ],
             ),
           ),
@@ -85,16 +91,10 @@ class ShoppingCartCard extends StatelessWidget {
                   context
                       .read<OrderVM>()
                       .removeProductFromCart(cartItem?.productId ?? '')
-                      .then((val) {
-                    if (val.success) {
-                      if (context.mounted) {
-                        context.read<AuthUserVM>().getUserProfile();
-                      }
-
-                      FlushBarToast.fLSnackBar(
-                          snackBarType: SnackBarType.success,
-                          message: val.message ?? '');
-                    }
+                      .then((_) {
+                    FlushBarToast.fLSnackBar(
+                        snackBarType: SnackBarType.success,
+                        message: ' Item removed from cart');
                   });
                 },
                 child: Icon(
@@ -105,8 +105,8 @@ class ShoppingCartCard extends StatelessWidget {
               ),
               Text(
                 '${AppUtils.nairaSymbol}${AppUtils.formatAmountString(cartItem?.unitPrice.toString() ?? '0.00')}',
-                style: AppTypography.text16.copyWith(
-                  fontFamily: '',
+                style: GoogleFonts.roboto(
+                  fontSize: Sizer.text(16),
                   fontWeight: FontWeight.w600,
                   color: AppColors.primaryOrange,
                 ),

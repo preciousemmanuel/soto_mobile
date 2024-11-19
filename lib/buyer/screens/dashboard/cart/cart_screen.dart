@@ -1,4 +1,3 @@
-import 'package:soto_ecommerce/buyer/screens/dashboard/home/product/product_details_screen.dart';
 import 'package:soto_ecommerce/common/common.dart';
 
 class CartScreen extends StatelessWidget {
@@ -11,7 +10,7 @@ class CartScreen extends StatelessWidget {
         width: Sizer.screenWidth,
         height: Sizer.screenHeight,
         child: BusyOverlay(
-          show: vm.isBusy || context.watch<AuthUserVM>().isBusy,
+          show: vm.isBusy,
           child: Scaffold(
             backgroundColor: AppColors.bgWhite,
             appBar: CustomHeader(
@@ -24,10 +23,9 @@ class CartScreen extends StatelessWidget {
               },
               child: ListView(
                 children: [
-                  Consumer<AuthUserVM>(
-                    builder: (context, authVM, _) {
-                      if (authVM.cart?.items == null ||
-                          authVM.cart?.items?.isEmpty == true) {
+                  Builder(
+                    builder: (context) {
+                      if (vm.cartItems.isEmpty) {
                         return const EmptyListState(
                           text: 'Cart is empty, add some products',
                         );
@@ -42,7 +40,7 @@ class CartScreen extends StatelessWidget {
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
                             itemBuilder: (ctx, i) {
-                              final cartItem = authVM.cart?.items?[i];
+                              final cartItem = vm.cartItems[i];
                               return Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
@@ -53,8 +51,7 @@ class CartScreen extends StatelessWidget {
                                   ShoppingCartCard(
                                     cartItem: cartItem,
                                   ),
-                                  if (i ==
-                                      (authVM.cart?.items?.length ?? 0 - 1))
+                                  if (i == (vm.cartItems.length))
                                     const Divider(
                                       color: AppColors.whiteF7,
                                       thickness: 2,
@@ -63,7 +60,7 @@ class CartScreen extends StatelessWidget {
                               );
                             },
                             separatorBuilder: (ctx, i) => const YBox(6),
-                            itemCount: authVM.cart?.items?.length ?? 0,
+                            itemCount: vm.cartItems.length,
                           ),
                           const YBox(26),
                           Container(
@@ -123,7 +120,7 @@ class CartScreen extends StatelessWidget {
                           const YBox(48),
                           CartAmountTotal(
                             total:
-                                '${AppUtils.nairaSymbol}${AppUtils.formatAmountString('${authVM.cart?.totalAmount ?? 0.0}')}',
+                                '${AppUtils.nairaSymbol}${AppUtils.formatAmountString('${vm.cartTotalAmount}')}',
                             btnText: 'Proceed to checkout',
                             btnOntap: () {
                               Navigator.pushNamed(

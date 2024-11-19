@@ -59,7 +59,7 @@ class _OrderScreenState extends State<OrderScreen> {
                     if (vm.isBusy) {
                       return const SizerLoader();
                     }
-                    if (vm.vendorOrder.isEmpty) {
+                    if (vm.myOrder.isEmpty) {
                       return const EmptyListState(
                         height: 500,
                         text: 'No order yet',
@@ -79,14 +79,21 @@ class _OrderScreenState extends State<OrderScreen> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               const Divider(color: AppColors.whiteF7),
-                              const OrderCard(),
+                              OrderCard(
+                                qty: vm.myOrder[i].quantity.toString(),
+                                productName:
+                                    vm.myOrder[i].productId?.productName ?? '',
+                                productImage:
+                                    vm.myOrder[i].productId?.images?.first ??
+                                        '',
+                              ),
                               if (i == 4)
                                 const Divider(color: AppColors.whiteF7),
                             ],
                           );
                         },
                         separatorBuilder: (ctx, i) => const YBox(6),
-                        itemCount: vm.vendorOrder.length,
+                        itemCount: vm.myOrder.length,
                       ),
                     );
                   }),

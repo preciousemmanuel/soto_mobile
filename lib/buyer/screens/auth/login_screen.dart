@@ -91,32 +91,32 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ],
                     ),
-                    const YBox(30),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: SocialsCTA(
-                            icon: AppSvgs.fb,
-                            text: 'Facebook',
-                            onTap: () {
-                              // Navigator.pushNamed(
-                              //     context, RoutePath.approvalScreen);
-                            },
-                          ),
-                        ),
-                        const XBox(25),
-                        Expanded(
-                          child: SocialsCTA(
-                            icon: AppSvgs.google,
-                            text: 'Google',
-                            onTap: () {},
-                          ),
-                        ),
-                      ],
-                    ),
-                    const YBox(16),
-                    const OrWidget(),
-                    const YBox(16),
+                    const YBox(60),
+                    // Row(
+                    //   children: [
+                    //     Expanded(
+                    //       child: SocialsCTA(
+                    //         icon: AppSvgs.fb,
+                    //         text: 'Facebook',
+                    //         onTap: () {
+                    //           // Navigator.pushNamed(
+                    //           //     context, RoutePath.approvalScreen);
+                    //         },
+                    //       ),
+                    //     ),
+                    //     const XBox(25),
+                    //     Expanded(
+                    //       child: SocialsCTA(
+                    //         icon: AppSvgs.google,
+                    //         text: 'Google',
+                    //         onTap: () {},
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
+                    // const YBox(16),
+                    // const OrWidget(),
+                    // const YBox(16),
                     CustomTextField(
                       focusNode: emailFocus,
                       labelText: "Name/Email",

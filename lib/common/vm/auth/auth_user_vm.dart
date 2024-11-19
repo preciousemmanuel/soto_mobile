@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:soto_ecommerce/common/common.dart';
 
 class AuthUserVM extends BaseVM {
@@ -5,12 +7,18 @@ class AuthUserVM extends BaseVM {
     getUserFromStorage();
   }
   static const String dashboardLoading = "dashboardLoading";
+  static const String updatingShipment = "updatingShipment";
 
   AuthUser? _authUser;
   AuthUser? get authUser => _authUser;
   Wallet? get wallet => _authUser?.wallet;
   Cart? get cart => _authUser?.cart;
   Business? get business => _authUser?.business;
+  List<CityModel> _cities = [];
+  List<CityModel> get cities => _cities;
+  List<StateModel> _states = [];
+  List<StateModel> get states => _states;
+
   String get shippingADD =>
       '${authUser?.shippingAddress?.fullAddress}, ${authUser?.shippingAddress?.country}';
   String get fullname =>
@@ -61,6 +69,7 @@ class AuthUserVM extends BaseVM {
     return await performApiCall(
       url: "/user/add-shipping-address",
       method: apiService.putWithAuth,
+      busyObjectName: updatingShipment,
       body: {
         "address": address,
         "city": city,
@@ -69,6 +78,32 @@ class AuthUserVM extends BaseVM {
         "country": country
       },
       onSuccess: (data) {
+        return apiResponse;
+      },
+    );
+  }
+
+  Future<ApiResponse> getStates() async {
+    return await performApiCall(
+      url: "/delivery/get-states",
+      method: apiService.getWithAuth,
+      onSuccess: (data) {
+        _states = stateModelFromJson(jsonEncode(data["data"]));
+        return apiResponse;
+      },
+    );
+  }
+
+  Future<ApiResponse> getCities({
+    required String countryCode,
+    required String stateCode,
+  }) async {
+    return await performApiCall(
+      url:
+          "/delivery/get-cities?country_code=$countryCode&state_code=$stateCode",
+      method: apiService.getWithAuth,
+      onSuccess: (data) {
+        _cities = cityModelFromJson(jsonEncode(data["data"]));
         return apiResponse;
       },
     );

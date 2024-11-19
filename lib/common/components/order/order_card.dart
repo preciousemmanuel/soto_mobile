@@ -3,7 +3,14 @@ import 'package:soto_ecommerce/common/common.dart';
 class OrderCard extends StatelessWidget {
   const OrderCard({
     super.key,
+    required this.productName,
+    required this.productImage,
+    required this.qty,
   });
+
+  final String productName;
+  final String productImage;
+  final String qty;
 
   @override
   Widget build(BuildContext context) {

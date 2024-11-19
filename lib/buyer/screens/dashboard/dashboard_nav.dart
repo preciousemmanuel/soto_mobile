@@ -46,7 +46,13 @@ class _DashboardNavState extends State<DashboardNav> {
       vm.getUserProfile(
         busyObjectName: AuthUserVM.dashboardLoading,
       );
+      _getCartFromStorage();
     }
+  }
+
+  _getCartFromStorage() {
+    final vm = context.read<OrderVM>();
+    vm.getCartFromStorage();
   }
 
   @override
