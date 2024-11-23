@@ -5,11 +5,13 @@ class OrderCard extends StatelessWidget {
     super.key,
     required this.productName,
     required this.productImage,
+    required this.trackingCode,
     required this.qty,
   });
 
   final String productName;
   final String productImage;
+  final String trackingCode;
   final String qty;
 
   @override
@@ -42,9 +44,11 @@ class OrderCard extends StatelessWidget {
                 ]),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(Sizer.width(8)),
-              child: imageHelper(
-                AppImages.product,
+              child: MyCachedNetworkImage(
+                imageUrl: productImage,
+                fadeInDuration: const Duration(milliseconds: 50),
                 fit: BoxFit.cover,
+                width: MediaQuery.of(context).size.width,
               ),
             ),
           ),
@@ -54,7 +58,7 @@ class OrderCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Order #92287157',
+                  'Order #$trackingCode',
                   style: AppTypography.text14.copyWith(
                     fontWeight: FontWeight.w500,
                     color: AppColors.text20,
@@ -83,12 +87,12 @@ class OrderCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              const OrderCTA(
-                title: '1 items',
+              OrderCTA(
+                title: '$qty items',
                 textColor: AppColors.text70,
               ),
               OrderCTA(
-                title: '1 items',
+                title: 'Track',
                 color: AppColors.primaryOrange,
                 vPad: 6,
                 hPad: 24,

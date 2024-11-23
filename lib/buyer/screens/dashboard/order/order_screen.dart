@@ -8,7 +8,7 @@ class OrderScreen extends StatefulWidget {
 }
 
 class _OrderScreenState extends State<OrderScreen> {
-  int currentIndex = 0;
+  OrderStatusType orderStatusType = OrderStatusType.pending;
 
   @override
   void initState() {
@@ -45,9 +45,10 @@ class _OrderScreenState extends State<OrderScreen> {
                             right: 10,
                           ),
                           text: OrderStatusType.values[i].name,
-                          isSelected: i == currentIndex,
+                          isSelected:
+                              orderStatusType == OrderStatusType.values[i],
                           onTap: () {
-                            currentIndex = i;
+                            orderStatusType = OrderStatusType.values[i];
                             setState(() {});
                           },
                         ),
@@ -55,48 +56,14 @@ class _OrderScreenState extends State<OrderScreen> {
                     ],
                   ),
                   const YBox(10),
-                  Builder(builder: (context) {
-                    if (vm.isBusy) {
-                      return const SizerLoader();
-                    }
-                    if (vm.myOrder.isEmpty) {
-                      return const EmptyListState(
-                        height: 500,
-                        text: 'No order yet',
-                      );
-                    }
-                    return Expanded(
-                      child: ListView.separated(
-                        padding: EdgeInsets.only(
-                          top: Sizer.height(20),
-                          left: Sizer.width(20),
-                          right: Sizer.width(20),
-                          bottom: Sizer.height(60),
-                        ),
-                        shrinkWrap: true,
-                        itemBuilder: (ctx, i) {
-                          return Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Divider(color: AppColors.whiteF7),
-                              OrderCard(
-                                qty: vm.myOrder[i].quantity.toString(),
-                                productName:
-                                    vm.myOrder[i].productId?.productName ?? '',
-                                productImage:
-                                    vm.myOrder[i].productId?.images?.first ??
-                                        '',
-                              ),
-                              if (i == 4)
-                                const Divider(color: AppColors.whiteF7),
-                            ],
-                          );
-                        },
-                        separatorBuilder: (ctx, i) => const YBox(6),
-                        itemCount: vm.myOrder.length,
-                      ),
-                    );
-                  }),
+                  if (orderStatusType == OrderStatusType.pending)
+                    OrderPendingTab(vm: vm),
+                  if (orderStatusType == OrderStatusType.delivered)
+                    OrderDeliveredTab(vm: vm),
+                  if (orderStatusType == OrderStatusType.cancelled)
+                    OrderCancelledTab(vm: vm),
+                  if (orderStatusType == OrderStatusType.failed)
+                    OrderFailedTab(vm: vm),
                 ],
               ),
             ),

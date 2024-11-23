@@ -3,8 +3,14 @@ import 'dart:convert';
 import 'package:soto_ecommerce/common/common.dart';
 
 class OrderVM extends BaseVM {
-  List<OrderRes> _myOrder = [];
-  List<OrderRes> get myOrder => _myOrder;
+  List<OrderRes> _activeOrders = [];
+  List<OrderRes> get activeOrders => _activeOrders;
+  final List<OrderRes> _customOrders = [];
+  List<OrderRes> get customOrders => _customOrders;
+  final List<OrderRes> _deliveredOrders = [];
+  List<OrderRes> get deliveredOrders => _deliveredOrders;
+  final List<OrderRes> _cancelledOrders = [];
+  List<OrderRes> get cancelledOrders => _cancelledOrders;
   List<ProductCart> _cartItems = [];
   List<ProductCart> get cartItems => _cartItems;
 
@@ -145,13 +151,15 @@ class OrderVM extends BaseVM {
     );
   }
 
-  Future<ApiResponse> fetchBuyerOrders() async {
+  Future<ApiResponse> fetchBuyerOrders({String? status}) async {
     printty("add to cart call");
+
+    final url = "/order/fetch/by-buyer?limit=10&page=1&status=${status ?? ''}";
     return await performApiCall(
-      url: "/order/fetch/by-buyer?limit=10&page=1",
+      url: url,
       method: apiService.getWithAuth,
       onSuccess: (data) {
-        _myOrder = orderResFromJson(jsonEncode(data["data"]["data"]));
+        _activeOrders = orderResFromJson(jsonEncode(data["data"]["data"]));
         return apiResponse;
       },
     );
