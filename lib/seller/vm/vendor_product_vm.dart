@@ -30,8 +30,7 @@ class VendorProductVM extends BaseVM {
         productDescC.text.isNotEmpty &&
         _selectedCategory != null &&
         unitpriceC.text.isNotEmpty &&
-        productQtyC.text.isNotEmpty &&
-        disCountPriceC.text.isNotEmpty;
+        productQtyC.text.isNotEmpty;
   }
 
   void selectCategory(ProductCategory category) {

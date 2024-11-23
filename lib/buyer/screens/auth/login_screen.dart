@@ -238,16 +238,19 @@ class _LoginScreenState extends State<LoginScreen> {
           response: value,
           onSuccess: () {
             vm.clearData();
-            gotorDashboard();
+            printty("IsVerified: ${value.data["data"]["IsVerified"]}");
+            gotoApprovalOrDashboard(value.data["data"]["IsVerified"]);
           });
     });
   }
 
-  void gotorDashboard() {
+  void gotoApprovalOrDashboard([bool isVendorVerified = false]) {
     Navigator.pushNamedAndRemoveUntil(
       context,
       widget.args?.isVendor == true
-          ? RoutePath.sellerDashboardNavScreen
+          ? isVendorVerified
+              ? RoutePath.sellerDashboardNavScreen
+              : RoutePath.approvalScreen
           : RoutePath.dashboardNavScreen,
       (route) => false,
     );

@@ -28,7 +28,7 @@ class LoginVM extends BaseVM {
       onSuccess: (data) {
         String token = data["data"]["Token"];
         StorageService.storeAccessToken(token);
-        return ApiResponse(success: true, data: apiResponse.data);
+        return apiResponse;
       },
     );
   }
