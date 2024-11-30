@@ -29,14 +29,14 @@ class InventoryTable extends StatelessWidget {
             children: [
               Expanded(
                 flex: 7,
-                child: InventoryColumn(
+                child: ColumnValue(
                   title: 'Delivered To',
                   value: deliveredTo,
                 ),
               ),
               Expanded(
                 flex: 8,
-                child: InventoryColumn(
+                child: ColumnValue(
                   title: 'Product Name',
                   value: date,
                 ),
@@ -48,21 +48,21 @@ class InventoryTable extends StatelessWidget {
             children: [
               Expanded(
                 flex: 6,
-                child: InventoryColumn(
+                child: ColumnValue(
                   title: 'Date',
                   value: date,
                 ),
               ),
               Expanded(
                 flex: 4,
-                child: InventoryColumn(
+                child: ColumnValue(
                   title: 'Unit Price',
                   value: unitPrce,
                 ),
               ),
               Expanded(
                 flex: 3,
-                child: InventoryColumn(
+                child: ColumnValue(
                   title: 'Qty',
                   value: qty,
                 ),
@@ -71,41 +71,6 @@ class InventoryTable extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class InventoryColumn extends StatelessWidget {
-  const InventoryColumn({
-    super.key,
-    required this.title,
-    required this.value,
-  });
-
-  final String title;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: AppTypography.text14.copyWith(
-            color: AppColors.text060,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        const YBox(4),
-        Text(
-          value,
-          style: AppTypography.text12.copyWith(
-            color: AppColors.gray8D,
-          ),
-        ),
-      ],
     );
   }
 }

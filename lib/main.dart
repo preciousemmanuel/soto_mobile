@@ -1,9 +1,16 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:soto_ecommerce/buyer/screens/splash/splash_screen.dart';
 import 'package:soto_ecommerce/common/common.dart';
 
+// Listen to background messages
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  printty('Handling a background message ${message.messageId}');
+  FirebasePushNotificationService.firebaseMessagingBackgroundHandler(message);
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await AppInitService().init();
+  await AppInitService().init(_firebaseMessagingBackgroundHandler);
   runApp(const MyApp());
 }
 

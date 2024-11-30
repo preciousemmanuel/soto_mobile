@@ -42,10 +42,10 @@ class _DashboardNavState extends State<DashboardNav> {
 
   _init() async {
     final vm = context.read<AuthUserVM>();
+    final notyVm = context.read<NotificationVm>();
     if (await StorageService.getString(StorageKey.accessToken) != null) {
-      vm.getUserProfile(
-        busyObjectName: AuthUserVM.dashboardLoading,
-      );
+      vm.getUserProfile(busyObjectName: AuthUserVM.dashboardLoading);
+      notyVm.fetchNotifications();
       _getCartFromStorage();
     }
   }

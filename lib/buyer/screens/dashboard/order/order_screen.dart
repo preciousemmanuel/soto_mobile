@@ -28,9 +28,9 @@ class _OrderScreenState extends State<OrderScreen> {
           child: BusyOverlay(
             child: Scaffold(
               backgroundColor: AppColors.bgWhite,
-              appBar: CustomHeader(
+              appBar: const CustomHeader(
                 title: 'My Orders',
-                backBtn: () {},
+                showBackBtn: false,
               ),
               body: Column(
                 children: [

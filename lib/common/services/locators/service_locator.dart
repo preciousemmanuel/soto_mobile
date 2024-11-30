@@ -13,6 +13,7 @@ final allProviders = <SingleChildWidget>[
   ChangeNotifierProvider(create: (_) => WishlistVM()),
   ChangeNotifierProvider(create: (_) => OrderVM()),
   ChangeNotifierProvider(create: (_) => NotificationVm()),
+  ChangeNotifierProvider(create: (_) => CustomOrderVm()),
 
   // Seller
   ChangeNotifierProvider(create: (_) => CreateBusinessVM()),

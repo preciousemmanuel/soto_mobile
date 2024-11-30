@@ -1,5 +1,6 @@
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:soto_ecommerce/common/common.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class NotificationScreen extends StatefulWidget {
   const NotificationScreen({super.key});
@@ -117,8 +118,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
                             return NotificationCard(
                               title: t.title ?? '',
                               subtitle: t.content ?? '',
-                              time: t.createdAt?.toIso8601String() ?? '',
-                              onTap: () {
+                              time:
+                                  timeago.format(t.createdAt ?? DateTime.now()),
+                              onDelete: () {
                                 ref.readNotification(t.id ?? '0');
                               },
                             );
@@ -138,73 +140,5 @@ class _NotificationScreenState extends State<NotificationScreen> {
         ),
       );
     });
-  }
-}
-
-class NotificationCard extends StatelessWidget {
-  const NotificationCard({
-    super.key,
-    required this.title,
-    required this.subtitle,
-    required this.time,
-    this.onTap,
-  });
-
-  final String title;
-  final String subtitle;
-  final String time;
-  final Function()? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(
-        left: Sizer.width(16),
-        right: Sizer.width(16),
-        top: Sizer.height(8),
-        bottom: Sizer.height(8),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: AppTypography.text16.copyWith(
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.text1A,
-                  ),
-                ),
-                const YBox(4),
-                Text(subtitle,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: AppTypography.text12.copyWith(
-                      color: AppColors.text5C,
-                    )),
-                const YBox(8),
-                Text(
-                  time,
-                  style: AppTypography.text10.copyWith(
-                    color: AppColors.text70,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const XBox(24),
-          InkWell(
-            onTap: () {},
-            child: Icon(
-              Iconsax.trash,
-              color: AppColors.primaryOrange,
-              size: Sizer.radius(20),
-            ),
-          ),
-        ],
-      ),
-    );
   }
 }

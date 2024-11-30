@@ -50,10 +50,10 @@ class AuthUserVM extends BaseVM {
       method: apiService.getWithAuth,
       busyObjectName: busyObjectName,
       onSuccess: (data) {
-        String token = data["data"]["Token"];
-        StorageService.storeAccessToken(token);
-        StorageService.storeUser(data["data"]);
-        _authUser = AuthUser.fromJson(data["data"]);
+        String? token = data["data"]?["Token"];
+        if (token != null) StorageService.storeAccessToken(token);
+        if (data["data"] != null) StorageService.storeUser(data["data"]);
+        if (data["data"] != null) _authUser = AuthUser.fromJson(data["data"]);
         return apiResponse;
       },
     );

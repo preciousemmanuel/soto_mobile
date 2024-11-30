@@ -16,4 +16,5 @@ class StorageKey {
   static const String onboarding = "onboarding";
   static const String vendorUser = "vendorUser";
   static const String productCart = "productCart";
+  static const String customOrder = "customOrder";
 }

@@ -15,7 +15,7 @@ class CartScreen extends StatelessWidget {
             backgroundColor: AppColors.bgWhite,
             appBar: CustomHeader(
               title: 'Shopping Cart',
-              backBtn: () {},
+              showBackBtn: ModalRoute.of(context)!.canPop,
             ),
             body: RefreshIndicator(
               onRefresh: () async {

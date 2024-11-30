@@ -11,6 +11,12 @@ class CreateBusinessAccountScreen extends StatefulWidget {
 
 class _CreateBusinessAccountScreenState
     extends State<CreateBusinessAccountScreen> {
+  FocusNode businessNameF = FocusNode();
+  FocusNode businessEmailF = FocusNode();
+  FocusNode businessPhoneF = FocusNode();
+  FocusNode businessAddressF = FocusNode();
+  FocusNode descriptionF = FocusNode();
+
   bool isExpanded = false;
 
   @override
@@ -23,6 +29,12 @@ class _CreateBusinessAccountScreenState
 
   @override
   void dispose() {
+    businessNameF.dispose();
+    businessEmailF.dispose();
+    businessPhoneF.dispose();
+    businessAddressF.dispose();
+    descriptionF.dispose();
+
     super.dispose();
   }
 
@@ -52,6 +64,7 @@ class _CreateBusinessAccountScreenState
               ),
               const YBox(20),
               CustomTextField(
+                focusNode: businessNameF,
                 labelText: "Business Name",
                 showLabelHeader: true,
                 fillColor: AppColors.orangeEA.withOpacity(0.5),
@@ -66,6 +79,7 @@ class _CreateBusinessAccountScreenState
               ),
               const YBox(20),
               CustomTextField(
+                  focusNode: businessEmailF,
                   labelText: "Business Email Address",
                   showLabelHeader: true,
                   fillColor: AppColors.orangeEA.withOpacity(0.5),
@@ -85,6 +99,7 @@ class _CreateBusinessAccountScreenState
                   }),
               const YBox(20),
               CustomTextField(
+                focusNode: businessPhoneF,
                 labelText: "Phone Number",
                 showLabelHeader: true,
                 fillColor: AppColors.orangeEA.withOpacity(0.5),
@@ -103,6 +118,7 @@ class _CreateBusinessAccountScreenState
               ),
               const YBox(20),
               CustomTextField(
+                focusNode: businessAddressF,
                 labelText: "Business Address",
                 showLabelHeader: true,
                 fillColor: AppColors.orangeEA.withOpacity(0.5),
@@ -185,6 +201,7 @@ class _CreateBusinessAccountScreenState
               ),
               const YBox(6),
               CustomTextField(
+                focusNode: descriptionF,
                 fillColor: AppColors.transparent,
                 borderColor: AppColors.grayE0,
                 controller: vm.businessDescriptionC,
@@ -238,6 +255,7 @@ class _CreateBusinessAccountScreenState
               CustomBtn.solid(
                 online: vm.btnIsValid,
                 onTap: () {
+                  FocusManager.instance.primaryFocus?.unfocus();
                   Navigator.pushNamed(context, RoutePath.createPasswordScreen);
                 },
                 text: "Continue",

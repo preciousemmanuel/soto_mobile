@@ -9,6 +9,16 @@ class CreatePasswordScreen extends StatefulWidget {
 }
 
 class _CreatePasswordScreenState extends State<CreatePasswordScreen> {
+  FocusNode passwordF = FocusNode();
+  FocusNode confirmPasswordF = FocusNode();
+
+  @override
+  void dispose() {
+    passwordF.dispose();
+    confirmPasswordF.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<CreateBusinessVM>(builder: (context, vm, _) {
@@ -20,8 +30,8 @@ class _CreatePasswordScreenState extends State<CreatePasswordScreen> {
               padding: EdgeInsets.symmetric(
                 horizontal: Sizer.width(20),
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+              child: ListView(
+                // mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   const YBox(20),
                   const BackIcon(),
@@ -50,6 +60,7 @@ class _CreatePasswordScreenState extends State<CreatePasswordScreen> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       CustomTextField(
+                        focusNode: passwordF,
                         fillColor: AppColors.orangeEA.withOpacity(0.5),
                         hintText: 'Password',
                         prefixIcon: Icon(
@@ -64,6 +75,7 @@ class _CreatePasswordScreenState extends State<CreatePasswordScreen> {
                       ),
                       const YBox(26),
                       CustomTextField(
+                        focusNode: confirmPasswordF,
                         fillColor: AppColors.orangeEA.withOpacity(0.5),
                         hintText: 'Confirm Password',
                         prefixIcon: Icon(
@@ -84,6 +96,7 @@ class _CreatePasswordScreenState extends State<CreatePasswordScreen> {
                         },
                         text: "Continue",
                       ),
+                      const YBox(100)
                     ],
                   ),
                 ],
@@ -96,6 +109,7 @@ class _CreatePasswordScreenState extends State<CreatePasswordScreen> {
   }
 
   _createBusinessAccount() {
+    FocusManager.instance.primaryFocus?.unfocus();
     final vm = context.read<CreateBusinessVM>();
     vm.createBusinessAccount().then((value) {
       if (value.success) {

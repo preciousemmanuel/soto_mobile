@@ -10,7 +10,6 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   bool _isVendor = false;
-  final bool _enableBiometric = false;
 
   @override
   void initState() {

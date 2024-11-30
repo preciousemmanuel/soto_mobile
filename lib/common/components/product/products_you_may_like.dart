@@ -1,4 +1,3 @@
-import 'package:soto_ecommerce/buyer/screens/dashboard/home/product/product_details_screen.dart';
 import 'package:soto_ecommerce/common/common.dart';
 
 class ProductsYouMayLike extends StatelessWidget {

@@ -56,7 +56,7 @@ class DioResponseHandler {
         printty("error dioError: $dioError");
         printty("error code: ${dioError.response!.statusCode}");
         printty("error response: ${dioError.response}");
-        String deviceErrorMsg = "This device is not set as your trusted device";
+        // String deviceErrorMsg = "This device is not set as your trusted device";
 
         try {
           if (dioError.response!.statusCode == 422 ||
