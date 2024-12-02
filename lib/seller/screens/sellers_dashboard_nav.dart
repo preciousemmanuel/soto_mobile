@@ -1,8 +1,6 @@
 import 'package:soto_ecommerce/buyer/buyer.dart';
 import 'package:soto_ecommerce/common/common.dart';
-import 'package:soto_ecommerce/seller/screens/insights/insights_screen.dart';
-import 'package:soto_ecommerce/seller/screens/overview/overview_screen.dart';
-import 'package:soto_ecommerce/seller/screens/wallet/wallet_screen.dart';
+import 'package:soto_ecommerce/seller/screens/screens.dart';
 
 class SellersDashboardNav extends StatefulWidget {
   const SellersDashboardNav({
@@ -21,7 +19,7 @@ class _SellersDashboardNavState extends State<SellersDashboardNav> {
 
   List screens = [
     const OverviewScreen(),
-    const OrderScreen(),
+    const VendorOrderScreen(),
     const WalletScreen(),
     const InsightScreen(),
     const ProfileScreen(),

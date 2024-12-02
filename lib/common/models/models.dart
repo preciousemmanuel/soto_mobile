@@ -11,3 +11,4 @@ export 'product_category.dart';
 export 'sales_analytics.dart';
 export 'transaction.dart';
 export 'vendor_inventory.dart';
+export 'vendor_order.dart';

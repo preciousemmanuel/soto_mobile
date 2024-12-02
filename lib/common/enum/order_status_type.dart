@@ -4,6 +4,8 @@ enum OrderStatusType {
   delivered,
   cancelled,
   failed,
+  returned,
+  custom,
 }
 
 extension OrderStatusTypeExtension on OrderStatusType {
@@ -19,6 +21,10 @@ extension OrderStatusTypeExtension on OrderStatusType {
         return 'Cancelled';
       case OrderStatusType.failed:
         return 'Failed';
+      case OrderStatusType.returned:
+        return 'Returned';
+      case OrderStatusType.custom:
+        return 'Custom';
     }
   }
 }

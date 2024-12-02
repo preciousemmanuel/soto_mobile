@@ -1,20 +1,21 @@
 import 'package:soto_ecommerce/common/common.dart';
+import 'package:soto_ecommerce/seller/vm/vm.dart';
 
-class OrderScreen extends StatefulWidget {
-  const OrderScreen({super.key});
+class VendorOrderScreen extends StatefulWidget {
+  const VendorOrderScreen({super.key});
 
   @override
-  State<OrderScreen> createState() => _OrderScreenState();
+  State<VendorOrderScreen> createState() => _VendorOrderScreenState();
 }
 
-class _OrderScreenState extends State<OrderScreen> {
+class _VendorOrderScreenState extends State<VendorOrderScreen> {
   OrderStatusType orderStatusType = OrderStatusType.pending;
 
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context
-          .read<OrderVM>()
+          .read<VendorOrderVm>()
           .fetchBuyerOrders(status: OrderStatusType.pending.name.toUpperCase());
     });
     super.initState();
@@ -22,7 +23,7 @@ class _OrderScreenState extends State<OrderScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<OrderVM>(
+    return Consumer<VendorOrderVm>(
       builder: (context, vm, _) {
         return SizedBox(
           width: Sizer.screenWidth,
@@ -42,7 +43,7 @@ class _OrderScreenState extends State<OrderScreen> {
                     child: Row(
                       children: [
                         ...List.generate(
-                          OrderStatusType.values.length - 1,
+                          OrderStatusType.values.length,
                           (i) => StatusWidget(
                             margin: EdgeInsets.only(
                               left: i == 0 ? 20 : 0,
@@ -62,17 +63,19 @@ class _OrderScreenState extends State<OrderScreen> {
                   ),
                   const YBox(10),
                   if (orderStatusType == OrderStatusType.pending)
-                    OrderPendingTab(vm: vm),
+                    VendorOrderPendingTab(vm: vm),
                   if (orderStatusType == OrderStatusType.booked)
-                    OrderBookedTab(vm: vm),
+                    VendorOrderBookedTab(vm: vm),
                   if (orderStatusType == OrderStatusType.delivered)
-                    OrderDeliveredTab(vm: vm),
+                    VendorOrderDeliveredTab(vm: vm),
                   if (orderStatusType == OrderStatusType.cancelled)
-                    OrderCancelledTab(vm: vm),
+                    VendorOrderCancelledTab(vm: vm),
                   if (orderStatusType == OrderStatusType.failed)
-                    OrderFailedTab(vm: vm),
+                    VendorOrderFailedTab(vm: vm),
                   if (orderStatusType == OrderStatusType.returned)
-                    OrderReturnedTab(vm: vm),
+                    VendorOrderReturnedTab(vm: vm),
+                  if (orderStatusType == OrderStatusType.custom)
+                    VendorOrderCustomTab(vm: vm),
                 ],
               ),
             ),
