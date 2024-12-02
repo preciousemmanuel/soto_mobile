@@ -1,3 +1,4 @@
+import 'package:google_fonts/google_fonts.dart';
 import 'package:soto_ecommerce/common/common.dart';
 import 'package:soto_ecommerce/seller/vm/vendor_product_vm.dart';
 
@@ -119,30 +120,32 @@ class _VendorProductDetailsScreenState
                         const YBox(4),
                         Text(
                           '${AppUtils.nairaSymbol}${AppUtils.formatAmountString(_singleProduct?.unitPrice.toString() ?? '')}',
-                          style: AppTypography.text24.copyWith(
+                          style: GoogleFonts.roboto(
                             color: AppColors.primaryOrange,
+                            fontSize: Sizer.height(24),
                             fontWeight: FontWeight.w600,
                           ),
                         )
                       ],
                     ),
                   ),
-                  // Container(
-                  //   padding: EdgeInsets.symmetric(
-                  //     horizontal: Sizer.width(12),
-                  //     vertical: Sizer.height(4),
-                  //   ),
-                  //   decoration: BoxDecoration(
-                  //     color: AppColors.primaryOrange.withOpacity(0.1),
-                  //     borderRadius: BorderRadius.circular(Sizer.radius(8)),
-                  //   ),
-                  //   child: Text(
-                  //     _singleProduct?.category?.name ?? '',
-                  //     style: AppTypography.text14.copyWith(
-                  //         color: AppColors.primaryOrange,
-                  //         fontWeight: FontWeight.w500),
-                  //   ),
-                  // ),
+                  if ((_singleProduct?.category?.name ?? '').isNotEmpty)
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: Sizer.width(12),
+                        vertical: Sizer.height(4),
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppColors.primaryOrange.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(Sizer.radius(8)),
+                      ),
+                      child: Text(
+                        _singleProduct?.category?.name ?? '',
+                        style: AppTypography.text14.copyWith(
+                            color: AppColors.primaryOrange,
+                            fontWeight: FontWeight.w500),
+                      ),
+                    ),
                 ],
               ),
               const YBox(13),
@@ -169,7 +172,8 @@ class _VendorProductDetailsScreenState
                   ),
                 ),
                 TextSpan(
-                  text: _singleProduct?.productQuantity.toString() ?? '',
+                  text: AppUtils.formatAmountString(
+                      _singleProduct?.productQuantity.toString() ?? ''),
                   style: AppTypography.text14.copyWith(
                     color: AppColors.primaryOrange,
                     fontWeight: FontWeight.w500,

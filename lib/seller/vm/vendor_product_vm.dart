@@ -60,6 +60,9 @@ class VendorProductVM extends BaseVM {
           .toList(),
     };
 
+    // loop through body and  remove empty values
+    body.removeWhere((key, value) => value == null || value == '');
+
     printty('addNewproduct body: $body');
     return await performApiCall(
       url: "/product/add-new",

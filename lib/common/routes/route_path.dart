@@ -17,6 +17,7 @@ class RoutePath {
   static const notificationScreen = '/notificationScreen';
   static const productDetailScreen = '/productDetailScreen';
   static const allProductsScreen = '/allProductsScreen';
+  static const productCategoryScreen = '/productCategoryScreen';
 
   // Profile
   static const profileScreen = '/profileScreen';
@@ -47,6 +48,7 @@ class RoutePath {
   static const createBusinessAccountScreen = '/createBusinessAccountScreen';
   static const createPasswordScreen = '/createPasswordScreen';
   static const approvalScreen = '/approvalScreen';
+  static const vendorOtpScreen = '/vendorOtpScreen';
 
   static const addProductScreen = '/addProductScreen';
   static const vendorProductListScreen = '/vendorProductListScreen';

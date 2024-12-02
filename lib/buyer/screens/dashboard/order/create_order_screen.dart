@@ -37,8 +37,6 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
   FocusNode productMessageF = FocusNode();
 
   clearFields() {
-    emailC.clear();
-    phoneC.clear();
     productNameC.clear();
     productBrandC.clear();
     productSizeC.clear();
@@ -154,6 +152,16 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                 showLabelHeader: true,
                 fillColor: AppColors.bgF5,
                 hintText: 'Enter name',
+                onChanged: (val) {},
+              ),
+              const YBox(20),
+              CustomTextField(
+                controller: productBrandC,
+                focusNode: productBrandF,
+                labelText: 'Product Brand',
+                showLabelHeader: true,
+                fillColor: AppColors.bgF5,
+                hintText: 'Enter brand name',
                 onChanged: (val) {},
               ),
               const YBox(20),
@@ -320,7 +328,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                         _createCustomOrder();
                         // Navigator.pushNamed(context, RoutePath.addOrderScreen);
                       },
-                      text: "Save & Submit",
+                      text: "Submit",
                     ),
                   ),
                   const XBox(20),
@@ -357,12 +365,16 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
     ApiResponse response = await ref.createCustomOrder([
       CustomOrderRes(
         productName: productNameC.text.trim(),
+        productBrand: productBrandC.text.trim(),
         size: productSizeC.text.trim(),
         color: productColorC.text.trim(),
         type: productTypeC.text.trim(),
-        quantity: int.tryParse(productQuantityC.text.trim()) ?? 0,
-        minPrice: int.tryParse(productPriceC1.text.trim()) ?? 0,
-        maxPrice: int.tryParse(productPriceC2.text.trim()) ?? 0,
+        quantity:
+            int.tryParse(productQuantityC.text.trim().replaceAllCommas()) ?? 0,
+        minPrice:
+            int.tryParse(productPriceC1.text.trim().replaceAllCommas()) ?? 0,
+        maxPrice:
+            int.tryParse(productPriceC2.text.trim().replaceAllCommas()) ?? 0,
         phoneNumber: phoneC.text.trim(),
         email: emailC.text.trim(),
         note: productMessageC.text.trim(),
@@ -372,6 +384,8 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
     handleApiResponse(
         response: response,
         onSuccess: () {
+          emailC.clear();
+          phoneC.clear();
           clearFields();
         });
   }
@@ -381,10 +395,12 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
     final ref = context.read<CustomOrderVm>();
     ApiResponse response = await ref.saveCustomOrderToStorage(CustomOrderRes(
       productName: productNameC.text.trim(),
+      productBrand: productBrandC.text.trim(),
       size: productSizeC.text.trim(),
       color: productColorC.text.trim(),
       type: productTypeC.text.trim(),
-      quantity: int.tryParse(productQuantityC.text.trim()) ?? 0,
+      quantity:
+          int.tryParse(productQuantityC.text.trim().replaceAllCommas()) ?? 0,
       minPrice:
           int.tryParse(productPriceC1.text.trim().replaceAllCommas()) ?? 0,
       maxPrice:

@@ -9,6 +9,7 @@ String customOrderModelToJson(List<CustomOrderRes> data) =>
 
 class CustomOrderRes {
   final String? productName;
+  final String? productBrand;
   final String? size;
   final String? color;
   final String? type;
@@ -28,6 +29,7 @@ class CustomOrderRes {
 
   CustomOrderRes({
     this.productName,
+    this.productBrand,
     this.size,
     this.color,
     this.type,
@@ -48,6 +50,7 @@ class CustomOrderRes {
 
   factory CustomOrderRes.fromJson(Map<String, dynamic> json) => CustomOrderRes(
         productName: json["product_name"],
+        productBrand: json["product_brand"],
         size: json["size"],
         color: json["color"],
         type: json["type"],
@@ -72,6 +75,7 @@ class CustomOrderRes {
 
   Map<String, dynamic> toJson() => {
         "product_name": productName,
+        "product_brand": productBrand,
         "size": size,
         "color": color,
         "type": type,
@@ -92,6 +96,6 @@ class CustomOrderRes {
 
   @override
   String toString() {
-    return 'CustomOrderRes(productName: $productName, size: $size, color: $color, type: $type, quantity: $quantity, maxPrice: $maxPrice, minPrice: $minPrice, phoneNumber: $phoneNumber, email: $email, note: $note, user: $user, trackingId: $trackingId, status: $status, id: $id, createdAt: $createdAt, updatedAt: $updatedAt, v: $v)';
+    return 'CustomOrderRes(productName: $productName, productBrand: $productBrand, size: $size, color: $color, type: $type, quantity: $quantity, maxPrice: $maxPrice, minPrice: $minPrice, phoneNumber: $phoneNumber, email: $email, note: $note, user: $user, trackingId: $trackingId, status: $status, id: $id, createdAt: $createdAt, updatedAt: $updatedAt, v: $v)';
   }
 }

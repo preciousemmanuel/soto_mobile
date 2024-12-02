@@ -1,4 +1,6 @@
 // for product details
+import 'package:soto_ecommerce/common/common.dart';
+
 class ProductArgs {
   final String productId;
   ProductArgs({required this.productId});
@@ -14,6 +16,14 @@ class AllProductArgs {
   final String? categoryId;
   final String? searchQuery;
   final bool isSearch;
+}
+
+class ProductCatArg {
+  ProductCatArg({
+    required this.category,
+  });
+
+  final ProductCategory category;
 }
 
 // for webview

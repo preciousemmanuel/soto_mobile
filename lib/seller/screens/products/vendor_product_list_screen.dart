@@ -1,8 +1,26 @@
 import 'package:soto_ecommerce/common/common.dart';
 import 'package:soto_ecommerce/seller/vm/vendor_product_vm.dart';
 
-class VendorProductListScreen extends StatelessWidget {
+class VendorProductListScreen extends StatefulWidget {
   const VendorProductListScreen({super.key});
+
+  @override
+  State<VendorProductListScreen> createState() =>
+      _VendorProductListScreenState();
+}
+
+class _VendorProductListScreenState extends State<VendorProductListScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      init();
+    });
+  }
+
+  init() {
+    context.read<VendorProductVM>().getProductsByVendor();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,33 +46,37 @@ class VendorProductListScreen extends StatelessWidget {
             text: 'No products found',
           );
         }
-        return ListView.separated(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          padding: EdgeInsets.only(
-            left: Sizer.width(20),
-            right: Sizer.width(20),
-            top: Sizer.height(40),
-            bottom: Sizer.height(100),
-          ),
-          itemBuilder: (_, i) {
-            return OverviewProductTile(
-              product: ref.productsByVendor[i],
-              onTap: () {
-                Navigator.pushNamed(
-                  context,
-                  RoutePath.vendorProductDetailsScreen,
-                  arguments: ProductArgs(
-                    productId: ref.productsByVendor[i].id ?? '',
-                  ),
-                );
-              },
-            );
+        return RefreshIndicator(
+          onRefresh: () async {
+            init();
           },
-          separatorBuilder: (_, __) => const Divider(
-            color: AppColors.whiteF7,
+          child: ListView.separated(
+            shrinkWrap: true,
+            padding: EdgeInsets.only(
+              left: Sizer.width(20),
+              right: Sizer.width(20),
+              top: Sizer.height(40),
+              bottom: Sizer.height(100),
+            ),
+            itemBuilder: (_, i) {
+              return OverviewProductTile(
+                product: ref.productsByVendor[i],
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    RoutePath.vendorProductDetailsScreen,
+                    arguments: ProductArgs(
+                      productId: ref.productsByVendor[i].id ?? '',
+                    ),
+                  );
+                },
+              );
+            },
+            separatorBuilder: (_, __) => const Divider(
+              color: AppColors.whiteF7,
+            ),
+            itemCount: ref.productsByVendor.length,
           ),
-          itemCount: ref.productsByVendor.length,
         );
       }),
     );

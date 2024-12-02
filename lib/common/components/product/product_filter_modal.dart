@@ -256,7 +256,7 @@ class _ProductFilterModalState extends State<ProductFilterModal> {
       priceUpper: maxPriceC.text.trim().isNotEmpty
           ? maxPriceC.text.trim().replaceAllCommas()
           : null,
-      category: selectedCategory?.id,
+      categoryId: selectedCategory?.id,
       rating: selectedRating?.toString(),
     );
 

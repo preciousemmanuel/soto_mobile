@@ -109,12 +109,12 @@ class _ConfirmPaymentScreenState extends State<ConfirmPaymentScreen> {
                         upperText: 'Recipient',
                         lowerText: authVM.fullname,
                       ),
-                      const YBox(10),
-                      const CustomColumnText(
-                        upperText: 'Payment method',
-                        lowerText: 'Mastercard ending in 3947',
-                      ),
-                      const YBox(24),
+                      // const YBox(10),
+                      // const CustomColumnText(
+                      //   upperText: 'Payment method',
+                      //   lowerText: 'Mastercard ending in 3947',
+                      // ),
+                      const YBox(50),
                       Consumer<OrderVM>(builder: (context, orderVM, _) {
                         return CustomBtn.solid(
                           text: "Proceed",

@@ -31,6 +31,8 @@ class ColumnValue extends StatelessWidget {
         const YBox(4),
         Text(
           value,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
           style: GoogleFonts.roboto(
             fontSize: Sizer.text(12),
             color: valueColor ?? AppColors.gray8D,

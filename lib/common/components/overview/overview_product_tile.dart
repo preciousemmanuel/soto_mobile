@@ -1,3 +1,4 @@
+import 'package:google_fonts/google_fonts.dart';
 import 'package:soto_ecommerce/common/common.dart';
 
 class OverviewProductTile extends StatelessWidget {
@@ -51,7 +52,8 @@ class OverviewProductTile extends StatelessWidget {
                   '${AppUtils.nairaSymbol}${AppUtils.formatAmountString(
                     (product?.unitPrice ?? 0).toString(),
                   )}',
-                  style: AppTypography.text12.copyWith(
+                  style: GoogleFonts.roboto(
+                    fontSize: Sizer.text(12),
                     color: AppColors.black66,
                   ),
                 ),

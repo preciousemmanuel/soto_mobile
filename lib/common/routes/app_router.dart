@@ -49,6 +49,11 @@ class AppRouter {
       case RoutePath.allProductsScreen:
         AllProductArgs? allProductArgs = args as AllProductArgs?;
         return buildRoute(AllProductsScreen(args: allProductArgs));
+      case RoutePath.productCategoryScreen:
+        if (args is ProductCatArg) {
+          return buildRoute(ProductsCategoryScreen(args: args));
+        }
+        return errorScreen('Incorrect arguments for ${settings.name}');
 
       // Orders
       case RoutePath.createOrderScreen:
@@ -101,6 +106,8 @@ class AppRouter {
         return buildRoute(const CreatePasswordScreen());
       case RoutePath.approvalScreen:
         return buildRoute(const ApprovalScreen());
+      case RoutePath.vendorOtpScreen:
+        return buildRoute(const VendorOtpScreen());
 
       case RoutePath.addProductScreen:
         return buildRoute(const AddProductScreen());

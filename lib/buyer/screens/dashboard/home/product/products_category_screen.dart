@@ -1,21 +1,19 @@
 import 'package:soto_ecommerce/common/common.dart';
 
-class AllProductsScreen extends StatefulWidget {
-  const AllProductsScreen({
+class ProductsCategoryScreen extends StatefulWidget {
+  const ProductsCategoryScreen({
     super.key,
-    this.args,
+    required this.args,
   });
 
-  final AllProductArgs? args;
+  final ProductCatArg args;
 
   @override
-  State<AllProductsScreen> createState() => _AllProductsScreenState();
+  State<ProductsCategoryScreen> createState() => _ProductsCategoryScreenState();
 }
 
-class _AllProductsScreenState extends State<AllProductsScreen> {
+class _ProductsCategoryScreenState extends State<ProductsCategoryScreen> {
   final ScrollController _scrollController = ScrollController();
-  TextEditingController searchC = TextEditingController();
-  FocusNode searchF = FocusNode();
 
   @override
   void initState() {
@@ -25,24 +23,18 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
         if (!prodVm.gettingMore && prodVm.hasMore && !prodVm.isBusy) {
-          prodVm.getPaginatedProducts();
+          prodVm.getPaginatedProducts(
+            categoryId: widget.args.category.id,
+          );
         }
       }
     });
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      // if (widget.args?.isSearch == true) {
-      //   searchF.requestFocus();
-      // }
-      context.read<ProductVM>().getProductList();
+      context.read<ProductVM>().getProductList(
+            categoryId: widget.args.category.id,
+          );
     });
-  }
-
-  @override
-  void dispose() {
-    searchC.dispose();
-    searchF.dispose();
-    super.dispose();
   }
 
   @override
@@ -50,69 +42,47 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
     return Consumer<ProductVM>(builder: (ctx, ref, _) {
       return Scaffold(
         backgroundColor: AppColors.bgFF,
-        appBar: const CustomHeader(
-          title: 'Products',
+        appBar: CustomHeader(
+          title: widget.args.category.name ?? '',
         ),
         body: Column(
           children: [
-            const YBox(10),
-            if (widget.args?.isSearch == true)
-              Padding(
-                padding: EdgeInsets.only(
-                  left: Sizer.width(20),
-                  right: Sizer.width(20),
-                  bottom: Sizer.width(20),
-                  top: Sizer.width(20),
-                ),
-                child: CustomTextField(
-                  focusNode: searchF,
-                  controller: searchC,
-                  hintText: 'I’m looking for...',
-                  showfillColor: false,
-                  borderColor: AppColors.grayDE,
-                  prefixIcon: Icon(
-                    Iconsax.search_normal_1,
-                    color: AppColors.iconC4,
-                    size: Sizer.height(20),
-                  ),
-                  showSuffixIcon: true,
-
-                  suffixIcon: InkWell(
-                    onTap: () {
-                      ModalWrapper.bottomSheet(
-                        context: context,
-                        widget: const ProductFilterModal(),
-                      );
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(8),
-                      child: svgHelper(AppSvgs.filter),
-                    ),
-                  ),
-                  // controller: vm.passwordC,
-                  onChanged: (val) {},
-                  onSubmitted: (val) {
-                    ref.getProductList(productName: val);
-                  },
-                ),
-              ),
             Expanded(
               child: ListView(
                 shrinkWrap: true,
                 controller: _scrollController,
                 padding: EdgeInsets.only(
+                  top: Sizer.height(20),
                   bottom: Sizer.height(200),
                 ),
                 children: [
+                  Container(
+                    padding: EdgeInsets.only(
+                      left: Sizer.width(20),
+                      right: Sizer.width(20),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(Sizer.radius(8)),
+                      child: MyCachedNetworkImage(
+                        imageUrl: widget.args.category.image ?? '',
+                        fadeInDuration: const Duration(milliseconds: 50),
+                        fit: BoxFit.cover,
+                        width: MediaQuery.of(context).size.width,
+                        height: Sizer.height(100),
+                      ),
+                    ),
+                  ),
+                  const YBox(20),
                   Builder(builder: (context) {
                     if (ref.isBusy) {
                       return const ProductShimmer();
                     }
 
                     if (ref.allProductList.isEmpty) {
-                      return const EmptyListState(
+                      return EmptyListState(
                         height: 500,
-                        text: 'No products found',
+                        text:
+                            'No products found for ${widget.args.category.name}',
                       );
                     }
                     return GridView.count(

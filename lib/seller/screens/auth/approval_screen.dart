@@ -70,7 +70,7 @@ class ApprovalScreen extends StatelessWidget {
                     onTap: () {
                       ref.getUserProfile().then((v) {
                         if (v.success) {
-                          if (v.data["data"]["IsVerified"] == true) {
+                          if (v.data["data"]?["IsVerified"] == true) {
                             Navigator.pushNamedAndRemoveUntil(
                               context,
                               RoutePath.sellerDashboardNavScreen,

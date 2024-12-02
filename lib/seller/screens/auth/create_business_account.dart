@@ -42,6 +42,7 @@ class _CreateBusinessAccountScreenState
   Widget build(BuildContext context) {
     return Consumer<CreateBusinessVM>(builder: (context, vm, _) {
       return Scaffold(
+        backgroundColor: AppColors.bgFF,
         appBar: CustomHeader(
           title: 'Business Details',
           titleStyle: AppTypography.text20.copyWith(

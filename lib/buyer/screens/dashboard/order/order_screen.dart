@@ -13,7 +13,9 @@ class _OrderScreenState extends State<OrderScreen> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<OrderVM>().fetchBuyerOrders();
+      context
+          .read<OrderVM>()
+          .fetchBuyerOrders(status: OrderStatusType.pending.name.toUpperCase());
     });
     super.initState();
   }
@@ -35,29 +37,34 @@ class _OrderScreenState extends State<OrderScreen> {
               body: Column(
                 children: [
                   const YBox(40),
-                  Row(
-                    children: [
-                      ...List.generate(
-                        OrderStatusType.values.length,
-                        (i) => StatusWidget(
-                          margin: EdgeInsets.only(
-                            left: i == 0 ? 20 : 0,
-                            right: 10,
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        ...List.generate(
+                          OrderStatusType.values.length,
+                          (i) => StatusWidget(
+                            margin: EdgeInsets.only(
+                              left: i == 0 ? 20 : 0,
+                              right: 10,
+                            ),
+                            text: OrderStatusType.values[i].name,
+                            isSelected:
+                                orderStatusType == OrderStatusType.values[i],
+                            onTap: () {
+                              orderStatusType = OrderStatusType.values[i];
+                              setState(() {});
+                            },
                           ),
-                          text: OrderStatusType.values[i].name,
-                          isSelected:
-                              orderStatusType == OrderStatusType.values[i],
-                          onTap: () {
-                            orderStatusType = OrderStatusType.values[i];
-                            setState(() {});
-                          },
-                        ),
-                      )
-                    ],
+                        )
+                      ],
+                    ),
                   ),
                   const YBox(10),
                   if (orderStatusType == OrderStatusType.pending)
                     OrderPendingTab(vm: vm),
+                  if (orderStatusType == OrderStatusType.booked)
+                    OrderBookedTab(vm: vm),
                   if (orderStatusType == OrderStatusType.delivered)
                     OrderDeliveredTab(vm: vm),
                   if (orderStatusType == OrderStatusType.cancelled)

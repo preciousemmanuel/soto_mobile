@@ -130,7 +130,7 @@ class _ReviewOrderScreenState extends State<ReviewOrderScreen> {
                               qty: item.quantity.toString(),
                               priceRange:
                                   '${AppUtils.nairaSymbol}${AppUtils.formatAmountString(item.minPrice.toString())} - ${AppUtils.nairaSymbol}${AppUtils.formatAmountString(item.maxPrice.toString())}',
-                              productBrand: 'Product Brand',
+                              productBrand: item.productBrand ?? '',
                               productName: item.productName ?? '',
                               type: item.type ?? '',
                             ),
@@ -143,6 +143,7 @@ class _ReviewOrderScreenState extends State<ReviewOrderScreen> {
                   }),
                 ),
                 CustomBtn.solid(
+                  online: selectedCustomOrders.isNotEmpty,
                   height: Sizer.height(50),
                   onTap: _createCustomOrder,
                   text: "Submit",

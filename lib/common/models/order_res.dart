@@ -97,7 +97,7 @@ class OrderItems {
   final int? unitPrice;
   final int? height;
   final int? width;
-  final int? weight;
+  final double? weight;
   final bool? isDiscounted;
   final String? id;
 

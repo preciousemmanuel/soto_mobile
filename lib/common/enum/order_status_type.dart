@@ -1,5 +1,6 @@
 enum OrderStatusType {
   pending,
+  booked,
   delivered,
   cancelled,
   failed,
@@ -10,6 +11,8 @@ extension OrderStatusTypeExtension on OrderStatusType {
     switch (this) {
       case OrderStatusType.pending:
         return 'Pending';
+      case OrderStatusType.booked:
+        return 'Booked';
       case OrderStatusType.delivered:
         return 'Delivered';
       case OrderStatusType.cancelled:

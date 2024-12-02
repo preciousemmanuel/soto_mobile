@@ -143,36 +143,49 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       ...List.generate(
                         ref.productCategories.length,
-                        (i) => ClipRRect(
-                          borderRadius: BorderRadius.circular(Sizer.radius(8)),
-                          child: Container(
-                            padding: EdgeInsets.only(
-                              left: Sizer.width(12),
-                              right: Sizer.width(12),
-                              // top: Sizer.height(18),
-                            ),
-                            margin: EdgeInsets.only(
-                              right: Sizer.width(8),
-                              left: i == 0 ? Sizer.width(20) : 0,
-                            ),
-                            width: Sizer.width(125),
-                            height: Sizer.height(56),
-                            decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.circular(Sizer.radius(8)),
-                              image: DecorationImage(
+                        (i) => InkWell(
+                          onTap: () {
+                            Navigator.pushNamed(
+                              context,
+                              RoutePath.productCategoryScreen,
+                              arguments: ProductCatArg(
+                                category: ref.productCategories[i],
+                              ),
+                            );
+                          },
+                          child: ClipRRect(
+                            borderRadius:
+                                BorderRadius.circular(Sizer.radius(8)),
+                            child: Container(
+                              padding: EdgeInsets.only(
+                                left: Sizer.width(12),
+                                right: Sizer.width(12),
+                                // top: Sizer.height(18),
+                              ),
+                              margin: EdgeInsets.only(
+                                right: Sizer.width(8),
+                                left: i == 0 ? Sizer.width(20) : 0,
+                              ),
+                              width: Sizer.width(125),
+                              height: Sizer.height(56),
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.circular(Sizer.radius(8)),
+                                image: DecorationImage(
                                   fit: BoxFit.cover,
                                   image: ref.productCategories[i].image == null
                                       ? const AssetImage(AppImages.noImage)
                                       : NetworkImage(
                                           ref.productCategories[i].image ?? '',
-                                        )),
-                            ),
-                            child: Center(
-                              child: Text(
-                                ref.productCategories[i].name ?? '',
-                                style: AppTypography.text12.copyWith(
-                                  fontWeight: FontWeight.w500,
+                                        ),
+                                ),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  ref.productCategories[i].name ?? '',
+                                  style: AppTypography.text12.copyWith(
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
                               ),
                             ),
@@ -286,14 +299,15 @@ class _HomeScreenState extends State<HomeScreen> {
                         }
                         return RelatedProductCard(
                           productName:
-                              vm.allProductList[index].productName ?? '',
-                          productId: vm.allProductList[index].id ?? '',
-                          unitPrice: '${vm.allProductList[index].unitPrice}',
-                          productImage:
-                              (vm.allProductList[index].images?.isNotEmpty ??
-                                      false)
-                                  ? vm.allProductList[index].images?.first ?? ''
-                                  : '',
+                              vm.popularProductList[index].productName ?? '',
+                          productId: vm.popularProductList[index].id ?? '',
+                          unitPrice:
+                              '${vm.popularProductList[index].unitPrice}',
+                          productImage: (vm.popularProductList[index].images
+                                      ?.isNotEmpty ??
+                                  false)
+                              ? vm.popularProductList[index].images?.first ?? ''
+                              : '',
                           onTap: () {
                             Navigator.pushNamed(
                               context,
@@ -305,7 +319,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           },
                         );
                       },
-                      childCount: vm.allProductList.length,
+                      childCount: vm.popularProductList.take(8).length,
                     ),
                   );
                 },

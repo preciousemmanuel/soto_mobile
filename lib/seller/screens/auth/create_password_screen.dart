@@ -25,6 +25,7 @@ class _CreatePasswordScreenState extends State<CreatePasswordScreen> {
       return BusyOverlay(
         show: vm.busy(CreateBusinessVM.businessSignupState),
         child: Scaffold(
+          backgroundColor: AppColors.bgFF,
           body: SafeArea(
             child: Container(
               padding: EdgeInsets.symmetric(
@@ -43,6 +44,7 @@ class _CreatePasswordScreenState extends State<CreatePasswordScreen> {
                   const YBox(24),
                   Text(
                     "Create Password",
+                    textAlign: TextAlign.center,
                     style: AppTypography.text32.copyWith(
                       fontWeight: FontWeight.w500,
                     ),
@@ -85,6 +87,13 @@ class _CreatePasswordScreenState extends State<CreatePasswordScreen> {
                         ),
                         controller: vm.businessPasswordConfirmC,
                         isPassword: true,
+                        errorText: vm.businessPasswordConfirmC.text
+                                    .trim()
+                                    .isNotEmpty &&
+                                vm.businessPasswordC.text.trim() !=
+                                    vm.businessPasswordConfirmC.text.trim()
+                            ? "Password does not match"
+                            : null,
                         onChanged: (val) => vm.reBuildUI(),
                         onSubmitted: (p0) {},
                       ),
@@ -114,7 +123,7 @@ class _CreatePasswordScreenState extends State<CreatePasswordScreen> {
     vm.createBusinessAccount().then((value) {
       if (value.success) {
         vm.clearData();
-        gotoApprovalScreen();
+        gotoVendorOtpScreen();
         FlushBarToast.fLSnackBar(
             snackBarType: SnackBarType.success,
             message: 'Account created successfully');
@@ -125,10 +134,10 @@ class _CreatePasswordScreenState extends State<CreatePasswordScreen> {
     });
   }
 
-  void gotoApprovalScreen() {
-    Navigator.pushNamed(
+  void gotoVendorOtpScreen() {
+    Navigator.pushReplacementNamed(
       context,
-      RoutePath.approvalScreen,
+      RoutePath.vendorOtpScreen,
     );
   }
 }
