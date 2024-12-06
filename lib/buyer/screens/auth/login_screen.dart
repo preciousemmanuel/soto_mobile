@@ -77,7 +77,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          'Login',
+                          '${widget.args?.isVendor == true ? 'Vendor' : 'Buyer'} Login',
                           style: AppTypography.text24.copyWith(
                             color: AppColors.primaryOrange,
                             fontWeight: FontWeight.w600,
@@ -219,7 +219,39 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                           ],
                         )),
-                    const YBox(60)
+                    const YBox(200),
+                    if (widget.args?.isVendor != true)
+                      RichText(
+                          textAlign: TextAlign.center,
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: "Are you a Vendor?",
+                                style: AppTypography.text14.copyWith(
+                                  color: AppColors.text32,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              TextSpan(
+                                text: " Login/Register",
+                                style: AppTypography.text14.copyWith(
+                                  color: AppColors.green58,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    context.read<AuthUserVM>().setVendorUser();
+                                    Navigator.pushNamedAndRemoveUntil(
+                                      NavKey.appNavigatorKey.currentContext!,
+                                      RoutePath.loginScreen,
+                                      arguments:
+                                          LoginScreenArgs(isVendor: true),
+                                      (r) => false,
+                                    );
+                                  },
+                              ),
+                            ],
+                          )),
                   ],
                 ),
               ),

@@ -9,6 +9,7 @@ class CreateOrderScreen extends StatefulWidget {
 
 class _CreateOrderScreenState extends State<CreateOrderScreen> {
   bool orderAddedFortheFirstTime = false;
+  bool showValidationError = false;
 
   ScrollController scrollController = ScrollController();
   TextEditingController emailC = TextEditingController();
@@ -137,6 +138,8 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                       textStyle: AppTypography.text14.copyWith(
                           fontWeight: FontWeight.w500, color: AppColors.white),
                       onTap: () {
+                        emailC.clear();
+                        phoneC.clear();
                         Navigator.pushNamed(
                             context, RoutePath.reviewOrderScreen);
                       },
@@ -152,7 +155,10 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                 showLabelHeader: true,
                 fillColor: AppColors.bgF5,
                 hintText: 'Enter name',
-                onChanged: (val) {},
+                errorText: showValidationError && productNameC.text.isEmpty
+                    ? 'Product name is required'
+                    : null,
+                onChanged: (val) => setState(() {}),
               ),
               const YBox(20),
               CustomTextField(
@@ -162,7 +168,10 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                 showLabelHeader: true,
                 fillColor: AppColors.bgF5,
                 hintText: 'Enter brand name',
-                onChanged: (val) {},
+                errorText: showValidationError && productBrandC.text.isEmpty
+                    ? 'Product brand is required'
+                    : null,
+                onChanged: (val) => setState(() {}),
               ),
               const YBox(20),
               Row(
@@ -176,7 +185,11 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                       showLabelHeader: true,
                       fillColor: AppColors.bgF5,
                       hintText: 'Enter quantity',
-                      onChanged: (val) {},
+                      errorText:
+                          showValidationError && productQuantityC.text.isEmpty
+                              ? 'Quantity is required'
+                              : null,
+                      onChanged: (val) => setState(() {}),
                     ),
                   ),
                   const XBox(24),
@@ -189,7 +202,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                       showLabelHeader: true,
                       fillColor: AppColors.bgF5,
                       hintText: 'Enter size',
-                      onChanged: (val) {},
+                      onChanged: (val) => setState(() {}),
                     ),
                   ),
                 ],
@@ -264,7 +277,8 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                       showLabelHeader: true,
                       fillColor: AppColors.bgF5,
                       hintText: 'example@gmail.com',
-                      errorText: emailC.text.isNotEmpty && !emailIsValid()
+                      errorText: (emailC.text.isNotEmpty && !emailIsValid()) ||
+                              (showValidationError && emailC.text.isEmpty)
                           ? 'Invalid email address'
                           : null,
                       onChanged: (val) => setState(() {}),
@@ -280,7 +294,10 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                       keyboardType: KeyboardType.number,
                       fillColor: AppColors.bgF5,
                       hintText: '0803xxxxxxxxx',
-                      onChanged: (val) {},
+                      errorText: showValidationError && phoneC.text.isEmpty
+                          ? 'Phone number is required '
+                          : null,
+                      onChanged: (val) => setState(() {}),
                     ),
                   ),
                 ],
@@ -319,10 +336,8 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                       onTap: () {
                         _srollToTop();
                         if (!activateBtn()) {
-                          FlushBarToast.fLSnackBar(
-                            snackBarType: SnackBarType.warning,
-                            message: "Only optional fields can be empty",
-                          );
+                          showValidationError = true;
+                          setState(() {});
                           return;
                         }
                         _createCustomOrder();
@@ -341,10 +356,8 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                         onTap: () {
                           _srollToTop();
                           if (!activateBtn()) {
-                            FlushBarToast.fLSnackBar(
-                              snackBarType: SnackBarType.warning,
-                              message: "Only optional fields can be empty",
-                            );
+                            showValidationError = true;
+                            setState(() {});
                             return;
                           }
                           _saveAndAddCustomOrder();
@@ -370,11 +383,9 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
         color: productColorC.text.trim(),
         type: productTypeC.text.trim(),
         quantity:
-            int.tryParse(productQuantityC.text.trim().replaceAllCommas()) ?? 0,
-        minPrice:
-            int.tryParse(productPriceC1.text.trim().replaceAllCommas()) ?? 0,
-        maxPrice:
-            int.tryParse(productPriceC2.text.trim().replaceAllCommas()) ?? 0,
+            int.tryParse(productQuantityC.text.trim().replaceAllCommas()) ?? 1,
+        minPrice: int.tryParse(productPriceC1.text.trim().replaceAllCommas()),
+        maxPrice: int.tryParse(productPriceC2.text.trim().replaceAllCommas()),
         phoneNumber: phoneC.text.trim(),
         email: emailC.text.trim(),
         note: productMessageC.text.trim(),
@@ -384,6 +395,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
     handleApiResponse(
         response: response,
         onSuccess: () {
+          showValidationError = false;
           emailC.clear();
           phoneC.clear();
           clearFields();
@@ -400,11 +412,9 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
       color: productColorC.text.trim(),
       type: productTypeC.text.trim(),
       quantity:
-          int.tryParse(productQuantityC.text.trim().replaceAllCommas()) ?? 0,
-      minPrice:
-          int.tryParse(productPriceC1.text.trim().replaceAllCommas()) ?? 0,
-      maxPrice:
-          int.tryParse(productPriceC2.text.trim().replaceAllCommas()) ?? 0,
+          int.tryParse(productQuantityC.text.trim().replaceAllCommas()) ?? 1,
+      minPrice: int.tryParse(productPriceC1.text.trim().replaceAllCommas()),
+      maxPrice: int.tryParse(productPriceC2.text.trim().replaceAllCommas()),
       phoneNumber: phoneC.text.trim(),
       email: emailC.text.trim(),
       note: productMessageC.text.trim(),
@@ -414,6 +424,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
         response: response,
         onSuccess: () {
           orderAddedFortheFirstTime = true;
+          showValidationError = false;
           clearFields();
           setState(() {});
         });
@@ -421,10 +432,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
 
   bool activateBtn() {
     return productNameC.text.isNotEmpty &&
-        productTypeC.text.isNotEmpty &&
-        productQuantityC.text.isNotEmpty &&
-        productPriceC1.text.isNotEmpty &&
-        productPriceC2.text.isNotEmpty &&
+        productBrandC.text.isNotEmpty &&
         emailIsValid() &&
         phoneC.text.isNotEmpty;
   }

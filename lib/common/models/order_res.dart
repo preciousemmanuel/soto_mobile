@@ -128,7 +128,7 @@ class OrderItems {
         unitPrice: json["unit_price"],
         height: json["height"],
         width: json["width"],
-        weight: json["weight"],
+        weight: json["weight"].toDouble(),
         isDiscounted: json["is_discounted"],
         id: json["_id"],
       );

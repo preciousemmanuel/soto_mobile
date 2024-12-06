@@ -1,7 +1,7 @@
 import 'package:soto_ecommerce/common/common.dart';
 
-class AllProductsScreen extends StatefulWidget {
-  const AllProductsScreen({
+class SearchProductScreen extends StatefulWidget {
+  const SearchProductScreen({
     super.key,
     this.args,
   });
@@ -9,11 +9,13 @@ class AllProductsScreen extends StatefulWidget {
   final AllProductArgs? args;
 
   @override
-  State<AllProductsScreen> createState() => _AllProductsScreenState();
+  State<SearchProductScreen> createState() => _SearchProductScreenState();
 }
 
-class _AllProductsScreenState extends State<AllProductsScreen> {
+class _SearchProductScreenState extends State<SearchProductScreen> {
   final ScrollController _scrollController = ScrollController();
+  TextEditingController searchC = TextEditingController();
+  FocusNode searchF = FocusNode();
 
   @override
   void initState() {
@@ -29,12 +31,17 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
     });
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      // if (widget.args?.isSearch == true) {
+      //   searchF.requestFocus();
+      // }
       context.read<ProductVM>().getProductList();
     });
   }
 
   @override
   void dispose() {
+    searchC.dispose();
+    searchF.dispose();
     super.dispose();
   }
 
@@ -44,11 +51,50 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
       return Scaffold(
         backgroundColor: AppColors.bgFF,
         appBar: const CustomHeader(
-          title: 'Products',
+          title: 'Search',
         ),
         body: Column(
           children: [
             const YBox(10),
+            Padding(
+              padding: EdgeInsets.only(
+                left: Sizer.width(20),
+                right: Sizer.width(20),
+                bottom: Sizer.width(20),
+                top: Sizer.width(20),
+              ),
+              child: CustomTextField(
+                focusNode: searchF,
+                controller: searchC,
+                hintText: 'I’m looking for...',
+                showfillColor: false,
+                borderColor: AppColors.grayDE,
+                prefixIcon: Icon(
+                  Iconsax.search_normal_1,
+                  color: AppColors.iconC4,
+                  size: Sizer.height(20),
+                ),
+                showSuffixIcon: true,
+
+                suffixIcon: InkWell(
+                  onTap: () {
+                    ModalWrapper.bottomSheet(
+                      context: context,
+                      widget: const ProductFilterModal(),
+                    );
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    child: svgHelper(AppSvgs.filter),
+                  ),
+                ),
+                // controller: vm.passwordC,
+                onChanged: (val) {},
+                onSubmitted: (val) {
+                  ref.getProductList(productName: val);
+                },
+              ),
+            ),
             Expanded(
               child: ListView(
                 shrinkWrap: true,

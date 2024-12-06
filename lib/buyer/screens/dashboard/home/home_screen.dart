@@ -59,8 +59,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         isReadOnly: true,
                         onTap: () {
                           Navigator.pushNamed(
-                              context, RoutePath.allProductsScreen,
-                              arguments: AllProductArgs(isSearch: true));
+                            context,
+                            RoutePath.searchProductScreen,
+                          );
                         },
                         suffixIcon: Container(
                           padding: const EdgeInsets.all(8),

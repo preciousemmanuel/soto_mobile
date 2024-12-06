@@ -10,6 +10,7 @@ class ReviewOrderScreen extends StatefulWidget {
 class _ReviewOrderScreenState extends State<ReviewOrderScreen> {
   List<CustomOrderRes> customOrders = [];
   List<CustomOrderRes> selectedCustomOrders = [];
+  List<int> selectedIndexes = [];
 
   @override
   void initState() {
@@ -30,6 +31,7 @@ class _ReviewOrderScreenState extends State<ReviewOrderScreen> {
 
   @override
   Widget build(BuildContext context) {
+    printty('Selected indexes: $selectedIndexes');
     return Consumer<CustomOrderVm>(builder: (_, vm, __) {
       return BusyOverlay(
         show: vm.isBusy,
@@ -57,6 +59,8 @@ class _ReviewOrderScreenState extends State<ReviewOrderScreen> {
                     InkWell(
                       onTap: () {
                         selectedCustomOrders.addAll(customOrders);
+                        selectedIndexes =
+                            List.generate(customOrders.length, (i) => i);
                         setState(() {});
                       },
                       child: Container(
@@ -103,36 +107,58 @@ class _ReviewOrderScreenState extends State<ReviewOrderScreen> {
                       ),
                       itemBuilder: (_, i) {
                         final item = customOrders[i];
-                        return InkWell(
-                          onTap: () {
-                            selectedCustomOrders.contains(item)
-                                ? selectedCustomOrders.remove(item)
-                                : selectedCustomOrders.add(item);
-
-                            setState(() {});
+                        return Dismissible(
+                          key: Key(item.hashCode.toString()),
+                          direction: DismissDirection.endToStart,
+                          onDismissed: (direction) {
+                            vm.removeCustomOrderFromStorage([i]);
                           },
-                          child: Container(
-                            decoration: BoxDecoration(
-                                color: selectedCustomOrders.contains(item)
-                                    ? AppColors.black
-                                    : AppColors.baseF9,
-                                borderRadius:
-                                    BorderRadius.circular(Sizer.radius(8)),
-                                border: Border.all(
-                                  color: AppColors.gray8D,
-                                )),
-                            child: ReviewCustomOrderTable(
-                              titleColor: selectedCustomOrders.contains(item)
-                                  ? AppColors.white
-                                  : null,
-                              color: item.color ?? '',
-                              size: item.size ?? '',
-                              qty: item.quantity.toString(),
-                              priceRange:
-                                  '${AppUtils.nairaSymbol}${AppUtils.formatAmountString(item.minPrice.toString())} - ${AppUtils.nairaSymbol}${AppUtils.formatAmountString(item.maxPrice.toString())}',
-                              productBrand: item.productBrand ?? '',
-                              productName: item.productName ?? '',
-                              type: item.type ?? '',
+                          background: Container(
+                            alignment: Alignment.centerRight,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: Sizer.width(20)),
+                            color: Colors.red,
+                            child: Icon(
+                              Icons.delete,
+                              color: Colors.white,
+                              size: Sizer.radius(40),
+                            ),
+                          ),
+                          child: InkWell(
+                            onTap: () {
+                              selectedCustomOrders.contains(item)
+                                  ? selectedCustomOrders.remove(item)
+                                  : selectedCustomOrders.add(item);
+
+                              selectedIndexes.contains(i)
+                                  ? selectedIndexes.remove(i)
+                                  : selectedIndexes.add(i);
+
+                              setState(() {});
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: selectedCustomOrders.contains(item)
+                                      ? AppColors.black
+                                      : AppColors.baseF9,
+                                  borderRadius:
+                                      BorderRadius.circular(Sizer.radius(8)),
+                                  border: Border.all(
+                                    color: AppColors.gray8D,
+                                  )),
+                              child: ReviewCustomOrderTable(
+                                titleColor: selectedCustomOrders.contains(item)
+                                    ? AppColors.white
+                                    : null,
+                                color: item.color ?? '',
+                                size: item.size ?? '',
+                                qty: item.quantity.toString(),
+                                priceRange:
+                                    '${AppUtils.nairaSymbol}${AppUtils.formatAmountString(item.minPrice.toString())} - ${AppUtils.nairaSymbol}${AppUtils.formatAmountString(item.maxPrice.toString())}',
+                                productBrand: item.productBrand ?? '',
+                                productName: item.productName ?? '',
+                                type: item.type ?? '',
+                              ),
                             ),
                           ),
                         );
@@ -167,7 +193,7 @@ class _ReviewOrderScreenState extends State<ReviewOrderScreen> {
     handleApiResponse(
         response: response,
         onSuccess: () {
-          ref.clearCustomOrderFromStorage();
+          ref.removeCustomOrderFromStorage(selectedIndexes);
           Navigator.pop(context);
         });
   }

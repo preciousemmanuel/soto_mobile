@@ -49,6 +49,9 @@ class AppRouter {
       case RoutePath.allProductsScreen:
         AllProductArgs? allProductArgs = args as AllProductArgs?;
         return buildRoute(AllProductsScreen(args: allProductArgs));
+      case RoutePath.searchProductScreen:
+        return buildRoute(const SearchProductScreen());
+
       case RoutePath.productCategoryScreen:
         if (args is ProductCatArg) {
           return buildRoute(ProductsCategoryScreen(args: args));

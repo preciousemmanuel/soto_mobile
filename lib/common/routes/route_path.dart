@@ -17,6 +17,7 @@ class RoutePath {
   static const notificationScreen = '/notificationScreen';
   static const productDetailScreen = '/productDetailScreen';
   static const allProductsScreen = '/allProductsScreen';
+  static const searchProductScreen = '/searchProductScreen';
   static const productCategoryScreen = '/productCategoryScreen';
 
   // Profile
