@@ -1,3 +1,4 @@
+import 'package:google_fonts/google_fonts.dart';
 import 'package:soto_ecommerce/common/common.dart';
 import 'package:soto_ecommerce/seller/vm/vm.dart';
 
@@ -9,6 +10,7 @@ class WalletScreen extends StatefulWidget {
 }
 
 class _WalletScreenState extends State<WalletScreen> {
+  bool showAmount = false;
   @override
   void initState() {
     super.initState();
@@ -98,19 +100,29 @@ class _WalletScreenState extends State<WalletScreen> {
                                 ),
                               ),
                               const XBox(12),
-                              const Icon(
-                                Iconsax.eye,
-                                size: 20,
-                                color: AppColors.redD5,
+                              InkWell(
+                                onTap: () {
+                                  showAmount = !showAmount;
+                                  setState(() {});
+                                },
+                                child: Icon(
+                                  showAmount ? Iconsax.eye_slash : Iconsax.eye,
+                                  size: 20,
+                                  color: AppColors.redD5,
+                                ),
                               ),
                             ],
                           ),
                           const YBox(10),
                           Text(
-                            '${AppUtils.nairaSymbol}${AppUtils.formatAmountString(
-                              (vm.wallet?.currentBalance ?? 0.0).toString(),
-                            )}',
-                            style: AppTypography.text48.copyWith(
+                            showAmount
+                                ? '${AppUtils.nairaSymbol}${AppUtils.formatAmountString(
+                                    (vm.wallet?.currentBalance ?? 0.0)
+                                        .toString(),
+                                  )}'
+                                : '${AppUtils.nairaSymbol}*******',
+                            style: GoogleFonts.roboto(
+                              fontSize: Sizer.text(42),
                               fontWeight: FontWeight.w600,
                               color: AppColors.white,
                             ),
@@ -162,7 +174,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                     ),
                                     onTap: () {
                                       Navigator.pushNamed(context,
-                                          RoutePath.withdrawToBankScreen);
+                                          RoutePath.withdrawChooseAccount);
                                     },
                                   ),
                                 ),
@@ -191,8 +203,8 @@ class _WalletScreenState extends State<WalletScreen> {
                                       ],
                                     ),
                                     onTap: () {
-                                      Navigator.pushNamed(context,
-                                          RoutePath.withdrawToBankScreen);
+                                      // Navigator.pushNamed(context,
+                                      //     RoutePath.withdrawToBankScreen);
                                     },
                                   ),
                                 ),
@@ -247,6 +259,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                 final transaction = ref.transactionList[i];
                                 return WalletHistoryListTile(
                                   isSend: false,
+                                  reference: transaction.reference ?? '',
                                   naration: transaction.narration ?? '',
                                   amount:
                                       (transaction.amount ?? 0.0).toString(),

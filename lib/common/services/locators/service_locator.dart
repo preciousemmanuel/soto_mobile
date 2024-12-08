@@ -20,4 +20,5 @@ final allProviders = <SingleChildWidget>[
   ChangeNotifierProvider(create: (_) => VendorDashboardVM()),
   ChangeNotifierProvider(create: (_) => VendorProductVM()),
   ChangeNotifierProvider(create: (_) => VendorOrderVm()),
+  ChangeNotifierProvider(create: (_) => WalletVm()),
 ];

@@ -123,7 +123,11 @@ class AppRouter {
         return errorScreen('Incorrect arguments for ${settings.name}');
 
       case RoutePath.withdrawToBankScreen:
-        return buildRoute(const WithdrawToBankScreen());
+        if (args is WithdrawArgs) {
+          return buildRoute(WithdrawToBankScreen(args: args));
+        }
+        return errorScreen('Incorrect arguments for ${settings.name}');
+
       case RoutePath.withdrawChooseAccount:
         return buildRoute(const WithdrawChooseAccount());
       case RoutePath.walletPaymentMethodScreen:

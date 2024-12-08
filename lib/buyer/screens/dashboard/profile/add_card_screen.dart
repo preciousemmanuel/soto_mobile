@@ -84,13 +84,11 @@ class AddCardScreen extends StatelessWidget {
               ),
               const XBox(50),
               Expanded(
-                  child: Container(
-                child: Text(
-                  '3 digits usually \nfound at the back \nside',
-                  style: AppTypography.text12.copyWith(
-                    color: AppColors.text5C,
-                    height: 1.2,
-                  ),
+                  child: Text(
+                '3 digits usually \nfound at the back \nside',
+                style: AppTypography.text12.copyWith(
+                  color: AppColors.text5C,
+                  height: 1.2,
                 ),
               )),
             ],

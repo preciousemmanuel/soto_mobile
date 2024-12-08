@@ -1,3 +1,4 @@
+import 'package:google_fonts/google_fonts.dart';
 import 'package:soto_ecommerce/common/common.dart';
 
 class WalletHistoryListTile extends StatelessWidget {
@@ -5,12 +6,14 @@ class WalletHistoryListTile extends StatelessWidget {
     super.key,
     this.isSend = false,
     required this.naration,
+    required this.reference,
     required this.date,
     required this.amount,
   });
 
   final bool isSend;
   final String naration;
+  final String reference;
   final String date;
   final String amount;
 
@@ -46,8 +49,8 @@ class WalletHistoryListTile extends StatelessWidget {
               ),
               const YBox(2),
               Text(
-                '#212323',
-                style: AppTypography.text14.copyWith(
+                reference,
+                style: AppTypography.text12.copyWith(
                   color: AppColors.black66,
                 ),
               ),
@@ -55,12 +58,13 @@ class WalletHistoryListTile extends StatelessWidget {
           ),
           const Spacer(),
           Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
                 '${AppUtils.nairaSymbol}${AppUtils.formatAmountString(amount)}',
-                style: AppTypography.text15.copyWith(
+                style: GoogleFonts.roboto(
                   color: isSend ? AppColors.red3B : AppColors.green78,
+                  fontSize: Sizer.text(16),
                   fontWeight: FontWeight.w500,
                 ),
               ),

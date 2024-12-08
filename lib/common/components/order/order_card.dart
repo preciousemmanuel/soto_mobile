@@ -96,7 +96,12 @@ class OrderCard extends StatelessWidget {
                 color: AppColors.primaryOrange,
                 vPad: 6,
                 hPad: 24,
-                onTap: () {},
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    RoutePath.trackMyOrderScreen,
+                  );
+                },
               ),
             ],
           ),

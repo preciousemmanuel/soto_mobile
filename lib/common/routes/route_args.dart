@@ -26,6 +26,12 @@ class ProductCatArg {
   final ProductCategory category;
 }
 
+class WithdrawArgs {
+  final String bankId;
+
+  WithdrawArgs(this.bankId);
+}
+
 // for webview
 class WebViewArg {
   final String? appBarText;

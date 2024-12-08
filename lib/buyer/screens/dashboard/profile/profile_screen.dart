@@ -158,17 +158,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                   const YBox(16),
-                  DecorationContainer(
-                    onTap: () {
-                      Navigator.pushNamed(
-                          context, RoutePath.paymentMethodScreen);
-                    },
-                    child: const ProfileListTile(
-                      title: 'Payment Methods',
-                      leadicon: Iconsax.card_add,
-                    ),
-                  ),
-                  const YBox(10),
+                  // DecorationContainer(
+                  //   onTap: () {
+                  //     Navigator.pushNamed(
+                  //         context, RoutePath.paymentMethodScreen);
+                  //   },
+                  //   child: const ProfileListTile(
+                  //     title: 'Payment Methods',
+                  //     leadicon: Iconsax.card_add,
+                  //   ),
+                  // ),
+                  // const YBox(10),
                   DecorationContainer(
                     onTap: () {
                       ModalWrapper.bottomSheet(

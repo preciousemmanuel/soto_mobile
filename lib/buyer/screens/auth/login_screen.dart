@@ -53,213 +53,203 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<LoginVM>(builder: (context, vm, _) {
-      return BusyOverlay(
-        show: vm.isBusy,
-        child: Scaffold(
-          backgroundColor: AppColors.bgFF,
-          body: SafeArea(
-            bottom: false,
-            child: Container(
-              padding: EdgeInsetsDirectional.symmetric(
-                horizontal: Sizer.width(20),
-              ),
-              child: Center(
-                child: ListView(
-                  children: [
-                    const YBox(10),
-                    imageHelper(
-                      AppImages.logo,
-                      height: Sizer.height(74),
-                    ),
-                    const YBox(14),
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          '${widget.args?.isVendor == true ? 'Vendor' : 'Buyer'} Login',
-                          style: AppTypography.text24.copyWith(
-                            color: AppColors.primaryOrange,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        Text(
-                          'Kindly enter your correct details',
-                          style: AppTypography.text14.copyWith(
-                            color: AppColors.text7D,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const YBox(60),
-                    // Row(
-                    //   children: [
-                    //     Expanded(
-                    //       child: SocialsCTA(
-                    //         icon: AppSvgs.fb,
-                    //         text: 'Facebook',
-                    //         onTap: () {
-                    //           // Navigator.pushNamed(
-                    //           //     context, RoutePath.approvalScreen);
-                    //         },
-                    //       ),
-                    //     ),
-                    //     const XBox(25),
-                    //     Expanded(
-                    //       child: SocialsCTA(
-                    //         icon: AppSvgs.google,
-                    //         text: 'Google',
-                    //         onTap: () {},
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
-                    // const YBox(16),
-                    // const OrWidget(),
-                    // const YBox(16),
-                    CustomTextField(
-                      focusNode: emailFocus,
-                      labelText: "Name/Email",
-                      showLabelHeader: true,
-                      fillColor: AppColors.orangeEA.withOpacity(0.5),
-                      hintText: 'Enter name or email',
-                      controller: vm.emailC,
-                      prefixIcon: Icon(
-                        Iconsax.sms,
-                        color: AppColors.iconC4,
-                        size: Sizer.height(20),
+    return PopScope(
+      canPop: false,
+      child: Consumer<LoginVM>(builder: (context, vm, _) {
+        return BusyOverlay(
+          show: vm.isBusy,
+          child: Scaffold(
+            backgroundColor: AppColors.bgFF,
+            body: SafeArea(
+              bottom: false,
+              child: Container(
+                padding: EdgeInsetsDirectional.symmetric(
+                  horizontal: Sizer.width(20),
+                ),
+                child: Center(
+                  child: ListView(
+                    children: [
+                      const YBox(10),
+                      imageHelper(
+                        AppImages.logo,
+                        height: Sizer.height(74),
                       ),
-                      onChanged: (val) => vm.reBuildUI(),
-                    ),
-                    const YBox(16),
-                    CustomTextField(
-                      focusNode: passwordFocus,
-                      labelText: "Password",
-                      showLabelHeader: true,
-                      fillColor: AppColors.orangeEA.withOpacity(0.5),
-                      hintText: 'Password',
-                      controller: vm.passwordC,
-                      prefixIcon: Icon(
-                        Iconsax.lock_1,
-                        color: AppColors.iconC4,
-                        size: Sizer.height(20),
-                      ),
-                      isPassword: true,
-                      onChanged: (val) => vm.reBuildUI(),
-                      onSubmitted: (p0) {},
-                    ),
-                    const YBox(10),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.pushNamed(
-                            context,
-                            RoutePath.changeOrForgotPasswordScreen,
-                            arguments: const PasswordScreenArgs(
-                              type: PasswordType.forgotPassword,
+                      const YBox(14),
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            '${widget.args?.isVendor == true ? 'Vendor' : 'Buyer'} Login',
+                            style: AppTypography.text24.copyWith(
+                              color: AppColors.primaryOrange,
+                              fontWeight: FontWeight.w600,
                             ),
-                          );
-                        },
-                        child: Text(
-                          'Forgot Password?',
-                          style: AppTypography.text14.copyWith(
-                            color: AppColors.primaryOrange,
-                            fontWeight: FontWeight.w500,
                           ),
-                        ),
+                          Text(
+                            'Kindly enter your correct details',
+                            style: AppTypography.text14.copyWith(
+                              color: AppColors.text7D,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                    const YBox(30),
-                    CustomBtn.solid(
-                      online: vm.btnIsValid,
-                      onTap: () {
-                        login();
-                      },
-                      text: "Login",
-                    ),
-                    const YBox(8),
-                    RichText(
-                        textAlign: TextAlign.center,
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                              text: "New to Soto? ",
-                              style: AppTypography.text14.copyWith(
-                                color: AppColors.text32,
-                                fontWeight: FontWeight.w400,
+                      const YBox(60),
+                      // Row(
+                      //   children: [
+                      //     Expanded(
+                      //       child: SocialsCTA(
+                      //         icon: AppSvgs.fb,
+                      //         text: 'Facebook',
+                      //         onTap: () {
+                      //           // Navigator.pushNamed(
+                      //           //     context, RoutePath.approvalScreen);
+                      //         },
+                      //       ),
+                      //     ),
+                      //     const XBox(25),
+                      //     Expanded(
+                      //       child: SocialsCTA(
+                      //         icon: AppSvgs.google,
+                      //         text: 'Google',
+                      //         onTap: () {},
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
+                      // const YBox(16),
+                      // const OrWidget(),
+                      // const YBox(16),
+                      CustomTextField(
+                        focusNode: emailFocus,
+                        labelText: "Name/Email",
+                        showLabelHeader: true,
+                        fillColor: AppColors.orangeEA.withOpacity(0.5),
+                        hintText: 'Enter name or email',
+                        controller: vm.emailC,
+                        prefixIcon: Icon(
+                          Iconsax.sms,
+                          color: AppColors.iconC4,
+                          size: Sizer.height(20),
+                        ),
+                        onChanged: (val) => vm.reBuildUI(),
+                      ),
+                      const YBox(16),
+                      CustomTextField(
+                        focusNode: passwordFocus,
+                        labelText: "Password",
+                        showLabelHeader: true,
+                        fillColor: AppColors.orangeEA.withOpacity(0.5),
+                        hintText: 'Password',
+                        controller: vm.passwordC,
+                        prefixIcon: Icon(
+                          Iconsax.lock_1,
+                          color: AppColors.iconC4,
+                          size: Sizer.height(20),
+                        ),
+                        isPassword: true,
+                        onChanged: (val) => vm.reBuildUI(),
+                        onSubmitted: (p0) {},
+                      ),
+                      const YBox(10),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.pushNamed(
+                              context,
+                              RoutePath.changeOrForgotPasswordScreen,
+                              arguments: const PasswordScreenArgs(
+                                type: PasswordType.forgotPassword,
                               ),
+                            );
+                          },
+                          child: Text(
+                            'Forgot Password?',
+                            style: AppTypography.text14.copyWith(
+                              color: AppColors.primaryOrange,
+                              fontWeight: FontWeight.w500,
                             ),
-                            widget.args?.isVendor == true
-                                ? TextSpan(
-                                    text: "Register New account",
-                                    style: AppTypography.text14.copyWith(
-                                      color: AppColors.primaryOrange,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () {
-                                        Navigator.pushNamed(
-                                            context,
-                                            RoutePath
-                                                .createBusinessAccountScreen);
-                                      },
-                                  )
-                                : TextSpan(
-                                    text: "Create an Account",
-                                    style: AppTypography.text14.copyWith(
-                                      color: AppColors.primaryOrange,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () {
-                                        Navigator.pushNamed(context,
-                                            RoutePath.createAccountScreen);
-                                      },
-                                  ),
-                          ],
-                        )),
-                    const YBox(200),
-                    if (widget.args?.isVendor != true)
+                          ),
+                        ),
+                      ),
+                      const YBox(30),
+                      CustomBtn.solid(
+                        online: vm.btnIsValid,
+                        onTap: () {
+                          login();
+                        },
+                        text: "Login",
+                      ),
+                      const YBox(8),
                       RichText(
                           textAlign: TextAlign.center,
                           text: TextSpan(
                             children: [
                               TextSpan(
-                                text: "Are you a Vendor?",
+                                text: "New to Soto? ",
                                 style: AppTypography.text14.copyWith(
                                   color: AppColors.text32,
-                                  fontWeight: FontWeight.w500,
+                                  fontWeight: FontWeight.w400,
                                 ),
                               ),
-                              TextSpan(
-                                text: " Login/Register",
-                                style: AppTypography.text14.copyWith(
-                                  color: AppColors.green58,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () {
-                                    context.read<AuthUserVM>().setVendorUser();
-                                    Navigator.pushNamedAndRemoveUntil(
-                                      NavKey.appNavigatorKey.currentContext!,
-                                      RoutePath.loginScreen,
-                                      arguments:
-                                          LoginScreenArgs(isVendor: true),
-                                      (r) => false,
-                                    );
-                                  },
-                              ),
+                              widget.args?.isVendor == true
+                                  ? TextSpan(
+                                      text: "Register New account",
+                                      style: AppTypography.text14.copyWith(
+                                        color: AppColors.primaryOrange,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () {
+                                          Navigator.pushNamed(
+                                              context,
+                                              RoutePath
+                                                  .createBusinessAccountScreen);
+                                        },
+                                    )
+                                  : TextSpan(
+                                      text: "Create an Account",
+                                      style: AppTypography.text14.copyWith(
+                                        color: AppColors.primaryOrange,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () {
+                                          Navigator.pushNamed(context,
+                                              RoutePath.createAccountScreen);
+                                        },
+                                    ),
                             ],
                           )),
-                  ],
+                      const YBox(200),
+                      widget.args?.isVendor != true
+                          ? SwitchScreens(
+                              title: "Are you a Vendor?",
+                              onSwitch: () {
+                                context.read<AuthUserVM>().setVendorUser();
+                                context
+                                    .read<LoginVM>()
+                                    .logout(switchToVendor: true);
+                              },
+                            )
+                          : SwitchScreens(
+                              title: "Are you a Buyer?",
+                              onSwitch: () {
+                                context.read<AuthUserVM>().removeVendorUser();
+                                context
+                                    .read<LoginVM>()
+                                    .logout(switchToVendor: false);
+                              },
+                            )
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-      );
-    });
+        );
+      }),
+    );
   }
 
   void login() {
@@ -286,5 +276,41 @@ class _LoginScreenState extends State<LoginScreen> {
           : RoutePath.dashboardNavScreen,
       (route) => false,
     );
+  }
+}
+
+class SwitchScreens extends StatelessWidget {
+  const SwitchScreens({
+    super.key,
+    required this.title,
+    this.onSwitch,
+  });
+
+  final String title;
+  final Function()? onSwitch;
+
+  @override
+  Widget build(BuildContext context) {
+    return RichText(
+        textAlign: TextAlign.center,
+        text: TextSpan(
+          children: [
+            TextSpan(
+              text: title,
+              style: AppTypography.text14.copyWith(
+                color: AppColors.text32,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            TextSpan(
+              text: " Login/Register",
+              style: AppTypography.text14.copyWith(
+                color: AppColors.green58,
+                fontWeight: FontWeight.w600,
+              ),
+              recognizer: TapGestureRecognizer()..onTap = onSwitch,
+            ),
+          ],
+        ));
   }
 }

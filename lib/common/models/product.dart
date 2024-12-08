@@ -43,7 +43,7 @@ class Product extends Equatable {
   final String? id;
   final String? productName;
   final String? description;
-  final Category? category; // TODO: Remind BE to add category id
+  final Category? category; //
   final List<dynamic>? images;
   final String? vendor;
   final int? unitPrice;
