@@ -203,8 +203,8 @@ class _WalletScreenState extends State<WalletScreen> {
                                       ],
                                     ),
                                     onTap: () {
-                                      // Navigator.pushNamed(context,
-                                      //     RoutePath.withdrawToBankScreen);
+                                      Navigator.pushNamed(context,
+                                          RoutePath.withdrawRequestScreen);
                                     },
                                   ),
                                 ),

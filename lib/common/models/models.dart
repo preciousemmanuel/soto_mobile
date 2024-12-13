@@ -14,3 +14,4 @@ export 'transaction.dart';
 export 'vendor_inventory.dart';
 export 'vendor_order.dart';
 export 'vendor_overview.dart';
+export 'withdrawal_request.dart';

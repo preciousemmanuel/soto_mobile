@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:collection/collection.dart';
+import 'package:intl/intl.dart';
 import 'package:soto_ecommerce/common/common.dart';
 
 class WalletVm extends BaseVM {
@@ -7,6 +9,9 @@ class WalletVm extends BaseVM {
   List<Bank> get allBankList => _allBankList;
   List<MyBankDetails> _myBankDetails = [];
   List<MyBankDetails> get myBankDetails => _myBankDetails;
+  Map<String, List<WithdrawRequest>> _withdrawRequestsList = {};
+  Map<String, List<WithdrawRequest>> get withdrawRequestsList =>
+      _withdrawRequestsList;
 
   Future<ApiResponse> addMyBankDetails({
     required String bankId,
@@ -58,6 +63,23 @@ class WalletVm extends BaseVM {
       method: apiService.postWithAuth,
       body: payload,
       onSuccess: (data) {
+        return apiResponse;
+      },
+    );
+  }
+
+  Future<ApiResponse> getWithdrawalRequests() async {
+    return await performApiCall(
+      url: "/business/fetch-withdrawal-requests?limit=100&page=1",
+      method: apiService.getWithAuth,
+      onSuccess: (data) {
+        final res = withdrawRequestFromJson(json.encode(data['data']['data']));
+        _withdrawRequestsList = groupBy(
+          res,
+          (WithdrawRequest request) => DateFormat('dd MMM yyyy').format(
+            request.createdAt ?? DateTime.now(),
+          ),
+        );
         return apiResponse;
       },
     );

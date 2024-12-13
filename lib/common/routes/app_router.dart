@@ -132,6 +132,8 @@ class AppRouter {
         return buildRoute(const WithdrawChooseAccount());
       case RoutePath.walletPaymentMethodScreen:
         return buildRoute(const WalletPaymentMethodScreen());
+      case RoutePath.withdrawRequestScreen:
+        return buildRoute(const WithdrawRequestScreen());
 
       default:
         return errorScreen('No route defined for ${settings.name}');

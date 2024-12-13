@@ -58,4 +58,5 @@ class RoutePath {
   static const withdrawToBankScreen = '/withdrawToBankScreen';
   static const withdrawChooseAccount = '/withdrawChooseAccount';
   static const walletPaymentMethodScreen = '/walletPaymentMethodScreen';
+  static const withdrawRequestScreen = '/withdrawRequestScreen';
 }
