@@ -91,18 +91,18 @@ class OrderCard extends StatelessWidget {
                 title: '$qty items',
                 textColor: AppColors.text70,
               ),
-              OrderCTA(
-                title: 'Track',
-                color: AppColors.primaryOrange,
-                vPad: 6,
-                hPad: 24,
-                onTap: () {
-                  Navigator.pushNamed(
-                    context,
-                    RoutePath.trackMyOrderScreen,
-                  );
-                },
-              ),
+              // OrderCTA(
+              //   title: 'Track',
+              //   color: AppColors.primaryOrange,
+              //   vPad: 6,
+              //   hPad: 24,
+              //   onTap: () {
+              //     Navigator.pushNamed(
+              //       context,
+              //       RoutePath.trackMyOrderScreen,
+              //     );
+              //   },
+              // ),
             ],
           ),
         ],

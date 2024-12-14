@@ -66,51 +66,58 @@ class CheckoutScreen extends StatelessWidget {
             );
           }),
           const YBox(20),
-          Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: Sizer.width(20),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Shipping Options',
-                  style: AppTypography.text20.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                const YBox(10),
-                const ShippingOptionTile(
-                  duration: '4-7 days',
-                  price: 'Free',
-                  title: 'Standard',
-                  isSelected: true,
-                ),
-                const YBox(12),
-                const ShippingOptionTile(
-                  duration: '1-2 days',
-                  price: 'N2,000',
-                  title: 'Express',
-                  isSelected: false,
-                  bg: AppColors.baseF9,
-                ),
-              ],
-            ),
-          ),
-          const YBox(24),
-          CartAmountTotal(
-            total:
-                '${AppUtils.nairaSymbol}${AppUtils.formatAmountString('${context.watch<OrderVM>().cartTotalAmount}')}',
-            btnText: 'Pay',
-            btnOntap: () {
-              // TODO: check this out later
-              // Navigator.pushNamed(context, RoutePath.checkoutPaymentScreen);
-              Navigator.pushNamed(context, RoutePath.confirmPaymentScreen);
-            },
-          ),
-          const YBox(50),
+          // Container(
+          //   padding: EdgeInsets.symmetric(
+          //     horizontal: Sizer.width(20),
+          //   ),
+          //   child: Column(
+          //     mainAxisSize: MainAxisSize.min,
+          //     crossAxisAlignment: CrossAxisAlignment.start,
+          //     children: [
+          //       Text(
+          //         'Shipping Options',
+          //         style: AppTypography.text20.copyWith(
+          //           fontWeight: FontWeight.w600,
+          //         ),
+          //       ),
+          //       const YBox(10),
+          //       const ShippingOptionTile(
+          //         duration: '4-7 days',
+          //         price: 'Free',
+          //         title: 'Standard',
+          //         isSelected: true,
+          //       ),
+          //       const YBox(12),
+          //       const ShippingOptionTile(
+          //         duration: '1-2 days',
+          //         price: 'N2,000',
+          //         title: 'Express',
+          //         isSelected: false,
+          //         bg: AppColors.baseF9,
+          //       ),
+          //     ],
+          //   ),
+          // ),
+
+          const YBox(200),
         ],
+      ),
+      bottomSheet: Container(
+        padding: EdgeInsets.only(
+          bottom: Sizer.height(20),
+          top: Sizer.height(10),
+        ),
+        color: AppColors.bgWhite,
+        child: CartAmountTotal(
+          total:
+              '${AppUtils.nairaSymbol}${AppUtils.formatAmountString('${context.watch<OrderVM>().cartTotalAmount}')}',
+          btnText: 'Pay',
+          btnOntap: () {
+            // TODO: check this out later
+            // Navigator.pushNamed(context, RoutePath.checkoutPaymentScreen);
+            Navigator.pushNamed(context, RoutePath.confirmPaymentScreen);
+          },
+        ),
       ),
     );
   }

@@ -10,6 +10,7 @@ export 'order_response.dart';
 export 'product.dart';
 export 'product_category.dart';
 export 'sales_analytics.dart';
+export 'shipping_cost_agility.dart';
 export 'transaction.dart';
 export 'vendor_inventory.dart';
 export 'vendor_order.dart';

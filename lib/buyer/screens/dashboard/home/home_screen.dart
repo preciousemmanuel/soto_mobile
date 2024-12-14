@@ -19,10 +19,17 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
   }
 
-  _init() {
+  _init() async {
+    final authVm = context.read<AuthUserVM>();
     context.read<ProductVM>()
       ..getCategories()
       ..getProductList();
+
+    if (authVm.authUser != null) {
+      authVm.addFCMToken(
+          fcmToken:
+              await StorageService.getStringItem(StorageKey.deviceToken) ?? "");
+    }
   }
 
   @override

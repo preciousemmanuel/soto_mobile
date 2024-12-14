@@ -108,4 +108,28 @@ class AuthUserVM extends BaseVM {
       },
     );
   }
+
+  Future<ApiResponse> addFCMToken({
+    required String fcmToken,
+  }) async {
+    printty('fcmToken: $fcmToken');
+    return await performApiCall(
+      url: "/notification/add-tokens",
+      method: apiService.postWithAuth,
+      body: {
+        "fcmToken": fcmToken, // for firebase push notification
+        // "playerId": "23465ydrgfsa", // for one signal push notification
+        "user_id": _authUser?.id ?? "",
+      },
+      onSuccess: (data) {
+        return apiResponse;
+      },
+    );
+  }
+
+  void clearData() {
+    _authUser = null;
+    _cities = [];
+    _states = [];
+  }
 }

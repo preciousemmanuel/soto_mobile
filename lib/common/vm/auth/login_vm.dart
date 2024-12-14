@@ -38,16 +38,23 @@ class LoginVM extends BaseVM {
       setBusy(true);
       await Future.delayed(const Duration(seconds: 1));
       final AuthUser? user = await StorageService.getUser();
-      Navigator.pushNamedAndRemoveUntil(
-        NavKey.appNavigatorKey.currentContext!,
-        RoutePath.loginScreen,
-        arguments: LoginScreenArgs(isVendor: switchToVendor),
-        (r) => false,
-      );
+      if (switchToVendor) {
+        Navigator.pushNamedAndRemoveUntil(
+          NavKey.appNavigatorKey.currentContext!,
+          RoutePath.loginScreen,
+          arguments: LoginScreenArgs(isVendor: switchToVendor),
+          (r) => false,
+        );
+      } else {
+        Navigator.pushNamedAndRemoveUntil(
+          NavKey.appNavigatorKey.currentContext!,
+          RoutePath.dashboardNavScreen,
+          (r) => false,
+        );
+      }
       setBusy(false);
 
       await StorageService.logout();
-      await StorageService.storeStringItem(StorageKey.email, user?.email ?? "");
 
       return ApiResponse(success: true);
     } catch (e) {

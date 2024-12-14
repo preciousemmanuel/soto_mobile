@@ -168,6 +168,15 @@ class _OverviewTabState extends State<OverviewTab> {
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (_, i) {
                     return OverviewProductTile(
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          RoutePath.vendorProductDetailsScreen,
+                          arguments: ProductArgs(
+                            productId: ref.productsByVendor[i].id ?? '',
+                          ),
+                        );
+                      },
                       product: ref.productsByVendor[i],
                     );
                   },

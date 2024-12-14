@@ -8,6 +8,8 @@ class FlushBarToast {
     int? duration,
     FlushbarPosition? position,
     SnackBarType snackBarType = SnackBarType.warning,
+    String? actionText,
+    Function()? onActionTap,
   }) {
     return Flushbar<dynamic>(
       padding: EdgeInsets.symmetric(
@@ -23,13 +25,39 @@ class FlushBarToast {
           ),
           const XBox(10),
           Expanded(
-            child: Text(
-              message,
-              // overflow: TextOverflow.ellipsis,
-              // maxLines: 2,
-              style: AppTypography.text14.copyWith(
-                color: AppColors.text7D,
-              ),
+            child: Row(
+              children: [
+                Text(
+                  message,
+                  // overflow: TextOverflow.ellipsis,
+                  // maxLines: 2,
+                  style: AppTypography.text14.copyWith(
+                    color: AppColors.text7D,
+                  ),
+                ),
+                if (onActionTap != null) const Spacer(),
+                if (onActionTap != null)
+                  InkWell(
+                    onTap: onActionTap,
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: Sizer.width(8),
+                        vertical: Sizer.height(2),
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppColors.primaryOrange,
+                        borderRadius: BorderRadius.circular(Sizer.radius(4)),
+                      ),
+                      child: Text(
+                        actionText ?? 'OK',
+                        style: AppTypography.text12.copyWith(
+                          color: AppColors.white,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  )
+              ],
             ),
           ),
         ],

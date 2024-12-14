@@ -139,7 +139,7 @@ class ProductVM extends BaseVM {
       onSuccess: (data) {
         // _singleProduct = Product.fromJson(data["data"]["product"]);
         return ApiResponse(
-            success: true, data: Product.fromJson(data["data"]["product"]));
+            success: true, data: ProductData.fromJson(data["data"]));
       },
     );
   }

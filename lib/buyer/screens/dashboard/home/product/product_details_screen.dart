@@ -16,7 +16,7 @@ class ProductDetailsScreen extends StatefulWidget {
 }
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
-  Product? _singleProduct;
+  ProductData? _singleProduct;
   ReviewsDescType _reviewsDescType = ReviewsDescType.description;
 
   int _productQty = 1;
@@ -59,9 +59,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     height: Sizer.height(340),
                     width: Sizer.screenWidth,
                     child: MyCachedNetworkImage(
-                      imageUrl: (_singleProduct?.images?.isNotEmpty ?? false)
-                          ? (_singleProduct?.images?.first ?? '')
-                          : '',
+                      imageUrl:
+                          (_singleProduct?.product?.images?.isNotEmpty ?? false)
+                              ? (_singleProduct?.product?.images?.first ?? '')
+                              : '',
                       fadeInDuration: const Duration(milliseconds: 50),
                       // fit: BoxFit.cover,
                       width: MediaQuery.of(context).size.width,
@@ -108,7 +109,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
-                                _singleProduct?.productName ?? '',
+                                _singleProduct?.product?.productName ?? '',
                                 style: AppTypography.text16.copyWith(
                                   fontWeight: FontWeight.w500,
                                   color: AppColors.text3E,
@@ -116,7 +117,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               ),
                               const YBox(4),
                               Text(
-                                ' N${AppUtils.formatAmountString(_singleProduct?.unitPrice.toString() ?? '')}',
+                                ' N${AppUtils.formatAmountString(_singleProduct?.product?.unitPrice.toString() ?? '')}',
                                 style: AppTypography.text24.copyWith(
                                   color: AppColors.primaryOrange,
                                   fontWeight: FontWeight.w600,
@@ -158,7 +159,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   const YBox(20),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: Sizer.width(20)),
-                    child: const ProductReviewStat(),
+                    child: ProductReviewStat(
+                      rating: _singleProduct?.product?.rating,
+                      reviewCount: _singleProduct?.reviews?.length ?? 0,
+                    ),
                   ),
                   const YBox(16),
                   Container(
@@ -199,8 +203,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   ),
                   const YBox(26),
                   _reviewsDescType == ReviewsDescType.description
-                      ? const DescTabDetail()
-                      : const ReviewsTabDetail(),
+                      ? DescTabDetail(
+                          desc: _singleProduct?.product?.description,
+                        )
+                      : ReviewsTabDetail(
+                          reviews: _singleProduct?.reviews ?? []),
                   const YBox(20),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: Sizer.width(20)),
@@ -256,23 +263,29 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     orderVM
                         .addproductToCart(
                       product: ProductCart(
-                        productId: _singleProduct?.id ?? '',
-                        productName: _singleProduct?.productName ?? '',
-                        productImage: _singleProduct?.images?.first ?? '',
-                        unitPrice: (_singleProduct?.unitPrice ?? 0).toDouble(),
+                        productId: _singleProduct?.product?.id ?? '',
+                        productName: _singleProduct?.product?.productName ?? '',
+                        productImage:
+                            _singleProduct?.product?.images?.first ?? '',
+                        unitPrice: (_singleProduct?.product?.unitPrice ?? 0)
+                            .toDouble(),
                         qty: _productQty,
                       ),
                     )
                         .then((_) {
                       orderVM.getCartFromStorage();
-                      Navigator.pushNamed(
-                        context,
-                        RoutePath.dashboardNavScreen,
-                        arguments: DashArg(index: 2),
-                      );
+
                       FlushBarToast.fLSnackBar(
                         snackBarType: SnackBarType.success,
                         message: 'Product added to cart',
+                        actionText: 'Go to cart',
+                        onActionTap: () {
+                          Navigator.pushNamed(
+                            context,
+                            RoutePath.dashboardNavScreen,
+                            arguments: DashArg(index: 2),
+                          );
+                        },
                       );
                     });
                   },

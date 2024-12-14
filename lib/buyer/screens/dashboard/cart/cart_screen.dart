@@ -117,7 +117,7 @@ class CartScreen extends StatelessWidget {
                               ],
                             );
                           }),
-                          const YBox(48),
+                          const YBox(60),
                           CartAmountTotal(
                             total:
                                 '${AppUtils.nairaSymbol}${AppUtils.formatAmountString('${vm.cartTotalAmount}')}',

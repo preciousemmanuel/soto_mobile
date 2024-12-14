@@ -13,6 +13,8 @@ class OrderVM extends BaseVM {
   List<OrderRes> get cancelledOrders => _cancelledOrders;
   List<ProductCart> _cartItems = [];
   List<ProductCart> get cartItems => _cartItems;
+  ShippingCostAgility? _shippingCostAgility;
+  ShippingCostAgility? get shippingCostAgility => _shippingCostAgility;
 
   Future<void> addproductToCart({required ProductCart product}) async {
     printty("add to cart call with product: $product");
@@ -165,6 +167,29 @@ class OrderVM extends BaseVM {
     );
   }
 
+  Future<ApiResponse> getDeliveryAgilityPrice({
+    required List<ProductCart> items,
+  }) async {
+    final bodyItemsList = items
+        .map((item) => {
+              "_id": item.productId,
+              "quantity": item.qty,
+            })
+        .toList();
+
+    printty("add to cart call with body: $bodyItemsList");
+    return await performApiCall(
+      url: "/delivery/agility-get-price",
+      method: apiService.postWithAuth,
+      body: {"items": bodyItemsList},
+      onSuccess: (data) {
+        _shippingCostAgility =
+            shippingCostAgilityFromJson(jsonEncode(data["data"]));
+        return apiResponse;
+      },
+    );
+  }
+
   //   Future<ApiResponse> addproductToCart(
   //     {required List<ProductCart> items}) async {
   //   printty("add to cart call");
@@ -190,6 +215,7 @@ class OrderVM extends BaseVM {
   // }
 }
 
+// Used to format payloads, not API res
 List<ProductCart> productCartFromJson(String str) => List<ProductCart>.from(
     json.decode(str).map((x) => ProductCart.fromJson(x)));
 

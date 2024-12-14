@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:soto_ecommerce/buyer/buyer.dart';
 import 'package:soto_ecommerce/common/common.dart';
 
@@ -201,7 +203,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           confirmText: 'Yes Logout',
                           onConfirm: () {
                             vm.removeVendorUser();
-                            context.read<LoginVM>().logout();
+                            context.read<LoginVM>().logout().then((v) {
+                              context.read<AuthUserVM>().clearData();
+                            });
                           },
                         ),
                       );

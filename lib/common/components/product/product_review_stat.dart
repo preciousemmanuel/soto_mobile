@@ -3,7 +3,12 @@ import 'package:soto_ecommerce/common/common.dart';
 class ProductReviewStat extends StatelessWidget {
   const ProductReviewStat({
     super.key,
+    this.rating,
+    required this.reviewCount,
   });
+
+  final int? rating;
+  final int reviewCount;
 
   @override
   Widget build(BuildContext context) {
@@ -28,12 +33,12 @@ class ProductReviewStat extends StatelessWidget {
                     ...List.generate(
                       5,
                       (i) => CustomRating(
-                        isActive: i < 4,
+                        isActive: i < (rating ?? 0).toInt(),
                       ),
                     ),
                     const XBox(8),
                     Text(
-                      '4.8',
+                      (rating ?? 0).toString(),
                       style: AppTypography.text12.copyWith(
                         fontWeight: FontWeight.w500,
                       ),
@@ -44,7 +49,7 @@ class ProductReviewStat extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      '53 Reviews',
+                      '$reviewCount Reviews',
                       style: AppTypography.text12.copyWith(
                         color: AppColors.textAA,
                       ),
@@ -67,7 +72,7 @@ class ProductReviewStat extends StatelessWidget {
               children: [
                 const CustomAvatar(),
                 ...List.generate(
-                  4,
+                  (rating ?? 0).toInt(),
                   (index) => Positioned(
                     left: -15 * (index + 1),
                     child: const CustomAvatar(),

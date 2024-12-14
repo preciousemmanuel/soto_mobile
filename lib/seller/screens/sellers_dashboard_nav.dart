@@ -29,10 +29,21 @@ class _SellersDashboardNavState extends State<SellersDashboardNav> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<AuthUserVM>().getUserProfile(
-            busyObjectName: AuthUserVM.dashboardLoading,
-          );
+      _init();
     });
+  }
+
+  _init() async {
+    final authVm = context.read<AuthUserVM>();
+    await authVm.getUserProfile(
+      busyObjectName: AuthUserVM.dashboardLoading,
+    );
+
+    if (authVm.authUser != null) {
+      authVm.addFCMToken(
+          fcmToken:
+              await StorageService.getStringItem(StorageKey.deviceToken) ?? "");
+    }
   }
 
   @override

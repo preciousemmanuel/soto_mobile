@@ -17,7 +17,7 @@ class VendorProductDetailsScreen extends StatefulWidget {
 
 class _VendorProductDetailsScreenState
     extends State<VendorProductDetailsScreen> {
-  Product? _singleProduct;
+  ProductData? _singleProduct;
 
   @override
   void initState() {
@@ -64,16 +64,17 @@ class _VendorProductDetailsScreenState
                 width: Sizer.screenWidth,
                 color: AppColors.bgFF,
                 child: MyCachedNetworkImage(
-                  imageUrl: (_singleProduct?.images?.isNotEmpty ?? false)
-                      ? (_singleProduct?.images?.first ?? '')
-                      : '',
+                  imageUrl:
+                      (_singleProduct?.product?.images?.isNotEmpty ?? false)
+                          ? (_singleProduct?.product?.images?.first ?? '')
+                          : '',
                   fadeInDuration: const Duration(milliseconds: 50),
                   fit: BoxFit.cover,
                 ),
               ),
               const YBox(12),
-              if ((_singleProduct?.images?.isNotEmpty == true &&
-                  {_singleProduct?.images ?? []}.contains('https://')))
+              if ((_singleProduct?.product?.images?.isNotEmpty == true &&
+                  {_singleProduct?.product?.images ?? []}.contains('https://')))
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -81,7 +82,7 @@ class _VendorProductDetailsScreenState
                       spacing: Sizer.width(15),
                       runSpacing: Sizer.height(10),
                       children: List.generate(
-                        _singleProduct?.images?.length ?? 0,
+                        _singleProduct?.product?.images?.length ?? 0,
                         (i) => Container(
                           decoration: BoxDecoration(
                             borderRadius:
@@ -93,7 +94,7 @@ class _VendorProductDetailsScreenState
                             borderRadius:
                                 BorderRadius.circular(Sizer.height(8)),
                             child: Image.network(
-                              _singleProduct?.images?[i] ?? '',
+                              _singleProduct?.product?.images?[i] ?? '',
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -111,7 +112,7 @@ class _VendorProductDetailsScreenState
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          _singleProduct?.productName ?? '',
+                          _singleProduct?.product?.productName ?? '',
                           style: AppTypography.text16.copyWith(
                             fontWeight: FontWeight.w500,
                             color: AppColors.text3E,
@@ -119,7 +120,7 @@ class _VendorProductDetailsScreenState
                         ),
                         const YBox(4),
                         Text(
-                          '${AppUtils.nairaSymbol}${AppUtils.formatAmountString(_singleProduct?.unitPrice.toString() ?? '')}',
+                          '${AppUtils.nairaSymbol}${AppUtils.formatAmountString(_singleProduct?.product?.unitPrice.toString() ?? '')}',
                           style: GoogleFonts.roboto(
                             color: AppColors.primaryOrange,
                             fontSize: Sizer.height(24),
@@ -129,7 +130,8 @@ class _VendorProductDetailsScreenState
                       ],
                     ),
                   ),
-                  if ((_singleProduct?.category?.name ?? '').isNotEmpty)
+                  if ((_singleProduct?.product?.category?.name ?? '')
+                      .isNotEmpty)
                     Container(
                       padding: EdgeInsets.symmetric(
                         horizontal: Sizer.width(12),
@@ -140,7 +142,7 @@ class _VendorProductDetailsScreenState
                         borderRadius: BorderRadius.circular(Sizer.radius(8)),
                       ),
                       child: Text(
-                        _singleProduct?.category?.name ?? '',
+                        _singleProduct?.product?.category?.name ?? '',
                         style: AppTypography.text14.copyWith(
                             color: AppColors.primaryOrange,
                             fontWeight: FontWeight.w500),
@@ -148,17 +150,22 @@ class _VendorProductDetailsScreenState
                     ),
                 ],
               ),
-              const YBox(13),
+              const YBox(16),
               Text('Description', style: AppTypography.text14),
+              const YBox(4),
               Text(
-                "I recently purchased the Avery Sofa and Armchair from E&M Furnitures, and I couldn't be happier! The quality of the materials and craftsmanship is top-notch and the delivery team was professional, ensuring everything was perfectly assembled.",
+                _singleProduct?.product?.description ??
+                    'No product description',
                 style: AppTypography.text12.copyWith(
                   color: AppColors.textAA,
                 ),
               ),
-              const YBox(13),
+              const YBox(16),
               Text('Rating', style: AppTypography.text14),
-              const ProductReviewStat(),
+              ProductReviewStat(
+                rating: _singleProduct?.product?.rating ?? 0,
+                reviewCount: _singleProduct?.reviews?.length ?? 0,
+              ),
               const YBox(13),
               Text('Product in stock', style: AppTypography.text14),
               const YBox(4),
@@ -167,13 +174,14 @@ class _VendorProductDetailsScreenState
                 TextSpan(
                   text: 'Qty: ',
                   style: AppTypography.text14.copyWith(
-                    color: AppColors.text3E,
+                    color: AppColors.text20,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
                 TextSpan(
                   text: AppUtils.formatAmountString(
-                      _singleProduct?.productQuantity.toString() ?? ''),
+                      _singleProduct?.product?.productQuantity.toString() ??
+                          ''),
                   style: AppTypography.text14.copyWith(
                     color: AppColors.primaryOrange,
                     fontWeight: FontWeight.w500,
