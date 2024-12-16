@@ -1,11 +1,6 @@
 import 'package:soto_ecommerce/buyer/buyer.dart';
 import 'package:soto_ecommerce/common/common.dart';
 
-class DashArg {
-  final int? index;
-  DashArg({this.index});
-}
-
 class DashboardNav extends StatefulWidget {
   const DashboardNav({
     super.key,

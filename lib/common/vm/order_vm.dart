@@ -5,16 +5,18 @@ import 'package:soto_ecommerce/common/common.dart';
 class OrderVM extends BaseVM {
   List<OrderRes> _activeOrders = [];
   List<OrderRes> get activeOrders => _activeOrders;
-  final List<OrderRes> _customOrders = [];
-  List<OrderRes> get customOrders => _customOrders;
-  final List<OrderRes> _deliveredOrders = [];
-  List<OrderRes> get deliveredOrders => _deliveredOrders;
-  final List<OrderRes> _cancelledOrders = [];
-  List<OrderRes> get cancelledOrders => _cancelledOrders;
   List<ProductCart> _cartItems = [];
   List<ProductCart> get cartItems => _cartItems;
+  OrderDetailsRes? _singleOrder;
+  OrderDetailsRes? get singleOrder => _singleOrder;
   ShippingCostAgility? _shippingCostAgility;
   ShippingCostAgility? get shippingCostAgility => _shippingCostAgility;
+  List<String> get orderTrackSteps {
+    final orderItinerary = _singleOrder?.orderItinerary;
+    if (orderItinerary == null) return [];
+
+    return orderItinerary.toJson().values.whereType<String>().toList();
+  }
 
   Future<void> addproductToCart({required ProductCart product}) async {
     printty("add to cart call with product: $product");
@@ -185,6 +187,18 @@ class OrderVM extends BaseVM {
       onSuccess: (data) {
         _shippingCostAgility =
             shippingCostAgilityFromJson(jsonEncode(data["data"]));
+        return apiResponse;
+      },
+    );
+  }
+
+  Future<ApiResponse> fetchOrderDetails(String id) async {
+    final url = "/order/view-one/$id";
+    return await performApiCall(
+      url: url,
+      method: apiService.getWithAuth,
+      onSuccess: (data) {
+        _singleOrder = OrderDetailsRes.fromJson(data["data"]);
         return apiResponse;
       },
     );

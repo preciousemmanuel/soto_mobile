@@ -21,8 +21,9 @@ class AuthUserVM extends BaseVM {
 
   String get shippingADD =>
       '${authUser?.shippingAddress?.fullAddress}, ${authUser?.shippingAddress?.country}';
-  String get fullname =>
-      '${(authUser?.firstName ?? '').capitalizeFirstLetter()} ${(authUser?.lastName ?? '').capitalizeFirstLetter()}';
+  String get fullname => _authUser?.userType == UserType.vendor.name
+      ? (_authUser?.business?.businessName ?? '').capitalize()
+      : '${(authUser?.firstName ?? '').capitalizeFirstLetter()} ${(authUser?.lastName ?? '').capitalizeFirstLetter()}';
 
   void getUserFromStorage() async {
     var authUser = await StorageService.getUser();

@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:soto_ecommerce/buyer/buyer.dart';
 import 'package:soto_ecommerce/common/common.dart';
-import 'package:soto_ecommerce/seller/screens/products/vendor_product_details_screen.dart';
 import 'package:soto_ecommerce/seller/seller.dart';
 
 class AppRouter {
@@ -18,6 +17,8 @@ class AppRouter {
         return buildRoute(const OnboardScreenOne());
       case RoutePath.onboardScreenTwo:
         return buildRoute(const OnboardScreenTwo());
+      case RoutePath.onboardScreenThree:
+        return buildRoute(const OnboardScreenThree());
 
       // Auth
       case RoutePath.loginScreen:
@@ -66,7 +67,10 @@ class AppRouter {
       case RoutePath.reviewOrderScreen:
         return buildRoute(const ReviewOrderScreen());
       case RoutePath.trackMyOrderScreen:
-        return buildRoute(const TrackMyOrderScreen());
+        if (args is OrderDetailArg) {
+          return buildRoute(TrackMyOrderScreen(args: args));
+        }
+        return errorScreen('Incorrect arguments for ${settings.name}');
 
       // Cart
       case RoutePath.checkoutScreen:
@@ -113,7 +117,9 @@ class AppRouter {
         return buildRoute(const VendorOtpScreen());
 
       case RoutePath.addProductScreen:
-        return buildRoute(const AddProductScreen());
+        final VendorProductArgs? vendorProductArgs = args as VendorProductArgs?;
+        return buildRoute(AddProductScreen(args: vendorProductArgs));
+
       case RoutePath.vendorProductListScreen:
         return buildRoute(const VendorProductListScreen());
       case RoutePath.vendorProductDetailsScreen:

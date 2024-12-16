@@ -33,13 +33,17 @@ class _OverviewScreenState extends State<OverviewScreen> {
                       Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          SizedBox(
-                            height: Sizer.height(50),
-                            width: Sizer.width(50),
-                            child: ClipRRect(
-                              borderRadius:
-                                  BorderRadius.circular(Sizer.width(32)),
-                              child: imageHelper(AppImages.avatar),
+                          Container(
+                            padding: const EdgeInsets.all(6),
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: AppColors.gray500,
+                                ),
+                                borderRadius:
+                                    BorderRadius.circular(Sizer.radius(100))),
+                            child: Icon(
+                              Iconsax.user,
+                              size: Sizer.width(32),
                             ),
                           ),
                           const XBox(8),
@@ -47,7 +51,12 @@ class _OverviewScreenState extends State<OverviewScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'ClassyXly',
+                                (context
+                                            .watch<AuthUserVM>()
+                                            .authUser
+                                            ?.firstName ??
+                                        'Guest')
+                                    .capitalizeFirstLetter(),
                                 style: AppTypography.text16.copyWith(
                                   fontWeight: FontWeight.w500,
                                 ),

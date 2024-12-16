@@ -1,4 +1,3 @@
-import 'package:soto_ecommerce/buyer/buyer.dart';
 import 'package:soto_ecommerce/common/common.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -33,16 +32,36 @@ class _CustomWebviewScreenState extends State<CustomWebviewScreen> {
 
     controller
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setNavigationDelegate(NavigationDelegate(
-        onPageStarted: (_) async {
-          isLoading = true;
-        },
-        onPageFinished: (finish) {
-          setState(() {
-            isLoading = false;
-          });
-        },
-      ))
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onPageStarted: (v) async {
+            printty('onPageStarted : $v');
+            isLoading = true;
+          },
+          onPageFinished: (finish) {
+            printty('onPageFinished: $finish');
+            setState(() {
+              isLoading = false;
+            });
+          },
+          onNavigationRequest: (request) async {
+            printty('onNavigationRequest: ${request.url}');
+            if (request.url.startsWith('https://standard.paystack.co/close')) {
+              Navigator.pop(context);
+            }
+            if (request.url == "https://hello.pstk.xyz/callback") {
+              Navigator.of(context).pop(); //close webview
+            }
+            return NavigationDecision.navigate;
+          },
+          onUrlChange: (request) async {
+            printty('onUrlChange: ${request.url}');
+            if (request.url == "https://hello.pstk.xyz/callback") {
+              Navigator.of(context).pop(); //close webview
+            }
+          },
+        ),
+      )
       ..loadRequest(Uri.parse(widget.arg.webURL));
 
     _controller = controller;
@@ -63,15 +82,7 @@ class _CustomWebviewScreenState extends State<CustomWebviewScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               InkWell(
-                onTap: () {
-                  context.read<OrderVM>().clearCart();
-                  Navigator.pushNamedAndRemoveUntil(
-                    context,
-                    RoutePath.dashboardNavScreen,
-                    (route) => false,
-                    arguments: DashArg(index: 1),
-                  );
-                },
+                onTap: widget.arg.onBackPress ?? () => Navigator.pop(context),
                 child: Padding(
                   padding: EdgeInsets.all(Sizer.radius(4)),
                   child: Icon(

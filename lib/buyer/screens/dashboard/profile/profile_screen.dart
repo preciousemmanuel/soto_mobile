@@ -65,6 +65,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     : vm.setVendorUser();
                                 context.read<LoginVM>().logout(
                                     switchToVendor: _isVendor ? false : true);
+                                context.read<AuthUserVM>().clearData();
                               },
                             ),
                           );
@@ -191,6 +192,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: const ProfileListTile(
                       title: 'Help Center',
                       leadicon: AppSvgs.chatHelp,
+                    ),
+                  ),
+                  const YBox(10),
+                  DecorationContainer(
+                    onTap: () {
+                      Navigator.pushNamed(
+                          context, RoutePath.customWebviewScreen,
+                          arguments: WebViewArg(
+                            webURL: AppUtils.termsAndConditions,
+                          ));
+                    },
+                    child: const ProfileListTile(
+                      title: 'Terms & Conditions',
+                      leadicon: AppSvgs.note,
+                    ),
+                  ),
+                  const YBox(10),
+                  DecorationContainer(
+                    onTap: () {
+                      Navigator.pushNamed(
+                        context,
+                        RoutePath.customWebviewScreen,
+                        arguments: WebViewArg(
+                          webURL: AppUtils.policy,
+                        ),
+                      );
+                    },
+                    child: const ProfileListTile(
+                      title: 'Privacy Policie',
+                      leadicon: AppSvgs.warning,
                     ),
                   ),
                   const YBox(10),

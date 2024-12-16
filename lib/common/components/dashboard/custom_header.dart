@@ -10,6 +10,7 @@ class CustomHeader extends StatelessWidget implements PreferredSizeWidget {
     this.padding,
     this.backBtn,
     this.titleStyle,
+    this.trailingWidget,
   });
 
   final String title;
@@ -19,6 +20,7 @@ class CustomHeader extends StatelessWidget implements PreferredSizeWidget {
   final FontWeight? titleWeight;
   final TextStyle? titleStyle;
   final EdgeInsetsGeometry? padding;
+  final Widget? trailingWidget;
 
   @override
   Widget build(BuildContext context) {
@@ -50,9 +52,11 @@ class CustomHeader extends StatelessWidget implements PreferredSizeWidget {
                       )
                     : Container(),
                 Container(
-                  padding: EdgeInsets.only(
-                    right: Sizer.width(showBackBtn ? 20 : 0),
-                  ),
+                  padding: trailingWidget == null
+                      ? null
+                      : EdgeInsets.only(
+                          right: Sizer.width(showBackBtn ? 20 : 0),
+                        ),
                   child: Text(
                     title,
                     style: titleStyle ??
@@ -62,7 +66,7 @@ class CustomHeader extends StatelessWidget implements PreferredSizeWidget {
                         ),
                   ),
                 ),
-                Container(),
+                Container(child: trailingWidget),
               ],
             ),
           ],

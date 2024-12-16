@@ -3,8 +3,34 @@
 import 'package:soto_ecommerce/buyer/screens/auth/login_screen.dart';
 import 'package:soto_ecommerce/common/common.dart';
 
-class ApprovalScreen extends StatelessWidget {
+class ApprovalScreen extends StatefulWidget {
   const ApprovalScreen({super.key});
+
+  @override
+  State<ApprovalScreen> createState() => _ApprovalScreenState();
+}
+
+class _ApprovalScreenState extends State<ApprovalScreen> {
+  @override
+  void initState() {
+    super.initState();
+    _init();
+  }
+
+  _init() {
+    final authVm = context.read<AuthUserVM>();
+    authVm.getUserProfile().then((v) {
+      if (v.success) {
+        if (v.data["data"]?["IsVerified"] == true) {
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            RoutePath.sellerDashboardNavScreen,
+            (route) => false,
+          );
+        }
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

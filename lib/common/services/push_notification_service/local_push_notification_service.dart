@@ -11,7 +11,7 @@ class LocalPushNotificationService {
     printty("Local noty init");
     //android
     const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('ic_korrency');
+        AndroidInitializationSettings('ic_launcher_foreground');
 
     //ios
     const DarwinInitializationSettings initializationSettingsDarwin =

@@ -50,6 +50,7 @@ class _VendorOrderPendingTabState extends State<VendorOrderPendingTab> {
             children: [
               const Divider(color: AppColors.whiteF7),
               OrderCard(
+                orderId: widget.vm.activeOrders[i].id ?? '',
                 qty: '${widget.vm.activeOrders[i].quantity ?? 0}',
                 trackingCode: '5636XDS',
                 productName:

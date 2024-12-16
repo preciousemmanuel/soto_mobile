@@ -26,6 +26,8 @@ class AppSvgs {
   static const String star = "$svgIcon/star.svg";
   static const String filter = "$svgIcon/filter.svg";
   static const String chatHelp = "$svgIcon/chatHelp.svg";
+  static const String note = "$svgIcon/note.svg";
+  static const String warning = "$svgIcon/warning.svg";
 
   static const String call = "$svgIcon/call.svg";
   static const String x = "$svgIcon/x.svg";

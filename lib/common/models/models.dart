@@ -5,6 +5,7 @@ export 'city_state_model.dart';
 export 'custom_order_res.dart';
 export 'my_bank_detials.dart';
 export 'notification_model.dart';
+export 'order_details_response.dart';
 export 'order_res.dart';
 export 'order_response.dart';
 export 'product.dart';

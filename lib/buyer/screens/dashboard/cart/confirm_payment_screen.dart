@@ -167,6 +167,7 @@ class _ConfirmPaymentScreenState extends State<ConfirmPaymentScreen> {
   void _createOrder() async {
     final orderVM = context.read<OrderVM>();
     final authVM = context.read<AuthUserVM>();
+    final currentCtx = NavKey.appNavigatorKey.currentContext!;
     try {
       final createOrderRes = await orderVM.createOder(
           items: orderVM.cartItems, address: authVM.shippingADD);
@@ -177,10 +178,22 @@ class _ConfirmPaymentScreenState extends State<ConfirmPaymentScreen> {
             orderId: createOrderRes.data ?? '');
 
         if (orderLinkRes.success) {
-          Navigator.pushReplacementNamed(context, RoutePath.customWebviewScreen,
-              arguments: WebViewArg(
-                webURL: orderLinkRes.data ?? '',
-              ));
+          Navigator.pushReplacementNamed(
+            context,
+            RoutePath.customWebviewScreen,
+            arguments: WebViewArg(
+              webURL: orderLinkRes.data ?? '',
+              onBackPress: () {
+                currentCtx.read<OrderVM>().clearCart();
+                Navigator.pushNamedAndRemoveUntil(
+                  currentCtx,
+                  RoutePath.dashboardNavScreen,
+                  (route) => false,
+                  arguments: DashArg(index: 1),
+                );
+              },
+            ),
+          );
         }
       }
     } catch (e) {

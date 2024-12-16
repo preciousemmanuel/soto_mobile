@@ -67,8 +67,8 @@ class CreateBusinessVM extends BaseVM {
       busyObjectName: businessSignupState,
       body: body,
       onSuccess: (data) {
-        // String token = data["data"]["token"];
-        // StorageService.storeAccessToken(token);
+        String token = data["data"]["Token"];
+        StorageService.storeAccessToken(token);
         return ApiResponse(
           success: true,
           data: apiResponse.data,

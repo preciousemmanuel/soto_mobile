@@ -6,13 +6,17 @@ class OverViewStat extends StatelessWidget {
   const OverViewStat({
     super.key,
     required this.title,
+    required this.subtitle,
     required this.cent,
     required this.amount,
+    this.iconColor,
   });
 
   final String title;
+  final String subtitle;
   final String cent;
   final String amount;
+  final Color? iconColor;
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +45,7 @@ class OverViewStat extends StatelessWidget {
                 ),
                 child: svgHelper(
                   AppSvgs.activity,
+                  color: iconColor,
                   width: Sizer.width(25),
                 ),
               ),
@@ -74,7 +79,7 @@ class OverViewStat extends StatelessWidget {
             ],
           ),
           Text(
-            'Amount to be Remitted',
+            subtitle,
             style: AppTypography.text10.copyWith(
               color: AppColors.black66.withOpacity(0.7),
             ),

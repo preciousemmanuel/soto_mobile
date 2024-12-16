@@ -49,6 +49,7 @@ class _OrderFailedTabState extends State<OrderFailedTab> {
             children: [
               const Divider(color: AppColors.whiteF7),
               OrderCard(
+                orderId: widget.vm.activeOrders[i].id ?? '',
                 qty: '${widget.vm.activeOrders[i].items?.first.quantity ?? 0}',
                 trackingCode: widget.vm.activeOrders[i].trackingId ?? '',
                 productName:

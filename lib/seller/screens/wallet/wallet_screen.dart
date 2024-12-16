@@ -44,16 +44,30 @@ class _WalletScreenState extends State<WalletScreen> {
                         Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            SizedBox(
-                              height: Sizer.height(32),
-                              width: Sizer.width(32),
-                              child: ClipRRect(
-                                borderRadius:
-                                    BorderRadius.circular(Sizer.width(32)),
-                                child: imageHelper(AppImages.avatar),
+                            Container(
+                              padding: const EdgeInsets.all(6),
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: AppColors.white,
+                                  ),
+                                  borderRadius:
+                                      BorderRadius.circular(Sizer.radius(100))),
+                              child: Icon(
+                                Iconsax.user,
+                                size: Sizer.width(24),
+                                color: AppColors.white,
                               ),
                             ),
-                            const XBox(4),
+                            // SizedBox(
+                            //   height: Sizer.height(32),
+                            //   width: Sizer.width(32),
+                            //   child: ClipRRect(
+                            //     borderRadius:
+                            //         BorderRadius.circular(Sizer.width(32)),
+                            //     child: imageHelper(AppImages.avatar),
+                            //   ),
+                            // ),
+                            const XBox(10),
                             Text(
                               vm.authUser?.firstName?.capitalizeFirstLetter() ??
                                   '',

@@ -3,12 +3,14 @@ import 'package:soto_ecommerce/common/common.dart';
 class OrderCard extends StatelessWidget {
   const OrderCard({
     super.key,
+    required this.orderId,
     required this.productName,
     required this.productImage,
     required this.trackingCode,
     required this.qty,
   });
 
+  final String orderId;
   final String productName;
   final String productImage;
   final String trackingCode;
@@ -91,18 +93,19 @@ class OrderCard extends StatelessWidget {
                 title: '$qty items',
                 textColor: AppColors.text70,
               ),
-              // OrderCTA(
-              //   title: 'Track',
-              //   color: AppColors.primaryOrange,
-              //   vPad: 6,
-              //   hPad: 24,
-              //   onTap: () {
-              //     Navigator.pushNamed(
-              //       context,
-              //       RoutePath.trackMyOrderScreen,
-              //     );
-              //   },
-              // ),
+              OrderCTA(
+                title: 'Track',
+                color: AppColors.primaryOrange,
+                vPad: 6,
+                hPad: 24,
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    RoutePath.trackMyOrderScreen,
+                    arguments: OrderDetailArg(orderId: orderId),
+                  );
+                },
+              ),
             ],
           ),
         ],

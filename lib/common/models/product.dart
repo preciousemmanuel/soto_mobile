@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 import 'package:soto_ecommerce/common/models/auth_user.dart';
+import 'package:soto_ecommerce/common/models/product_category.dart';
 
 List<Product> productFromJson(String str) =>
     List<Product>.from(json.decode(str).map((x) => Product.fromJson(x)));
@@ -44,10 +45,12 @@ class Product extends Equatable {
   final String? id;
   final String? productName;
   final String? description;
-  final Category? category;
+  final ProductCategory? category;
   final List<dynamic>? images;
   final String? vendor;
+  final String? status;
   final int? unitPrice;
+  final int? rawPrice;
   final int? productQuantity;
   final int? height;
   final int? width;
@@ -69,7 +72,9 @@ class Product extends Equatable {
     this.category,
     this.images,
     this.vendor,
+    this.status,
     this.unitPrice,
+    this.rawPrice,
     this.productQuantity,
     this.height,
     this.width,
@@ -91,12 +96,14 @@ class Product extends Equatable {
         description: json["description"],
         category: json["category"] == null
             ? null
-            : Category.fromJson(json["category"]),
+            : ProductCategory.fromJson(json["category"]),
         images: json["images"] == null
             ? []
             : List<dynamic>.from(json["images"]!.map((x) => x)),
         vendor: json["vendor"],
+        status: json["status"],
         unitPrice: json["unit_price"],
+        rawPrice: json["raw_price"],
         productQuantity: json["product_quantity"],
         height: json["height"],
         width: json["width"],
@@ -124,7 +131,9 @@ class Product extends Equatable {
         "images":
             images == null ? [] : List<dynamic>.from(images!.map((x) => x)),
         "vendor": vendor,
+        "status": status,
         "unit_price": unitPrice,
+        "raw_price": rawPrice,
         "product_quantity": productQuantity,
         "height": height,
         "width": width,
@@ -147,6 +156,7 @@ class Product extends Equatable {
         category,
         images,
         vendor,
+        status,
         unitPrice,
         productQuantity,
         height,
@@ -163,25 +173,25 @@ class Product extends Equatable {
       ];
 }
 
-class Category {
-  final String? id;
-  final String? name;
+// class Category {
+//   final String? id;
+//   final String? name;
 
-  Category({
-    this.id,
-    this.name,
-  });
+//   Category({
+//     this.id,
+//     this.name,
+//   });
 
-  factory Category.fromJson(Map<String, dynamic> json) => Category(
-        id: json["_id"],
-        name: json["name"],
-      );
+//   factory Category.fromJson(Map<String, dynamic> json) => Category(
+//         id: json["_id"],
+//         name: json["name"],
+//       );
 
-  Map<String, dynamic> toJson() => {
-        "_id": id,
-        "name": name,
-      };
-}
+//   Map<String, dynamic> toJson() => {
+//         "_id": id,
+//         "name": name,
+//       };
+// }
 
 class Review {
   final String? id;

@@ -1,5 +1,6 @@
 import 'package:google_fonts/google_fonts.dart';
 import 'package:soto_ecommerce/common/common.dart';
+import 'package:soto_ecommerce/common/components/product/modal/vendor_product_actions_modal.dart';
 import 'package:soto_ecommerce/seller/vm/vendor_product_vm.dart';
 
 class VendorProductDetailsScreen extends StatefulWidget {
@@ -44,6 +45,17 @@ class _VendorProductDetailsScreenState
           titleStyle: AppTypography.text16.copyWith(
             fontWeight: FontWeight.w600,
             color: AppColors.text1A,
+          ),
+          trailingWidget: InkWell(
+            onTap: () {
+              ModalWrapper.bottomSheet(
+                context: context,
+                widget: VendorProductActionsModal(
+                  product: _singleProduct?.product,
+                ),
+              );
+            },
+            child: const Icon(Icons.more_horiz),
           ),
         ),
         body: Builder(builder: (context) {
@@ -120,7 +132,7 @@ class _VendorProductDetailsScreenState
                         ),
                         const YBox(4),
                         Text(
-                          '${AppUtils.nairaSymbol}${AppUtils.formatAmountString(_singleProduct?.product?.unitPrice.toString() ?? '')}',
+                          '${AppUtils.nairaSymbol}${AppUtils.formatAmountString(_singleProduct?.product?.rawPrice.toString() ?? '')}',
                           style: GoogleFonts.roboto(
                             color: AppColors.primaryOrange,
                             fontSize: Sizer.height(24),

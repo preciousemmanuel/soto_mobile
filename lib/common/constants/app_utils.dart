@@ -8,6 +8,10 @@ class AppUtils {
   static String nairaSymbol = "₦";
   static String nairaCurrency = "NGN";
 
+  static String termsAndConditions =
+      "https://soto-web.vercel.app/terms-condition";
+  static String policy = "https://soto-web.vercel.app/privacy-policy";
+
   static String dateFormatter(String date) {
     var formatter = DateFormat('yyyy-MM-dd');
     DateTime dateTime = formatter.parse(date);

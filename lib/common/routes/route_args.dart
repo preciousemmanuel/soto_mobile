@@ -36,6 +36,28 @@ class WithdrawArgs {
 class WebViewArg {
   final String? appBarText;
   final String webURL;
+  final Function()? onBackPress;
 
-  WebViewArg({this.appBarText, required this.webURL});
+  WebViewArg({
+    this.appBarText,
+    required this.webURL,
+    this.onBackPress,
+  });
+}
+
+class DashArg {
+  final int? index;
+  DashArg({this.index});
+}
+
+class VendorProductArgs {
+  final bool isEdit;
+  final Product? product;
+
+  VendorProductArgs({this.isEdit = false, this.product});
+}
+
+class OrderDetailArg {
+  final String orderId;
+  OrderDetailArg({required this.orderId});
 }

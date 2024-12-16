@@ -79,7 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            '${widget.args?.isVendor == true ? 'Vendor' : 'Buyer'} Login',
+                            '${widget.args?.isVendor == true ? 'Seller' : 'Buyer'} Login',
                             style: AppTypography.text24.copyWith(
                               color: AppColors.primaryOrange,
                               fontWeight: FontWeight.w600,
@@ -224,7 +224,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       const YBox(200),
                       widget.args?.isVendor != true
                           ? SwitchScreens(
-                              title: "Are you a Vendor?",
+                              title: "Are you a Seller?",
                               onSwitch: () {
                                 context.read<AuthUserVM>().setVendorUser();
                                 context
@@ -236,6 +236,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               title: "Are you a Buyer?",
                               onSwitch: () {
                                 context.read<AuthUserVM>().removeVendorUser();
+                                context.read<AuthUserVM>().clearData();
                                 context
                                     .read<LoginVM>()
                                     .logout(switchToVendor: false);

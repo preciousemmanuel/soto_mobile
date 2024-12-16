@@ -42,7 +42,7 @@ class FlushBarToast {
                     child: Container(
                       padding: EdgeInsets.symmetric(
                         horizontal: Sizer.width(8),
-                        vertical: Sizer.height(2),
+                        vertical: Sizer.height(4),
                       ),
                       decoration: BoxDecoration(
                         color: AppColors.primaryOrange,

@@ -48,6 +48,8 @@ class _OverviewTabState extends State<OverviewTab> {
                         Expanded(
                           child: OverViewStat(
                             title: 'Sold',
+                            subtitle: 'Amount Sold',
+                            iconColor: AppColors.primaryOrange,
                             amount: AppUtils.formatAmountString(
                               (ref.vendorOverview?.totalUnremitted ?? "0")
                                   .toString(),
@@ -59,6 +61,7 @@ class _OverviewTabState extends State<OverviewTab> {
                         Expanded(
                           child: OverViewStat(
                             title: 'On market',
+                            subtitle: 'Amount In stock',
                             amount: AppUtils.formatAmountString(
                               (ref.vendorOverview?.totalInStock ?? "0")
                                   .toString(),
@@ -183,7 +186,7 @@ class _OverviewTabState extends State<OverviewTab> {
                   separatorBuilder: (_, __) => const Divider(
                     color: AppColors.whiteF7,
                   ),
-                  itemCount: ref.productsByVendor.length,
+                  itemCount: ref.productsByVendor.take(4).length,
                 );
               }),
               const YBox(100),
@@ -209,6 +212,7 @@ class StatShimmer extends StatelessWidget {
           Expanded(
             child: OverViewStat(
               title: 'Sold',
+              subtitle: 'Amount In stock',
               amount: '51,858',
               cent: '+55%',
             ),
@@ -217,6 +221,7 @@ class StatShimmer extends StatelessWidget {
           Expanded(
             child: OverViewStat(
               title: 'On market',
+              subtitle: 'Amount In stock',
               amount: '51,858',
               cent: '+55%',
             ),

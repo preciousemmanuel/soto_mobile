@@ -40,6 +40,7 @@ class _SplashScreenState extends State<SplashScreen>
         return;
       }
       if (await StorageService.getBoolItem(StorageKey.onboarding) == true) {
+        // Navigator.pushReplacementNamed(context, RoutePath.onboardScreenThree);
         Navigator.pushReplacementNamed(context, RoutePath.dashboardNavScreen);
       } else {
         Navigator.pushReplacementNamed(context, RoutePath.onboardScreenOne);
