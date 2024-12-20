@@ -51,7 +51,7 @@ class CartScreen extends StatelessWidget {
                                   ShoppingCartCard(
                                     cartItem: cartItem,
                                   ),
-                                  if (i == (vm.cartItems.length))
+                                  if (i == (vm.cartItems.length - 1))
                                     const Divider(
                                       color: AppColors.whiteF7,
                                       thickness: 2,
@@ -61,6 +61,25 @@ class CartScreen extends StatelessWidget {
                             },
                             separatorBuilder: (ctx, i) => const YBox(6),
                             itemCount: vm.cartItems.length,
+                          ),
+                          const YBox(20),
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: Sizer.width(20),
+                            ),
+                            child: CustomBtn.solid(
+                              isOutline: true,
+                              height: Sizer.height(50),
+                              borderRadius: BorderRadius.circular(
+                                Sizer.radius(100),
+                              ),
+                              text: "Continue Shopping",
+                              textColor: AppColors.primaryOrange,
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, RoutePath.allProductsScreen);
+                              },
+                            ),
                           ),
                           const YBox(26),
                           Container(

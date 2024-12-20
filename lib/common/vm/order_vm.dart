@@ -158,7 +158,7 @@ class OrderVM extends BaseVM {
   Future<ApiResponse> fetchBuyerOrders({String? status}) async {
     printty("add to cart call");
 
-    final url = "/order/fetch/by-buyer?limit=10&page=1&status=${status ?? ''}";
+    final url = "/order/fetch/by-buyer?limit=100&page=1&status=${status ?? ''}";
     return await performApiCall(
       url: url,
       method: apiService.getWithAuth,

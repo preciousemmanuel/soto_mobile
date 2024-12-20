@@ -8,6 +8,7 @@ class OrderCard extends StatelessWidget {
     required this.productImage,
     required this.trackingCode,
     required this.qty,
+    this.status,
   });
 
   final String orderId;
@@ -15,9 +16,11 @@ class OrderCard extends StatelessWidget {
   final String productImage;
   final String trackingCode;
   final String qty;
+  final String? status;
 
   @override
   Widget build(BuildContext context) {
+    AuthUserVM authUserVM = context.watch<AuthUserVM>();
     return Container(
       height: Sizer.height(90),
       // color: AppColors.red,
@@ -76,7 +79,7 @@ class OrderCard extends StatelessWidget {
                 ),
                 const Spacer(),
                 Text(
-                  'Packed',
+                  status ?? 'Booked',
                   style: AppTypography.text14.copyWith(
                     fontWeight: FontWeight.w500,
                   ),
@@ -93,19 +96,48 @@ class OrderCard extends StatelessWidget {
                 title: '$qty items',
                 textColor: AppColors.text70,
               ),
-              OrderCTA(
-                title: 'Track',
-                color: AppColors.primaryOrange,
-                vPad: 6,
-                hPad: 24,
-                onTap: () {
-                  Navigator.pushNamed(
-                    context,
-                    RoutePath.trackMyOrderScreen,
-                    arguments: OrderDetailArg(orderId: orderId),
-                  );
-                },
-              ),
+              authUserVM.isVendor
+                  ? OrderCTA(
+                      title: 'View',
+                      isOutline: true,
+                      textColor: AppColors.primaryOrange,
+                      vPad: 6,
+                      hPad: 24,
+                      onTap: () {
+                        // Navigator.pushNamed(
+                        //   context,
+                        //   RoutePath.trackMyOrderScreen,
+                        //   arguments: OrderDetailArg(orderId: orderId),
+                        // );
+                      },
+                    )
+                  : status?.toLowerCase() == 'booked'
+                      ? OrderCTA(
+                          title: 'Track',
+                          color: AppColors.primaryOrange,
+                          vPad: 6,
+                          hPad: 24,
+                          onTap: () {
+                            Navigator.pushNamed(
+                              context,
+                              RoutePath.trackMyOrderScreen,
+                              arguments: OrderDetailArg(orderId: orderId),
+                            );
+                          },
+                        )
+                      : OrderCTA(
+                          title: 'View',
+                          isOutline: true,
+                          textColor: AppColors.primaryOrange,
+                          vPad: 6,
+                          hPad: 24,
+                          onTap: () {
+                            Navigator.pushNamed(
+                              context,
+                              RoutePath.orderDetailScreen,
+                            );
+                          },
+                        )
             ],
           ),
         ],
@@ -121,6 +153,7 @@ class OrderCTA extends StatelessWidget {
     this.vPad,
     this.hPad,
     this.color,
+    this.isOutline = false,
     this.textColor,
     this.onTap,
   });
@@ -130,6 +163,7 @@ class OrderCTA extends StatelessWidget {
   final double? hPad;
   final Color? color;
   final Color? textColor;
+  final bool isOutline;
   final VoidCallback? onTap;
 
   @override
@@ -142,7 +176,13 @@ class OrderCTA extends StatelessWidget {
           vertical: Sizer.height(vPad ?? 2),
         ),
         decoration: BoxDecoration(
-          color: color ?? AppColors.whiteF7,
+          color: isOutline ? null : (color ?? AppColors.whiteF7),
+          border: isOutline
+              ? Border.all(
+                  color: color ?? AppColors.primaryOrange,
+                  width: 1,
+                )
+              : null,
           borderRadius: BorderRadius.circular(Sizer.width(5)),
         ),
         child: Center(

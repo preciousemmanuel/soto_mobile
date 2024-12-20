@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:soto_ecommerce/common/models/vendor_inventory.dart';
-
 List<VendorOrder> vendorOrderFromJson(String str) => List<VendorOrder>.from(
     json.decode(str).map((x) => VendorOrder.fromJson(x)));
 
@@ -10,93 +8,137 @@ String vendorOrderToJson(List<VendorOrder> data) =>
 
 class VendorOrder {
   final String? id;
-  final ProductId? productId;
-  final int? quantity;
-  final int? unitPrice;
-  final String? vendor;
-  final Buyer? buyer;
-  final bool? isDiscounted;
+  final List<VendorItem>? items;
+  final String? user;
+  final String? trackingId;
   final String? status;
-  final int? v;
+  final int? totalAmount;
+  final double? deliveryAmount;
+  final int? grandTotal;
   final DateTime? createdAt;
   final DateTime? updatedAt;
+  final String? order;
 
   VendorOrder({
     this.id,
-    this.productId,
-    this.quantity,
-    this.unitPrice,
-    this.vendor,
-    this.buyer,
-    this.isDiscounted,
+    this.items,
+    this.user,
+    this.trackingId,
     this.status,
-    this.v,
+    this.totalAmount,
+    this.deliveryAmount,
+    this.grandTotal,
     this.createdAt,
     this.updatedAt,
+    this.order,
   });
 
   factory VendorOrder.fromJson(Map<String, dynamic> json) => VendorOrder(
         id: json["_id"],
-        productId: json["product_id"] == null
-            ? null
-            : ProductId.fromJson(json["product_id"]),
-        quantity: json["quantity"],
-        unitPrice: json["unit_price"],
-        vendor: json["vendor"],
-        buyer: json["buyer"] == null ? null : Buyer.fromJson(json["buyer"]),
-        isDiscounted: json["is_discounted"],
+        items: json["items"] == null
+            ? []
+            : List<VendorItem>.from(
+                json["items"]!.map((x) => VendorItem.fromJson(x))),
+        user: json["user"],
+        trackingId: json["tracking_id"],
         status: json["status"],
-        v: json["__v"],
+        totalAmount: json["total_amount"],
+        deliveryAmount: json["delivery_amount"]?.toDouble(),
+        grandTotal: json["grand_total"],
         createdAt: json["createdAt"] == null
             ? null
             : DateTime.parse(json["createdAt"]),
         updatedAt: json["updatedAt"] == null
             ? null
             : DateTime.parse(json["updatedAt"]),
+        order: json["order"],
       );
 
   Map<String, dynamic> toJson() => {
         "_id": id,
-        "product_id": productId?.toJson(),
-        "quantity": quantity,
-        "unit_price": unitPrice,
-        "vendor": vendor,
-        "buyer": buyer?.toJson(),
-        "is_discounted": isDiscounted,
+        "items": items == null
+            ? []
+            : List<dynamic>.from(items!.map((x) => x.toJson())),
+        "user": user,
+        "tracking_id": trackingId,
         "status": status,
-        "__v": v,
+        "total_amount": totalAmount,
+        "delivery_amount": deliveryAmount,
+        "grand_total": grandTotal,
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
+        "order": order,
       };
+
+  @override
+  String toString() {
+    return 'VendorOrder(id: $id, items: $items, user: $user, trackingId: $trackingId, status: $status, totalAmount: $totalAmount, deliveryAmount: $deliveryAmount, grandTotal: $grandTotal, createdAt: $createdAt, updatedAt: $updatedAt, order: $order)';
+  }
 }
 
-class ProductId {
-  final String? id;
+class VendorItem {
+  final String? productId;
   final String? productName;
+  final String? productCode;
+  final String? description;
+  final String? vendor;
   final List<dynamic>? images;
-  final int? productQuantity;
+  final int? quantity;
+  final int? unitPrice;
+  final int? height;
+  final int? width;
+  final double? weight;
+  final bool? isDiscounted;
+  final String? id;
 
-  ProductId({
-    this.id,
+  VendorItem({
+    this.productId,
     this.productName,
+    this.productCode,
+    this.description,
+    this.vendor,
     this.images,
-    this.productQuantity,
+    this.quantity,
+    this.unitPrice,
+    this.height,
+    this.width,
+    this.weight,
+    this.isDiscounted,
+    this.id,
   });
 
-  factory ProductId.fromJson(Map<String, dynamic> json) => ProductId(
-        id: json["_id"],
+  factory VendorItem.fromJson(Map<String, dynamic> json) => VendorItem(
+        productId: json["product_id"],
         productName: json["product_name"],
+        productCode: json["product_code"],
+        description: json["description"],
+        vendor: json["vendor"],
         images: json["images"] == null
             ? []
             : List<dynamic>.from(json["images"]!.map((x) => x)),
-        productQuantity: json["product_quantity"],
+        quantity: json["quantity"],
+        unitPrice: json["unit_price"],
+        height: json["height"],
+        width: json["width"],
+        weight: json["weight"]?.toDouble(),
+        isDiscounted: json["is_discounted"],
+        id: json["_id"],
       );
 
   Map<String, dynamic> toJson() => {
-        "_id": id,
+        "product_id": productId,
         "product_name": productName,
+        "product_code": productCode,
+        "description": description,
+        "vendor": vendor,
         "images":
             images == null ? [] : List<dynamic>.from(images!.map((x) => x)),
-        "product_quantity": productQuantity,
+        "quantity": quantity,
+        "unit_price": unitPrice,
+        "height": height,
+        "width": width,
+        "weight": weight,
+        "is_discounted": isDiscounted,
+        "_id": id,
       };
 }

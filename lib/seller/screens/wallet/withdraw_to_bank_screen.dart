@@ -1,6 +1,6 @@
 import 'package:soto_ecommerce/buyer/screens/confirmation/confirmation_screen.dart';
 import 'package:soto_ecommerce/common/common.dart';
-import 'package:soto_ecommerce/seller/vm/wallet_vm.dart';
+import 'package:soto_ecommerce/seller/vm/vm.dart';
 
 class WithdrawToBankScreen extends StatefulWidget {
   const WithdrawToBankScreen({
@@ -153,6 +153,8 @@ class _WithdrawToBankScreenState extends State<WithdrawToBankScreen> {
   void _withdrawToBank() async {
     FocusManager.instance.primaryFocus?.unfocus();
     final vm = context.read<WalletVm>();
+    final authVm = context.read<AuthUserVM>();
+    final dashVm = context.read<VendorDashboardVM>();
     final res = await vm.makeWithdrawal(
       amount: double.tryParse(amountC.text.replaceAllCommas()) ?? 0.0,
       bankId: widget.args.bankId,
@@ -160,12 +162,15 @@ class _WithdrawToBankScreenState extends State<WithdrawToBankScreen> {
     handleApiResponse(
       response: res,
       onSuccess: () {
+        authVm.getUserProfile();
+        dashVm.getTransactions();
         Navigator.pushReplacementNamed(
           context,
           RoutePath.confirmationScreen,
           arguments: ConfirmationScreenArgs(
             msg: res.message ?? 'Withdrawal successful',
             onTap: () {
+              pop();
               pop();
               pop();
             },

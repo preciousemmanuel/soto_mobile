@@ -31,6 +31,17 @@ class NotificationVm extends BaseVM {
     );
   }
 
+  Future<ApiResponse> clearNotificationNotification() async {
+    return await performApiCall(
+      url: "/notification/clear-all",
+      method: apiService.putWithAuth,
+      onSuccess: (data) {
+        fetchNotifications();
+        return apiResponse;
+      },
+    );
+  }
+
   Future<ApiResponse> sendFcmToken(String token, String userId) async {
     return await performApiCall(
       url: "/notification/fetch?limit=10&page=1",

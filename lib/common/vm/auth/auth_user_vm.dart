@@ -19,6 +19,8 @@ class AuthUserVM extends BaseVM {
   List<StateModel> _states = [];
   List<StateModel> get states => _states;
 
+  bool get isVendor =>
+      _authUser?.userType?.toUpperCase() == UserType.vendor.name.toUpperCase();
   String get shippingADD =>
       '${authUser?.shippingAddress?.fullAddress}, ${authUser?.shippingAddress?.country}';
   String get fullname => _authUser?.userType == UserType.vendor.name

@@ -62,6 +62,13 @@ class AppRouter {
       // Orders
       case RoutePath.createOrderScreen:
         return buildRoute(const CreateOrderScreen());
+      case RoutePath.orderDetailScreen:
+        if (args is OrderDetailArg) {
+          return buildRoute(OrderDetailsScreen(args: args));
+        }
+        return errorScreen('Incorrect arguments for ${settings.name}');
+      case RoutePath.raiseDisputeScreen:
+        return buildRoute(const RaiseDisputeScreen());
       case RoutePath.addOrderScreen:
         return buildRoute(const AddOrderScreen());
       case RoutePath.reviewOrderScreen:
@@ -125,6 +132,11 @@ class AppRouter {
       case RoutePath.vendorProductDetailsScreen:
         if (args is ProductArgs) {
           return buildRoute(VendorProductDetailsScreen(args: args));
+        }
+        return errorScreen('Incorrect arguments for ${settings.name}');
+      case RoutePath.vendorOrderDetailScreen:
+        if (args is OrderDetailArg) {
+          return buildRoute(VendorOrderDetailScreen(args: args));
         }
         return errorScreen('Incorrect arguments for ${settings.name}');
 

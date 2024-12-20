@@ -97,12 +97,44 @@ class _NotificationScreenState extends State<NotificationScreen> {
                             top: Sizer.height(20),
                             bottom: Sizer.height(8),
                           ),
-                          child: Text(
-                            'Updates',
-                            style: AppTypography.text14.copyWith(
-                              fontWeight: FontWeight.w500,
-                              color: AppColors.text5C,
-                            ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Updates',
+                                style: AppTypography.text14.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                  color: AppColors.text5C,
+                                ),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  ModalWrapper.showCustomDialog(
+                                    context,
+                                    child: ConfirmModal(
+                                      message:
+                                          'Are you sure you want to clear all notifications?',
+                                      confirmText: 'Yes, clear all',
+                                      onConfirm: () {
+                                        Navigator.pop(context);
+                                        ref
+                                            .clearNotificationNotification()
+                                            .then((v) {
+                                          handleApiResponse(response: v);
+                                        });
+                                      },
+                                    ),
+                                  );
+                                },
+                                child: Text(
+                                  'Clear all',
+                                  style: AppTypography.text14.copyWith(
+                                    fontWeight: FontWeight.w500,
+                                    color: AppColors.primaryOrange,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                         const Divider(

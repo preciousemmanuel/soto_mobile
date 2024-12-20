@@ -54,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     Expanded(
                       flex: 7,
                       child: CustomTextField(
-                        hintText: 'I’m looking for...',
+                        hintText: 'Enter list.... ',
                         showfillColor: false,
                         borderColor: AppColors.grayDE,
                         prefixIcon: Icon(

@@ -4,9 +4,11 @@ class OrderDeliveredTab extends StatefulWidget {
   const OrderDeliveredTab({
     super.key,
     required this.vm,
+    this.status,
   });
 
   final OrderVM vm;
+  final String? status;
 
   @override
   State<OrderDeliveredTab> createState() => _OrderDeliveredTabState();
@@ -49,6 +51,7 @@ class _OrderDeliveredTabState extends State<OrderDeliveredTab> {
             children: [
               const Divider(color: AppColors.whiteF7),
               OrderCard(
+                status: widget.status,
                 orderId: widget.vm.activeOrders[i].id ?? '',
                 qty: '${widget.vm.activeOrders[i].items?.first.quantity ?? 0}',
                 trackingCode: widget.vm.activeOrders[i].trackingId ?? '',

@@ -14,7 +14,7 @@ class OrderRes {
   final int? totalAmount;
   final int? deliveryAmount;
   final String? shippingAddress;
-  final String? orderItinerary;
+  final int? orderItinerary;
   final String? trackingId;
   final int? grandTotal;
   final String? paymentType;

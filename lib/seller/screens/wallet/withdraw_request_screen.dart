@@ -57,47 +57,52 @@ class _WithdrawRequestScreenState extends State<WithdrawRequestScreen> {
                         bottom: Sizer.height(100),
                       ),
                       children: ref.withdrawRequestsList.entries.map((e) {
-                        return Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Container(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: Sizer.width(20),
-                              ),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    e.key,
-                                    style: AppTypography.text14.copyWith(
-                                      color: AppColors.black33,
-                                      fontWeight: FontWeight.w500,
+                        return Padding(
+                          padding: EdgeInsets.only(
+                            bottom: Sizer.height(20),
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: Sizer.width(20),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      e.key,
+                                      style: AppTypography.text14.copyWith(
+                                        color: AppColors.black33,
+                                        fontWeight: FontWeight.w500,
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                            const YBox(10),
-                            ListView.separated(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemBuilder: (_, i) {
-                                final r = e.value[i];
-                                return WithdrawRequestTile(
-                                  naration: 'Withdrawal Request',
-                                  amount: (r.amount ?? 0.0).toString(),
-                                  status: r.status ?? '',
-                                  date: AppUtils.formatDateTime(
-                                      (r.createdAt ?? DateTime.now())
-                                          .toLocal()
-                                          .toString()),
-                                );
-                              },
-                              separatorBuilder: (_, __) => const Divider(
-                                color: AppColors.dividerColor,
+                              const YBox(5),
+                              ListView.separated(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemBuilder: (_, i) {
+                                  final r = e.value[i];
+                                  return WithdrawRequestTile(
+                                    naration: 'Withdrawal Request',
+                                    amount: (r.amount ?? 0.0).toString(),
+                                    status: r.status ?? '',
+                                    date: AppUtils.formatDateTime(
+                                        (r.createdAt ?? DateTime.now())
+                                            .toLocal()
+                                            .toString()),
+                                  );
+                                },
+                                separatorBuilder: (_, __) => const Divider(
+                                  color: AppColors.dividerColor,
+                                ),
+                                itemCount: e.value.length,
                               ),
-                              itemCount: e.value.length,
-                            ),
-                          ],
+                            ],
+                          ),
                         );
                       }).toList(),
                     );

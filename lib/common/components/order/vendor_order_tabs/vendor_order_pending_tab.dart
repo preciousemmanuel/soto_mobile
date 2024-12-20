@@ -18,7 +18,7 @@ class _VendorOrderPendingTabState extends State<VendorOrderPendingTab> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      widget.vm.fetchBuyerOrders(
+      widget.vm.fetchVendorOrders(
         status: OrderStatusType.pending.name.toUpperCase(),
       );
     });
@@ -45,18 +45,27 @@ class _VendorOrderPendingTabState extends State<VendorOrderPendingTab> {
         ),
         shrinkWrap: true,
         itemBuilder: (ctx, i) {
+          final ao = widget.vm.activeOrders[i];
           return Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               const Divider(color: AppColors.whiteF7),
-              OrderCard(
-                orderId: widget.vm.activeOrders[i].id ?? '',
-                qty: '${widget.vm.activeOrders[i].quantity ?? 0}',
-                trackingCode: '5636XDS',
-                productName:
-                    widget.vm.activeOrders[i].productId?.productName ?? '',
-                productImage:
-                    widget.vm.activeOrders[i].productId?.images?.first ?? '',
+              VendorOrderCard(
+                orderCode: ao.trackingId ?? '',
+                orderLength: '${ao.items?.length ?? 0}',
+                orderTime: AppUtils.formatDateTime(
+                    (ao.createdAt ?? DateTime.now()).toLocal().toString()),
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    RoutePath.vendorOrderDetailScreen,
+                    arguments: OrderDetailArg(
+                      orderId: ao.id ?? '',
+                      isVendor: true,
+                      vendorOrder: ao,
+                    ),
+                  );
+                },
               ),
               if (i == 4) const Divider(color: AppColors.whiteF7),
             ],

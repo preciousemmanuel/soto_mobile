@@ -59,5 +59,11 @@ class VendorProductArgs {
 
 class OrderDetailArg {
   final String orderId;
-  OrderDetailArg({required this.orderId});
+  final bool isVendor;
+  final VendorOrder? vendorOrder;
+  OrderDetailArg({
+    required this.orderId,
+    this.isVendor = false,
+    this.vendorOrder,
+  });
 }

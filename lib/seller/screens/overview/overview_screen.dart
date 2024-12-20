@@ -11,6 +11,17 @@ class _OverviewScreenState extends State<OverviewScreen> {
   OverviewCategoryType categoryType = OverviewCategoryType.overview;
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final authVm = context.read<AuthUserVM>();
+      await authVm.getUserProfile(
+        busyObjectName: AuthUserVM.dashboardLoading,
+      );
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: Sizer.screenWidth,

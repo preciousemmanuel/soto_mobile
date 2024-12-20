@@ -233,10 +233,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           message: 'Do you want to Logout?',
                           confirmText: 'Yes Logout',
                           onConfirm: () {
-                            vm.removeVendorUser();
-                            context.read<LoginVM>().logout().then((v) {
-                              context.read<AuthUserVM>().clearData();
-                            });
+                            if (vm.isVendor) {
+                              context
+                                  .read<LoginVM>()
+                                  .logout(switchToVendor: true)
+                                  .then(
+                                (v) {
+                                  context.read<AuthUserVM>().clearData();
+                                },
+                              );
+                            } else {
+                              vm.removeVendorUser();
+                              context.read<LoginVM>().logout().then(
+                                (v) {
+                                  context.read<AuthUserVM>().clearData();
+                                },
+                              );
+                            }
                           },
                         ),
                       );

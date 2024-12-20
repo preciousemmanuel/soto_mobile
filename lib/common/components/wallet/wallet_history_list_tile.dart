@@ -83,7 +83,7 @@ class WalletHistoryListTile extends StatelessWidget {
   }
 }
 
-class WithdrawRequestTile extends StatelessWidget {
+class WithdrawRequestTile extends StatefulWidget {
   const WithdrawRequestTile({
     super.key,
     this.isSend = false,
@@ -99,6 +99,11 @@ class WithdrawRequestTile extends StatelessWidget {
   final String amount;
   final String? status;
 
+  @override
+  State<WithdrawRequestTile> createState() => _WithdrawRequestTileState();
+}
+
+class _WithdrawRequestTileState extends State<WithdrawRequestTile> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -127,16 +132,16 @@ class WithdrawRequestTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                naration,
+                widget.naration,
                 style: AppTypography.text14.copyWith(
                   color: AppColors.black33,
                 ),
               ),
               const YBox(2),
               Text(
-                '${AppUtils.nairaSymbol}${AppUtils.formatAmountString(amount)}',
+                '${AppUtils.nairaSymbol}${AppUtils.formatAmountString(widget.amount)}',
                 style: GoogleFonts.roboto(
-                  color: isSend ? AppColors.red3B : AppColors.green78,
+                  color: widget.isSend ? AppColors.red3B : AppColors.green78,
                   fontSize: Sizer.text(12),
                   fontWeight: FontWeight.w500,
                 ),
@@ -148,16 +153,16 @@ class WithdrawRequestTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
-                status ?? 'Pending',
+                widget.status ?? 'Pending',
                 style: GoogleFonts.roboto(
-                  color: isSend ? AppColors.red3B : AppColors.green78,
+                  color: _getStatusColor(),
                   fontSize: Sizer.text(14),
                   fontWeight: FontWeight.w500,
                 ),
               ),
               const YBox(2),
               Text(
-                date,
+                widget.date,
                 style: AppTypography.text12.copyWith(
                   color: AppColors.black66,
                 ),
@@ -167,5 +172,16 @@ class WithdrawRequestTile extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  _getStatusColor() {
+    if (widget.status?.toLowerCase() == 'pending') {
+      return AppColors.yellow07;
+    } else if (widget.status?.toLowerCase() == 'failed') {
+      return AppColors.red3B;
+    } else if (widget.status?.toLowerCase() == 'successful') {
+      return AppColors.green78;
+    }
+    return AppColors.yellow07;
   }
 }

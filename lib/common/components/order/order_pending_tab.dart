@@ -4,9 +4,11 @@ class OrderPendingTab extends StatefulWidget {
   const OrderPendingTab({
     super.key,
     required this.vm,
+    this.status,
   });
 
   final OrderVM vm;
+  final String? status;
 
   @override
   State<OrderPendingTab> createState() => _OrderPendingTabState();
@@ -49,6 +51,7 @@ class _OrderPendingTabState extends State<OrderPendingTab> {
             children: [
               const Divider(color: AppColors.whiteF7),
               OrderCard(
+                status: widget.status,
                 orderId: widget.vm.activeOrders[i].id ?? '',
                 qty: '${widget.vm.activeOrders[i].items?.first.quantity ?? 0}',
                 trackingCode: widget.vm.activeOrders[i].trackingId ?? '',

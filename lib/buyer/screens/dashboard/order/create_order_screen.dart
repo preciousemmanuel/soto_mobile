@@ -328,43 +328,57 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: CustomBtn.solid(
-                      height: Sizer.height(50),
-                      onTap: () {
-                        _srollToTop();
-                        if (!activateBtn()) {
-                          showValidationError = true;
-                          setState(() {});
-                          return;
-                        }
-                        _createCustomOrder();
-                        // Navigator.pushNamed(context, RoutePath.addOrderScreen);
-                      },
-                      text: "Submit",
-                    ),
-                  ),
-                  const XBox(20),
-                  Expanded(
-                    child: CustomBtn.solid(
-                        isOutline: true,
-                        height: Sizer.height(50),
-                        text: "Save & Add",
-                        textColor: AppColors.primaryOrange,
-                        onTap: () {
-                          _srollToTop();
-                          if (!activateBtn()) {
-                            showValidationError = true;
-                            setState(() {});
-                            return;
-                          }
-                          _saveAndAddCustomOrder();
-                        }),
-                  ),
-                ],
-              )
+              CustomBtn.solid(
+                  isOutline: true,
+                  height: Sizer.height(50),
+                  text: "Save & Add",
+                  textColor: AppColors.primaryOrange,
+                  onTap: () {
+                    _srollToTop();
+                    if (!activateBtn()) {
+                      showValidationError = true;
+                      setState(() {});
+                      return;
+                    }
+                    _saveAndAddCustomOrder();
+                  }),
+              // Row(
+              //   children: [
+              //     Expanded(
+              //       child: CustomBtn.solid(
+              //         height: Sizer.height(50),
+              //         onTap: () {
+              //           _srollToTop();
+              //           if (!activateBtn()) {
+              //             showValidationError = true;
+              //             setState(() {});
+              //             return;
+              //           }
+              //           _createCustomOrder();
+              //           // Navigator.pushNamed(context, RoutePath.addOrderScreen);
+              //         },
+              //         text: "Submit",
+              //       ),
+              //     ),
+              //     const XBox(20),
+              //     Expanded(
+              //       child: CustomBtn.solid(
+              //           isOutline: true,
+              //           height: Sizer.height(50),
+              //           text: "Save & Add",
+              //           textColor: AppColors.primaryOrange,
+              //           onTap: () {
+              //             _srollToTop();
+              //             if (!activateBtn()) {
+              //               showValidationError = true;
+              //               setState(() {});
+              //               return;
+              //             }
+              //             _saveAndAddCustomOrder();
+              //           }),
+              //     ),
+              //   ],
+              // )
             ],
           ),
         ),
@@ -372,35 +386,35 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
     );
   }
 
-  _createCustomOrder() async {
-    FocusManager.instance.primaryFocus?.unfocus();
-    final ref = context.read<CustomOrderVm>();
-    ApiResponse response = await ref.createCustomOrder([
-      CustomOrderRes(
-        productName: productNameC.text.trim(),
-        productBrand: productBrandC.text.trim(),
-        size: productSizeC.text.trim(),
-        color: productColorC.text.trim(),
-        type: productTypeC.text.trim(),
-        quantity:
-            int.tryParse(productQuantityC.text.trim().replaceAllCommas()) ?? 1,
-        minPrice: int.tryParse(productPriceC1.text.trim().replaceAllCommas()),
-        maxPrice: int.tryParse(productPriceC2.text.trim().replaceAllCommas()),
-        phoneNumber: phoneC.text.trim(),
-        email: emailC.text.trim(),
-        note: productMessageC.text.trim(),
-      )
-    ]);
+  // _createCustomOrder() async {
+  //   FocusManager.instance.primaryFocus?.unfocus();
+  //   final ref = context.read<CustomOrderVm>();
+  //   ApiResponse response = await ref.createCustomOrder([
+  //     CustomOrderRes(
+  //       productName: productNameC.text.trim(),
+  //       productBrand: productBrandC.text.trim(),
+  //       size: productSizeC.text.trim(),
+  //       color: productColorC.text.trim(),
+  //       type: productTypeC.text.trim(),
+  //       quantity:
+  //           int.tryParse(productQuantityC.text.trim().replaceAllCommas()) ?? 1,
+  //       minPrice: int.tryParse(productPriceC1.text.trim().replaceAllCommas()),
+  //       maxPrice: int.tryParse(productPriceC2.text.trim().replaceAllCommas()),
+  //       phoneNumber: phoneC.text.trim(),
+  //       email: emailC.text.trim(),
+  //       note: productMessageC.text.trim(),
+  //     )
+  //   ]);
 
-    handleApiResponse(
-        response: response,
-        onSuccess: () {
-          showValidationError = false;
-          emailC.clear();
-          phoneC.clear();
-          clearFields();
-        });
-  }
+  //   handleApiResponse(
+  //       response: response,
+  //       onSuccess: () {
+  //         showValidationError = false;
+  //         emailC.clear();
+  //         phoneC.clear();
+  //         clearFields();
+  //       });
+  // }
 
   _saveAndAddCustomOrder() async {
     FocusManager.instance.primaryFocus?.unfocus();

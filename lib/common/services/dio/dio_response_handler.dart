@@ -75,11 +75,11 @@ class DioResponseHandler {
           //           AppText.errorMsg);
           // }
 
-          printty(dioError.response!.data["message"]);
+          printty(dioError.response?.data?["message"]);
           return ApiResponse(
               code: dioError.response?.statusCode,
               success: false,
-              message: dioError.response!.data["message"] ??
+              message: dioError.response?.data?["message"] ??
                   dioError.message ??
                   dioError.response?.statusMessage ??
                   AppText.errorMsg);

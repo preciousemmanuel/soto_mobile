@@ -7,10 +7,12 @@ class RoutePath {
 
   // order
   static const orderScreen = '/orderScreen';
+  static const orderDetailScreen = '/orderDetailScreen';
   static const createOrderScreen = '/createOrderScreen';
   static const addOrderScreen = '/addOrderScreen';
   static const reviewOrderScreen = '/reviewOrderScreen';
   static const trackMyOrderScreen = '/trackMyOrderScreen';
+  static const raiseDisputeScreen = '/raiseDisputeScreen';
 
   // Dashboard
   static const dashboardNavScreen = '/dashboardNavScreen';
@@ -54,6 +56,7 @@ class RoutePath {
   static const addProductScreen = '/addProductScreen';
   static const vendorProductListScreen = '/vendorProductListScreen';
   static const vendorProductDetailsScreen = '/vendorProductDetailsScreen';
+  static const vendorOrderDetailScreen = '/vendorOrderDetailScreen';
 
   static const withdrawToBankScreen = '/withdrawToBankScreen';
   static const withdrawChooseAccount = '/withdrawChooseAccount';

@@ -8,14 +8,14 @@ class OrderScreen extends StatefulWidget {
 }
 
 class _OrderScreenState extends State<OrderScreen> {
-  OrderStatusType orderStatusType = OrderStatusType.pending;
+  OrderStatusType orderStatusType = OrderStatusType.booked;
 
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context
           .read<OrderVM>()
-          .fetchBuyerOrders(status: OrderStatusType.pending.name.toUpperCase());
+          .fetchBuyerOrders(status: OrderStatusType.booked.name.toUpperCase());
     });
     super.initState();
   }
@@ -61,18 +61,22 @@ class _OrderScreenState extends State<OrderScreen> {
                     ),
                   ),
                   const YBox(10),
-                  if (orderStatusType == OrderStatusType.pending)
-                    OrderPendingTab(vm: vm),
                   if (orderStatusType == OrderStatusType.booked)
-                    OrderBookedTab(vm: vm),
+                    OrderBookedTab(vm: vm, status: OrderStatusType.booked.name),
+                  if (orderStatusType == OrderStatusType.pending)
+                    OrderPendingTab(
+                        vm: vm, status: OrderStatusType.pending.name),
                   if (orderStatusType == OrderStatusType.delivered)
-                    OrderDeliveredTab(vm: vm),
+                    OrderDeliveredTab(
+                        vm: vm, status: OrderStatusType.delivered.name),
                   if (orderStatusType == OrderStatusType.cancelled)
-                    OrderCancelledTab(vm: vm),
+                    OrderCancelledTab(
+                        vm: vm, status: OrderStatusType.cancelled.name),
                   if (orderStatusType == OrderStatusType.failed)
-                    OrderFailedTab(vm: vm),
+                    OrderFailedTab(vm: vm, status: OrderStatusType.failed.name),
                   if (orderStatusType == OrderStatusType.returned)
-                    OrderReturnedTab(vm: vm),
+                    OrderReturnedTab(
+                        vm: vm, status: OrderStatusType.returned.name),
                 ],
               ),
             ),

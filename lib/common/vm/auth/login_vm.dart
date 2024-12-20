@@ -37,7 +37,7 @@ class LoginVM extends BaseVM {
     try {
       setBusy(true);
       await Future.delayed(const Duration(seconds: 1));
-      final AuthUser? user = await StorageService.getUser();
+      await StorageService.logout();
       if (switchToVendor) {
         Navigator.pushNamedAndRemoveUntil(
           NavKey.appNavigatorKey.currentContext!,
@@ -53,8 +53,6 @@ class LoginVM extends BaseVM {
         );
       }
       setBusy(false);
-
-      await StorageService.logout();
 
       return ApiResponse(success: true);
     } catch (e) {

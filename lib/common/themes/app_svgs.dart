@@ -47,6 +47,7 @@ class AppSvgs {
   static const String copy = "$svgIcon/copy.svg";
   static const String bulletActive = "$svgIcon/bulletActive.svg";
   static const String bulletInactive = "$svgIcon/bulletInactive.svg";
+  static const String attach = "$svgIcon/attach.svg";
 }
 
 SizedBox svgHelper(
@@ -55,13 +56,14 @@ SizedBox svgHelper(
   double? width,
   Color? color,
   ColorFilter? colorFilter,
+  BoxFit? fit,
 }) {
   return SizedBox(
     height: height,
     width: width,
     child: SvgPicture.asset(
       svg,
-      fit: BoxFit.cover,
+      fit: fit ?? BoxFit.cover,
       color: color,
       colorFilter: colorFilter,
     ),

@@ -1,6 +1,6 @@
 enum OrderStatusType {
-  pending,
   booked,
+  pending,
   delivered,
   cancelled,
   failed,

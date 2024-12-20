@@ -225,19 +225,19 @@ class _LoginScreenState extends State<LoginScreen> {
                       widget.args?.isVendor != true
                           ? SwitchScreens(
                               title: "Are you a Seller?",
-                              onSwitch: () {
+                              onSwitch: () async {
                                 context.read<AuthUserVM>().setVendorUser();
-                                context
+                                await context
                                     .read<LoginVM>()
                                     .logout(switchToVendor: true);
                               },
                             )
                           : SwitchScreens(
                               title: "Are you a Buyer?",
-                              onSwitch: () {
+                              onSwitch: () async {
                                 context.read<AuthUserVM>().removeVendorUser();
                                 context.read<AuthUserVM>().clearData();
-                                context
+                                await context
                                     .read<LoginVM>()
                                     .logout(switchToVendor: false);
                               },

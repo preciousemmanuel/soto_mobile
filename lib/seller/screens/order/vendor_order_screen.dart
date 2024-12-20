@@ -9,14 +9,14 @@ class VendorOrderScreen extends StatefulWidget {
 }
 
 class _VendorOrderScreenState extends State<VendorOrderScreen> {
-  OrderStatusType orderStatusType = OrderStatusType.pending;
+  OrderStatusType orderStatusType = OrderStatusType.booked;
 
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context
           .read<VendorOrderVm>()
-          .fetchBuyerOrders(status: OrderStatusType.pending.name.toUpperCase());
+          .fetchVendorOrders(status: OrderStatusType.booked.name.toUpperCase());
     });
     super.initState();
   }
@@ -62,10 +62,10 @@ class _VendorOrderScreenState extends State<VendorOrderScreen> {
                     ),
                   ),
                   const YBox(10),
-                  if (orderStatusType == OrderStatusType.pending)
-                    VendorOrderPendingTab(vm: vm),
                   if (orderStatusType == OrderStatusType.booked)
                     VendorOrderBookedTab(vm: vm),
+                  if (orderStatusType == OrderStatusType.pending)
+                    VendorOrderPendingTab(vm: vm),
                   if (orderStatusType == OrderStatusType.delivered)
                     VendorOrderDeliveredTab(vm: vm),
                   if (orderStatusType == OrderStatusType.cancelled)
