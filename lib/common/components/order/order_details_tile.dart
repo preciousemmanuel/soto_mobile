@@ -47,8 +47,8 @@ class OrderDetailsTile extends StatelessWidget {
                 productName,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
-                style: AppTypography.text12.copyWith(
-                  fontWeight: FontWeight.w500,
+                style: AppTypography.text14.copyWith(
+                  fontWeight: FontWeight.w600,
                 ),
               ),
               const YBox(4),
@@ -61,6 +61,7 @@ class OrderDetailsTile extends StatelessWidget {
                   color: AppColors.black66,
                 ),
               ),
+              const YBox(4),
               Text(
                 'Qty: $productQty',
                 style: AppTypography.text10.copyWith(

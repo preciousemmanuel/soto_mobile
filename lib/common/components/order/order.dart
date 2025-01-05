@@ -3,6 +3,7 @@ export 'order_cancelled_tab.dart';
 export 'order_card.dart';
 export 'order_custom_tab.dart';
 export 'order_delivered_tab.dart';
+export 'order_details_overview_tab.dart';
 export 'order_details_tile.dart';
 export 'order_failed_tab.dart';
 export 'order_pending_tab.dart';

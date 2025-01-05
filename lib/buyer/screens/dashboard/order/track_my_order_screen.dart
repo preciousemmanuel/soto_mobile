@@ -25,97 +25,96 @@ class _TrackMyOrderScreenState extends State<TrackMyOrderScreen> {
   @override
   Widget build(BuildContext context) {
     return Consumer<OrderVM>(builder: (ctx, ref, _) {
-      printty('ref.isBusy: ${ref.orderTrackSteps}');
-      return BusyOverlay(
-        show: ref.isBusy,
-        child: Scaffold(
-          backgroundColor: AppColors.bgWhite,
-          appBar: const CustomHeader(
-            title: 'Track Order',
+      if (ref.isBusy) {
+        return const SizerLoader();
+      }
+      return Scaffold(
+        backgroundColor: AppColors.bgWhite,
+        // appBar: const CustomHeader(
+        //   title: 'Track Order',
+        // ),
+        body: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: Sizer.width(20),
           ),
-          body: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: Sizer.width(20),
-            ),
-            child: Column(
-              children: [
-                const YBox(30),
-                Row(
-                  children: List.generate(
-                    3,
-                    (i) => Expanded(
-                      child: CustomTimelIne(
-                        isActive: i < ref.orderTrackSteps.length,
-                        isCompleted: i == 2,
-                      ),
+          child: Column(
+            children: [
+              const YBox(30),
+              Row(
+                children: List.generate(
+                  3,
+                  (i) => Expanded(
+                    child: CustomTimelIne(
+                      isActive: i < ref.orderTrackSteps.length,
+                      isCompleted: i == 2,
                     ),
                   ),
                 ),
-                const YBox(30),
-                Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: Sizer.width(10),
-                    vertical: Sizer.height(10),
-                  ),
-                  decoration: BoxDecoration(
-                    color: AppColors.baseF9,
-                    borderRadius: BorderRadius.circular(Sizer.radius(10)),
-                  ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Tracking ID',
-                              style: AppTypography.text14.copyWith(
-                                color: AppColors.text20,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            const YBox(4),
-                            Text(
-                              ref.singleOrder?.trackingId ?? '',
-                              style: AppTypography.text12.copyWith(
-                                color: AppColors.black,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const XBox(10),
-                      InkWell(
-                        onTap: () async {
-                          Clipboard.setData(ClipboardData(
-                            text: ref.singleOrder?.trackingId ?? '',
-                          )).then((_) {
-                            FlushBarToast.fLSnackBar(
-                              snackBarType: SnackBarType.success,
-                              message: 'Tracking ID copied to clipboard',
-                            );
-                          });
-                        },
-                        child: svgHelper(AppSvgs.copy),
-                      )
-                    ],
-                  ),
+              ),
+              const YBox(30),
+              Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: Sizer.width(10),
+                  vertical: Sizer.height(10),
                 ),
-                const YBox(40),
-                ListView.separated(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: ref.orderTrackSteps.length,
-                  separatorBuilder: (context, index) => const Divider(),
-                  itemBuilder: (context, index) {
-                    return TrackOrderCustomTextTile(
-                      text: ref.orderTrackSteps[index],
-                    );
-                  },
-                )
-              ],
-            ),
+                decoration: BoxDecoration(
+                  color: AppColors.baseF9,
+                  borderRadius: BorderRadius.circular(Sizer.radius(10)),
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Tracking ID',
+                            style: AppTypography.text14.copyWith(
+                              color: AppColors.text20,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          const YBox(4),
+                          Text(
+                            ref.singleOrder?.trackingId ?? '',
+                            style: AppTypography.text12.copyWith(
+                              color: AppColors.black,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const XBox(10),
+                    InkWell(
+                      onTap: () async {
+                        Clipboard.setData(ClipboardData(
+                          text: ref.singleOrder?.trackingId ?? '',
+                        )).then((_) {
+                          FlushBarToast.fLSnackBar(
+                            snackBarType: SnackBarType.success,
+                            message: 'Tracking ID copied to clipboard',
+                          );
+                        });
+                      },
+                      child: svgHelper(AppSvgs.copy),
+                    )
+                  ],
+                ),
+              ),
+              const YBox(40),
+              ListView.separated(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: ref.orderTrackSteps.length,
+                separatorBuilder: (context, index) => const Divider(),
+                itemBuilder: (context, index) {
+                  return TrackOrderCustomTextTile(
+                    text: ref.orderTrackSteps[index],
+                  );
+                },
+              )
+            ],
           ),
         ),
       );

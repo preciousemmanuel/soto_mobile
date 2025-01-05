@@ -6,14 +6,14 @@ import 'package:soto_ecommerce/common/common.dart';
 import 'package:soto_ecommerce/env/env_init.dart';
 
 class DioApiService {
-  int timeOutDurationInSeconds = 30;
-  int connectionTimeout = 6000;
+  int timeOutDurationInSeconds = 40;
+  int connectionTimeout = 8000;
   AppInterceptors appInterceptors;
   late Dio dio;
 
   var options = BaseOptions(
     baseUrl: EnvMain().config.baseUrl,
-    connectTimeout: const Duration(seconds: 6000),
+    connectTimeout: const Duration(seconds: 8000),
     receiveTimeout: const Duration(seconds: 3000),
   );
 

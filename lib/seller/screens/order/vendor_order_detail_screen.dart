@@ -174,10 +174,11 @@ class _VendorOrderDetailScreenState extends State<VendorOrderDetailScreen> {
                 const Spacer(),
                 Text(
                   "${AppUtils.nairaSymbol}${AppUtils.formatAmountString(
-                    (widget.args.vendorOrder?.totalAmount ?? 0).toString(),
+                    (widget.args.vendorOrder?.grandTotal ?? 0).toString(),
                   )}",
                   style: GoogleFonts.roboto(
                     color: AppColors.primaryOrange,
+                    fontSize: Sizer.height(14),
                     fontWeight: FontWeight.w500,
                   ),
                 ),

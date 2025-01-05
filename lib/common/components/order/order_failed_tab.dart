@@ -46,20 +46,38 @@ class _OrderFailedTabState extends State<OrderFailedTab> {
         ),
         shrinkWrap: true,
         itemBuilder: (ctx, i) {
+          final ao = widget.vm.activeOrders[i];
           return Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               const Divider(color: AppColors.whiteF7),
-              OrderCard(
-                status: widget.status,
-                orderId: widget.vm.activeOrders[i].id ?? '',
-                qty: '${widget.vm.activeOrders[i].items?.first.quantity ?? 0}',
-                trackingCode: widget.vm.activeOrders[i].trackingId ?? '',
-                productName:
-                    widget.vm.activeOrders[i].items?.first.productName ?? '',
-                productImage:
-                    widget.vm.activeOrders[i].items?.first.images?.first ?? '',
+              VendorOrderCard(
+                orderCode: ao.trackingId ?? '',
+                orderLength: '${ao.items?.length ?? 0}',
+                orderTime: AppUtils.formatDateTime(
+                    (ao.createdAt ?? DateTime.now()).toLocal().toString()),
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    RoutePath.orderDetailScreen,
+                    arguments: OrderDetailArg(
+                      orderId: ao.id ?? '',
+                      isVendor: true,
+                      buyerOrder: ao,
+                    ),
+                  );
+                },
               ),
+              // OrderCard(
+              //   status: widget.status,
+              //   orderId: widget.vm.activeOrders[i].id ?? '',
+              //   qty: '${widget.vm.activeOrders[i].items?.first.quantity ?? 0}',
+              //   trackingCode: widget.vm.activeOrders[i].trackingId ?? '',
+              //   productName:
+              //       widget.vm.activeOrders[i].items?.first.productName ?? '',
+              //   productImage:
+              //       widget.vm.activeOrders[i].items?.first.images?.first ?? '',
+              // ),
               if (i == 4) const Divider(color: AppColors.whiteF7),
             ],
           );
