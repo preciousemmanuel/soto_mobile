@@ -23,6 +23,7 @@ class AppImages {
   static const mail = "$images/mail.png";
   static const lock = "$images/lock.png";
   static const success = "$images/success.png";
+  static const faSend = "$images/faSend.png";
 
   static const cat = "$images/archive/cat.png";
   static const banner = "$images/archive/banner.png";

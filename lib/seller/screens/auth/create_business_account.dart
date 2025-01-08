@@ -23,7 +23,7 @@ class _CreateBusinessAccountScreenState
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<ProductVM>().getCategories();
+      context.read<CreateBusinessVM>().getVendorCategories();
     });
   }
 
@@ -142,49 +142,46 @@ class _CreateBusinessAccountScreenState
                 ),
               ),
               const YBox(6),
-              Consumer<ProductVM>(builder: (context, catRef, _) {
-                return SelectCategoryField(
-                  text: vm.businessCategoryC.text.isEmpty
-                      ? 'Select Category'
-                      : vm.businessCategoryC.text,
-                  isExpanded: isExpanded,
-                  isLoading: vm.isBusy,
-                  hasBeenSelected: vm.businessCategoryC.text.isNotEmpty,
-                  onSelect: () {
-                    isExpanded = !isExpanded;
-                    vm.reBuildUI();
-                  },
-                  children: List.generate(
-                    catRef.productCategories.length,
-                    (i) {
-                      return InkWell(
-                        onTap: () {
-                          vm.businessCategoryC.text =
-                              catRef.productCategories[i].name ?? '';
-                          isExpanded = false;
-                          vm.reBuildUI();
-                        },
-                        child: Container(
-                          padding: EdgeInsets.only(
-                            top: Sizer.height(i == 0 ? 30 : 14),
-                            bottom: Sizer.height(
-                                i == catRef.productCategories.length - 1
-                                    ? 0
-                                    : 14),
-                          ),
-                          child: Text(
-                            catRef.productCategories[i].name ?? '',
-                            style: AppTypography.text14.copyWith(
-                              fontWeight: FontWeight.w500,
-                              color: AppColors.text57,
-                            ),
+              SelectCategoryField(
+                text: vm.businessCategoryC.text.isEmpty
+                    ? 'Select Category'
+                    : vm.businessCategoryC.text,
+                isExpanded: isExpanded,
+                isLoading: vm.isBusy,
+                hasBeenSelected: vm.businessCategoryC.text.isNotEmpty,
+                onSelect: () {
+                  isExpanded = !isExpanded;
+                  vm.reBuildUI();
+                },
+                children: List.generate(
+                  vm.productCategories.length,
+                  (i) {
+                    return InkWell(
+                      onTap: () {
+                        vm.setCategoryId(vm.productCategories[i].id ?? '');
+                        vm.businessCategoryC.text =
+                            vm.productCategories[i].name ?? '';
+                        isExpanded = false;
+                        vm.reBuildUI();
+                      },
+                      child: Container(
+                        padding: EdgeInsets.only(
+                          top: Sizer.height(i == 0 ? 30 : 14),
+                          bottom: Sizer.height(
+                              i == vm.productCategories.length - 1 ? 0 : 14),
+                        ),
+                        child: Text(
+                          vm.productCategories[i].name ?? '',
+                          style: AppTypography.text14.copyWith(
+                            fontWeight: FontWeight.w500,
+                            color: AppColors.text57,
                           ),
                         ),
-                      );
-                    },
-                  ),
-                );
-              }),
+                      ),
+                    );
+                  },
+                ),
+              ),
               const YBox(20),
               Text(
                 'Description',

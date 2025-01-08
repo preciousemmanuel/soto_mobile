@@ -69,6 +69,13 @@ class AppRouter {
         return errorScreen('Incorrect arguments for ${settings.name}');
       case RoutePath.raiseDisputeScreen:
         return buildRoute(const RaiseDisputeScreen());
+
+      case RoutePath.disputeConfirmScreen:
+        if (args is DisputeArgs) {
+          return buildRoute(DisputeConfirmScreen(args: args));
+        }
+        return errorScreen('Incorrect arguments for ${settings.name}');
+
       case RoutePath.addOrderScreen:
         return buildRoute(const AddOrderScreen());
       case RoutePath.reviewOrderScreen:

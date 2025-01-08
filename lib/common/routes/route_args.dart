@@ -69,3 +69,8 @@ class OrderDetailArg {
     this.buyerOrder,
   });
 }
+
+class DisputeArgs {
+  final String disputeId;
+  DisputeArgs({required this.disputeId});
+}

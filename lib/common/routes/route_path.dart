@@ -13,6 +13,7 @@ class RoutePath {
   static const reviewOrderScreen = '/reviewOrderScreen';
   static const trackMyOrderScreen = '/trackMyOrderScreen';
   static const raiseDisputeScreen = '/raiseDisputeScreen';
+  static const disputeConfirmScreen = '/disputeConfirmScreen';
 
   // Dashboard
   static const dashboardNavScreen = '/dashboardNavScreen';

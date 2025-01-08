@@ -120,6 +120,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     showLabelHeader: true,
                     hintText: 'Product Name',
                     controller: productNameC,
+                    focusNode: productNameFocus,
                     onChanged: (val) => vm.reBuildUI(),
                   ),
                   const YBox(16),
@@ -130,6 +131,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     showLabelHeader: true,
                     maxLines: 3,
                     controller: productDescC,
+                    focusNode: productDescFocus,
                     onChanged: (val) => vm.reBuildUI(),
                   ),
                   const YBox(16),
@@ -357,6 +359,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     showLabelHeader: true,
                     hintText: 'Unit Price (N)',
                     controller: unitpriceC,
+                    focusNode: unitpriceFocus,
                     onChanged: (val) => vm.reBuildUI(),
                   ),
                   const YBox(16),
@@ -367,6 +370,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     showLabelHeader: true,
                     hintText: 'Product Qty',
                     controller: productQtyC,
+                    focusNode: productQtyFocus,
                     onChanged: (val) => vm.reBuildUI(),
                   ),
                   const YBox(16),
@@ -377,6 +381,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     showLabelHeader: true,
                     hintText: 'Discount Price (Optional)',
                     controller: disCountPriceC,
+                    focusNode: disCountPriceFocus,
                     onChanged: (val) => vm.reBuildUI(),
                   ),
                   const YBox(20),
@@ -388,6 +393,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                           borderColor: AppColors.grayE0,
                           hintText: 'Height',
                           controller: heightC,
+                          focusNode: heightFocus,
                           keyboardType: KeyboardType.decimal,
                           onChanged: (val) => vm.reBuildUI(),
                         ),
@@ -399,6 +405,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                           borderColor: AppColors.grayE0,
                           hintText: 'Width',
                           controller: widthC,
+                          focusNode: widthFocus,
                           keyboardType: KeyboardType.decimal,
                           onChanged: (val) => vm.reBuildUI(),
                         ),
@@ -410,6 +417,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     fillColor: AppColors.transparent,
                     borderColor: AppColors.grayE0,
                     hintText: 'Product Weight',
+                    focusNode: weightFocus,
                     controller: weightC,
                     onChanged: (val) {},
                     keyboardType: KeyboardType.decimal,
@@ -461,6 +469,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
   }
 
   _addProduct() async {
+    FocusScope.of(context).unfocus();
     final vm = context.read<VendorProductVM>();
     ApiResponse apiResponse = await vm.addNewproduct(
       isInstock: inStock,

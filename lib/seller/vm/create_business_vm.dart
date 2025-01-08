@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:soto_ecommerce/common/common.dart';
@@ -17,9 +18,10 @@ class CreateBusinessVM extends BaseVM {
   TextEditingController businessCategoryC = TextEditingController();
   TextEditingController businessDescriptionC = TextEditingController();
 
-  // List<BusinessCategory> _businessCategories = [];
-  // List<BusinessCategory> get businessCategories => _businessCategories;
-
+  List<ProductCategory> _productCategories = [];
+  List<ProductCategory> get productCategories => _productCategories;
+  String _categoryId = "";
+  String get categoryId => _categoryId;
   File? _selectedImage;
   File? get selectedImage => _selectedImage;
 
@@ -48,13 +50,30 @@ class CreateBusinessVM extends BaseVM {
         businessPasswordC.text == businessPasswordConfirmC.text;
   }
 
+  setCategoryId(String id) {
+    _categoryId = id;
+    reBuildUI();
+  }
+
+  Future<ApiResponse> getVendorCategories() async {
+    return await performApiCall(
+      url: "/business/fetch-business-categories?limit=100&page=1",
+      method: apiService.get,
+      onSuccess: (data) {
+        _productCategories =
+            productCategoryFromJson(json.encode(data['data']['data']));
+        return apiResponse;
+      },
+    );
+  }
+
   Future<ApiResponse> createBusinessAccount() async {
     var body = {
       "business_name": businessNameC.text.trim(),
       "email": businessEmailC.text.trim(),
       "adress": businessAddressC.text.trim(),
       "phone_number": businessPhoneC.text.trim(),
-      "category": businessCategoryC.text.trim(),
+      "category": _categoryId,
       "description": businessDescriptionC.text.trim(),
       // "business_logo": signupChannel,
       "password": businessPasswordC.text.trim()

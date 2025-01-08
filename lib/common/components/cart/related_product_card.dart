@@ -10,6 +10,8 @@ class RelatedProductCard extends StatefulWidget {
     required this.unitPrice,
     this.salesPrice,
     this.favLoading = false,
+    this.showAddToCartBtn = false,
+    this.onAddToCartTap,
     this.onTap,
   });
 
@@ -19,7 +21,9 @@ class RelatedProductCard extends StatefulWidget {
   final String unitPrice;
   final String? salesPrice;
   final bool favLoading;
+  final bool showAddToCartBtn;
   final Function()? onTap;
+  final Function()? onAddToCartTap;
 
   @override
   State<RelatedProductCard> createState() => _RelatedProductCardState();
@@ -94,7 +98,17 @@ class _RelatedProductCardState extends State<RelatedProductCard> {
                       ),
                     ),
                   ],
-                ))
+                )),
+                if (widget.showAddToCartBtn) const YBox(8),
+                if (widget.showAddToCartBtn)
+                  CustomBtn.solid(
+                    // online:
+                    isOutline: true,
+                    textColor: AppColors.primaryOrange,
+                    height: Sizer.height(40),
+                    onTap: widget.onAddToCartTap,
+                    text: "Add to cart",
+                  ),
               ],
             ),
             Positioned(

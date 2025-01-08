@@ -120,7 +120,7 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
                       crossAxisSpacing: Sizer.width(20),
                       mainAxisSpacing: Sizer.width(20),
                       physics: const NeverScrollableScrollPhysics(),
-                      childAspectRatio: 0.74,
+                      childAspectRatio: 0.64,
                       padding: EdgeInsets.only(
                         left: Sizer.width(20),
                         right: Sizer.width(20),
@@ -128,6 +128,7 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
                       children: [
                         for (int i = 0; i < ref.allProductList.length; i++)
                           RelatedProductCard(
+                            showAddToCartBtn: true,
                             productName:
                                 ref.allProductList[i].productName ?? '',
                             productId: ref.allProductList[i].id ?? '',
@@ -145,6 +146,39 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
                                   productId: ref.allProductList[i].id ?? '',
                                 ),
                               );
+                            },
+                            onAddToCartTap: () {
+                              final orderVm = context.read<OrderVM>();
+                              orderVm
+                                  .addproductToCart(
+                                product: ProductCart(
+                                  productId: ref.allProductList[i].id ?? '',
+                                  productName:
+                                      ref.allProductList[i].productName ?? '',
+                                  productImage:
+                                      ref.allProductList[i].images?.first ?? '',
+                                  unitPrice:
+                                      (ref.allProductList[i].unitPrice ?? 0)
+                                          .toDouble(),
+                                  qty: 1,
+                                ),
+                              )
+                                  .then((_) {
+                                orderVm.getCartFromStorage();
+
+                                FlushBarToast.fLSnackBar(
+                                  snackBarType: SnackBarType.success,
+                                  message: 'Product added to cart',
+                                  actionText: 'Go to cart',
+                                  onActionTap: () {
+                                    Navigator.pushNamed(
+                                      context,
+                                      RoutePath.dashboardNavScreen,
+                                      arguments: DashArg(index: 2),
+                                    );
+                                  },
+                                );
+                              });
                             },
                           ),
                       ],
