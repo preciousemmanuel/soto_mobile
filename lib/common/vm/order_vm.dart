@@ -147,9 +147,12 @@ class OrderVM extends BaseVM {
       method: apiService.postWithAuth,
       body: body,
       onSuccess: (data) {
+        print("dsdaddata $data");
+        print(
+            "dsdaddataLink ${data["data"]["data"]["data"]["authorization_url"]}");
         return ApiResponse(
           success: true,
-          data: data["data"]["data"]["authorization_url"],
+          data: data["data"]["data"]["data"]["authorization_url"],
         );
       },
     );

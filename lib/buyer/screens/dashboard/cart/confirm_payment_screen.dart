@@ -176,7 +176,7 @@ class _ConfirmPaymentScreenState extends State<ConfirmPaymentScreen> {
         final orderLinkRes = await orderVM.generatePaymentLink(
             amount: orderVM.cartTotalAmount,
             orderId: createOrderRes.data ?? '');
-
+        print("orderLinkResCont $orderLinkRes");
         if (orderLinkRes.success) {
           Navigator.pushReplacementNamed(
             context,
