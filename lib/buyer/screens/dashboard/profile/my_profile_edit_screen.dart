@@ -118,12 +118,12 @@ class _MyProfileScreenEditState extends State<MyProfileScreenEdit> {
                       onChanged: (val) => ref.reBuildUI(),
                     ),
                     const YBox(150),
-                    // CustomBtn.solid(
-                    //   online: activateBtn(),
-                    //   borderRadius: BorderRadius.circular(40),
-                    //   onTap: () {},
-                    //   text: 'Save Changes',
-                    // ),
+                    CustomBtn.solid(
+                      online: activateBtn(),
+                      borderRadius: BorderRadius.circular(40),
+                      onTap: () {},
+                      text: 'Save Changes',
+                    ),
                     const YBox(40),
                   ],
                 ),

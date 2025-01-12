@@ -7,6 +7,7 @@ class SelectCategoryField extends StatelessWidget {
     this.isExpanded = false,
     this.hasBeenSelected = false,
     this.isLoading = false,
+    this.showLeadingIcon = true,
     this.bgColor,
     this.borderColor,
     this.children = const <Widget>[],
@@ -17,6 +18,7 @@ class SelectCategoryField extends StatelessWidget {
   final bool isExpanded;
   final bool hasBeenSelected;
   final bool isLoading;
+  final bool showLeadingIcon;
   final Color? bgColor;
   final Color? borderColor;
   final List<Widget> children; // const <Widget>[],
@@ -44,12 +46,13 @@ class SelectCategoryField extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(
-                  Iconsax.element_2,
-                  color: AppColors.iconC4,
-                  size: Sizer.height(20),
-                ),
-                const XBox(10),
+                if (showLeadingIcon)
+                  Icon(
+                    Iconsax.element_2,
+                    color: AppColors.iconC4,
+                    size: Sizer.height(20),
+                  ),
+                if (showLeadingIcon) const XBox(10),
                 Expanded(
                   child: Text(
                     text,

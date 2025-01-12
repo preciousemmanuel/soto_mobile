@@ -13,6 +13,16 @@ class _RaiseDisputeScreenState extends State<RaiseDisputeScreen> {
   final titleF = FocusNode();
   final descF = FocusNode();
 
+  bool isExpanded = false;
+
+  List<String> disputeTitles = [
+    'Order and Delivery',
+    'Payment and Refund ',
+    'Product quality and authenticity',
+    'Warranty and Returns',
+    'Fraud and security',
+  ];
+
   @override
   void dispose() {
     titleC.dispose();
@@ -51,14 +61,57 @@ class _RaiseDisputeScreenState extends State<RaiseDisputeScreen> {
                 style: AppTypography.text12.copyWith(),
               ),
               const YBox(40),
-              CustomTextField(
-                controller: titleC,
-                focusNode: titleF,
-                fillColor: AppColors.transparent,
+
+              // CustomTextField(
+              //   controller: titleC,
+              //   focusNode: titleF,
+              //   fillColor: AppColors.transparent,
+              //   borderColor: AppColors.base9A,
+              //   isReadOnly: true,
+              //   borderRadius: 5,
+              //   hintText: 'Dispute Title',
+              //   onChanged: (val) => vm.reBuildUI(),
+              //   onTap: ,
+              // ),
+
+              SelectCategoryField(
+                text: titleC.text.trim().isNotEmpty ? titleC.text : 'Title',
                 borderColor: AppColors.base9A,
-                borderRadius: 5,
-                hintText: 'Dispute Title',
-                onChanged: (val) => vm.reBuildUI(),
+                bgColor: AppColors.transparent,
+                showLeadingIcon: false,
+                isExpanded: isExpanded,
+                isLoading: vm.isBusy,
+                hasBeenSelected: titleC.text.isNotEmpty,
+                onSelect: () {
+                  isExpanded = !isExpanded;
+                  vm.reBuildUI();
+                },
+                children: List.generate(
+                  disputeTitles.length,
+                  (i) {
+                    return InkWell(
+                      onTap: () {
+                        isExpanded = false;
+                        titleC.text = disputeTitles[i];
+                        vm.reBuildUI();
+                      },
+                      child: Container(
+                        padding: EdgeInsets.only(
+                          top: Sizer.height(i == 0 ? 30 : 14),
+                          bottom: Sizer.height(
+                              i == disputeTitles.length - 1 ? 0 : 14),
+                        ),
+                        child: Text(
+                          disputeTitles[i],
+                          style: AppTypography.text14.copyWith(
+                            fontWeight: FontWeight.w500,
+                            color: AppColors.text57,
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
               ),
               const YBox(30),
               CustomTextField(

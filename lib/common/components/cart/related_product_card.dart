@@ -99,16 +99,15 @@ class _RelatedProductCardState extends State<RelatedProductCard> {
                     ),
                   ],
                 )),
-                if (widget.showAddToCartBtn) const YBox(8),
-                if (widget.showAddToCartBtn)
-                  CustomBtn.solid(
-                    // online:
-                    isOutline: true,
-                    textColor: AppColors.primaryOrange,
-                    height: Sizer.height(40),
-                    onTap: widget.onAddToCartTap,
-                    text: "Add to cart",
-                  ),
+                const YBox(8),
+                CustomBtn.solid(
+                  // online:
+                  isOutline: true,
+                  textColor: AppColors.primaryOrange,
+                  height: Sizer.height(40),
+                  onTap: widget.onAddToCartTap,
+                  text: "Add to cart",
+                ),
               ],
             ),
             Positioned(

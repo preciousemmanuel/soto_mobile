@@ -1,13 +1,16 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:soto_ecommerce/common/common.dart';
 
 class AuthUserVM extends BaseVM {
+  final ImageHelperPicker _imagePicker = ImageHelperPicker();
   AuthUserVM() {
     getUserFromStorage();
   }
   static const String dashboardLoading = "dashboardLoading";
   static const String updatingShipment = "updatingShipment";
+  static const String pickImageState = "pickImageState";
 
   AuthUser? _authUser;
   AuthUser? get authUser => _authUser;
@@ -18,6 +21,9 @@ class AuthUserVM extends BaseVM {
   List<CityModel> get cities => _cities;
   List<StateModel> _states = [];
   List<StateModel> get states => _states;
+
+  File? _selectedImage;
+  File? get selectedImage => _selectedImage;
 
   bool get isVendor =>
       _authUser?.userType?.toUpperCase() == UserType.vendor.name.toUpperCase();
@@ -57,6 +63,22 @@ class AuthUserVM extends BaseVM {
         if (token != null) StorageService.storeAccessToken(token);
         if (data["data"] != null) StorageService.storeUser(data["data"]);
         if (data["data"] != null) _authUser = AuthUser.fromJson(data["data"]);
+        return apiResponse;
+      },
+    );
+  }
+
+  Future<ApiResponse> updateUserProfile({
+    String? firstName,
+    String? lastName,
+    String? email,
+    String? phone,
+  }) async {
+    return await performApiCall(
+      url: "/user/update-profile",
+      method: apiService.postWithAuth,
+      onSuccess: (data) {
+        getUserProfile();
         return apiResponse;
       },
     );
@@ -130,7 +152,51 @@ class AuthUserVM extends BaseVM {
     );
   }
 
+  Future<ApiResponse> pickImage() async {
+    try {
+      setBusyForObject(pickImageState, true);
+      final images = await _imagePicker.pickImage();
+
+      if (images.isNotEmpty) {
+        //  check for sizes
+        bool sizeExceeded = false;
+        for (final image in images) {
+          final file = File(image.path);
+          int fileSizeInBytes = file.lengthSync();
+          double fileSizeInMB = fileSizeInBytes / (1024 * 1024);
+          if (fileSizeInMB > 4.0) {
+            sizeExceeded = true;
+            break;
+          }
+        }
+
+        if (sizeExceeded) {
+          setBusyForObject(pickImageState, false);
+          return ApiResponse(
+              success: false,
+              message: "One or more images exceed the size limit of 4MB");
+        }
+
+        for (final image in images) {
+          final file = File(image.path);
+          _selectedImage = file;
+        }
+
+        setBusyForObject(pickImageState, false);
+        return ApiResponse(success: true);
+      }
+
+      setBusyForObject(pickImageState, false);
+      return ApiResponse(success: false, message: "No image selected");
+    } catch (e) {
+      setBusyForObject(pickImageState, false);
+      printty("Error while getting image $e");
+      return ApiResponse(success: false, message: e.toString());
+    }
+  }
+
   void clearData() {
+    _selectedImage = null;
     _authUser = null;
     _cities = [];
     _states = [];

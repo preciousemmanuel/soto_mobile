@@ -1,6 +1,7 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:soto_ecommerce/buyer/screens/dashboard/profile/modals/signup_alert_modal.dart';
 import 'package:soto_ecommerce/common/common.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -256,8 +257,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         crossAxisSpacing: Sizer.width(20),
                         mainAxisSpacing: Sizer.width(20),
                         pattern: [
-                          const StairedGridTile(0.5, 0.74),
-                          const StairedGridTile(0.5, 0.74),
+                          const StairedGridTile(0.5, 0.62),
+                          const StairedGridTile(0.5, 0.62),
                         ],
                       ),
                       childrenDelegate:
@@ -286,44 +287,69 @@ class _HomeScreenState extends State<HomeScreen> {
                       crossAxisSpacing: Sizer.width(20),
                       mainAxisSpacing: Sizer.width(20),
                       pattern: [
-                        const StairedGridTile(0.5, 0.74),
-                        const StairedGridTile(0.5, 0.74),
+                        const StairedGridTile(0.5, 0.62),
+                        const StairedGridTile(0.5, 0.62),
                       ],
                     ),
                     childrenDelegate: SliverChildBuilderDelegate(
-                      (context, index) {
-                        if (vm.isBusy) {
-                          return const Skeletonizer(
-                            enabled: true,
-                            child: RelatedProductCard(
-                              productName: 'Gucci Product',
-                              productId: '2777378388ddbdbd',
-                              unitPrice: '1000',
-                              productImage:
-                                  'https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg',
-                              onTap: null,
-                            ),
-                          );
-                        }
+                      (context, i) {
                         return RelatedProductCard(
                           productName:
-                              vm.popularProductList[index].productName ?? '',
-                          productId: vm.popularProductList[index].id ?? '',
-                          unitPrice:
-                              '${vm.popularProductList[index].unitPrice}',
-                          productImage: (vm.popularProductList[index].images
-                                      ?.isNotEmpty ??
-                                  false)
-                              ? vm.popularProductList[index].images?.first ?? ''
-                              : '',
+                              vm.popularProductList[i].productName ?? '',
+                          productId: vm.popularProductList[i].id ?? '',
+                          unitPrice: '${vm.popularProductList[i].unitPrice}',
+                          productImage:
+                              (vm.popularProductList[i].images?.isNotEmpty ??
+                                      false)
+                                  ? vm.popularProductList[i].images?.first ?? ''
+                                  : '',
                           onTap: () {
                             Navigator.pushNamed(
                               context,
                               RoutePath.productDetailScreen,
                               arguments: ProductArgs(
-                                productId: vm.allProductList[index].id ?? '',
+                                productId: vm.allProductList[i].id ?? '',
                               ),
                             );
+                          },
+                          onAddToCartTap: () {
+                            final orderVm = context.read<OrderVM>();
+                            final userVm = context.read<AuthUserVM>();
+                            if (userVm.authUser == null) {
+                              return ModalWrapper.showCustomDialog(
+                                context,
+                                child: const SignupAlertModal(),
+                              );
+                            }
+                            orderVm
+                                .addproductToCart(
+                              product: ProductCart(
+                                productId: vm.allProductList[i].id ?? '',
+                                productName:
+                                    vm.allProductList[i].productName ?? '',
+                                productImage:
+                                    vm.allProductList[i].images?.first ?? '',
+                                unitPrice: (vm.allProductList[i].unitPrice ?? 0)
+                                    .toDouble(),
+                                qty: 1,
+                              ),
+                            )
+                                .then((_) {
+                              orderVm.getCartFromStorage();
+
+                              FlushBarToast.fLSnackBar(
+                                snackBarType: SnackBarType.success,
+                                message: 'Product added to cart',
+                                actionText: 'Go to cart',
+                                onActionTap: () {
+                                  Navigator.pushNamed(
+                                    context,
+                                    RoutePath.dashboardNavScreen,
+                                    arguments: DashArg(index: 2),
+                                  );
+                                },
+                              );
+                            });
                           },
                         );
                       },

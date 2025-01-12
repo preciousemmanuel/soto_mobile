@@ -1,3 +1,4 @@
+import 'package:soto_ecommerce/buyer/screens/dashboard/profile/modals/signup_alert_modal.dart';
 import 'package:soto_ecommerce/common/common.dart';
 
 class AllProductsScreen extends StatefulWidget {
@@ -74,7 +75,7 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
                       crossAxisSpacing: Sizer.width(20),
                       mainAxisSpacing: Sizer.width(20),
                       physics: const NeverScrollableScrollPhysics(),
-                      childAspectRatio: 0.74,
+                      childAspectRatio: 0.64,
                       padding: EdgeInsets.only(
                         left: Sizer.width(20),
                         right: Sizer.width(20),
@@ -99,6 +100,46 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
                                   productId: ref.allProductList[i].id ?? '',
                                 ),
                               );
+                            },
+                            onAddToCartTap: () {
+                              final orderVm = context.read<OrderVM>();
+                              final userVm = context.read<AuthUserVM>();
+                              if (userVm.authUser == null) {
+                                return ModalWrapper.showCustomDialog(
+                                  context,
+                                  child: const SignupAlertModal(),
+                                );
+                              }
+                              orderVm
+                                  .addproductToCart(
+                                product: ProductCart(
+                                  productId: ref.allProductList[i].id ?? '',
+                                  productName:
+                                      ref.allProductList[i].productName ?? '',
+                                  productImage:
+                                      ref.allProductList[i].images?.first ?? '',
+                                  unitPrice:
+                                      (ref.allProductList[i].unitPrice ?? 0)
+                                          .toDouble(),
+                                  qty: 1,
+                                ),
+                              )
+                                  .then((_) {
+                                orderVm.getCartFromStorage();
+
+                                FlushBarToast.fLSnackBar(
+                                  snackBarType: SnackBarType.success,
+                                  message: 'Product added to cart',
+                                  actionText: 'Go to cart',
+                                  onActionTap: () {
+                                    Navigator.pushNamed(
+                                      context,
+                                      RoutePath.dashboardNavScreen,
+                                      arguments: DashArg(index: 2),
+                                    );
+                                  },
+                                );
+                              });
                             },
                           ),
                       ],

@@ -72,7 +72,7 @@ class _VendorProductDetailsScreenState
             children: [
               const YBox(26),
               Container(
-                height: Sizer.height(160),
+                height: Sizer.height(200),
                 width: Sizer.screenWidth,
                 color: AppColors.bgFF,
                 child: MyCachedNetworkImage(
@@ -81,7 +81,7 @@ class _VendorProductDetailsScreenState
                           ? (_singleProduct?.product?.images?.first ?? '')
                           : '',
                   fadeInDuration: const Duration(milliseconds: 50),
-                  fit: BoxFit.cover,
+                  fit: BoxFit.none,
                 ),
               ),
               const YBox(12),

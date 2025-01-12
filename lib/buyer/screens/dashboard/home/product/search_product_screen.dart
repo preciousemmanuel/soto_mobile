@@ -1,3 +1,4 @@
+import 'package:soto_ecommerce/buyer/screens/dashboard/profile/modals/signup_alert_modal.dart';
 import 'package:soto_ecommerce/common/common.dart';
 
 class SearchProductScreen extends StatefulWidget {
@@ -149,6 +150,13 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
                             },
                             onAddToCartTap: () {
                               final orderVm = context.read<OrderVM>();
+                              final userVm = context.read<AuthUserVM>();
+                              if (userVm.authUser == null) {
+                                return ModalWrapper.showCustomDialog(
+                                  context,
+                                  child: const SignupAlertModal(),
+                                );
+                              }
                               orderVm
                                   .addproductToCart(
                                 product: ProductCart(

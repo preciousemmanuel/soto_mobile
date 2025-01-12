@@ -58,7 +58,7 @@ class OrderVM extends BaseVM {
     for (var item in _cartItems) {
       total += (item.qty) * (item.unitPrice ?? 0);
     }
-    return total;
+    return total + (_shippingCostAgility?.shippingCost ?? 0);
   }
 
   void increaseCartQty(String productId) {

@@ -56,7 +56,7 @@ class _OrderCancelledTabState extends State<OrderCancelledTab> {
                 orderCode: ao.trackingId ?? '',
                 orderLength: '${ao.items?.length ?? 0}',
                 orderTime: AppUtils.formatDateTime(
-                    (ao.createdAt ?? DateTime.now()).toLocal().toString()),
+                    (ao.updatedAt ?? DateTime.now()).toLocal().toString()),
                 onTap: () {
                   Navigator.pushNamed(
                     context,

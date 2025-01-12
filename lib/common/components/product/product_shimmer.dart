@@ -17,7 +17,7 @@ class ProductShimmer extends StatelessWidget {
       crossAxisSpacing: Sizer.width(20),
       mainAxisSpacing: Sizer.width(20),
       physics: const NeverScrollableScrollPhysics(),
-      childAspectRatio: 0.74,
+      childAspectRatio: 0.64,
       padding: EdgeInsets.symmetric(
         horizontal: Sizer.width(20),
       ),

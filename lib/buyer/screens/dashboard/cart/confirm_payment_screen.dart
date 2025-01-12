@@ -64,10 +64,10 @@ class _ConfirmPaymentScreenState extends State<ConfirmPaymentScreen> {
                   rightText:
                       '${AppUtils.nairaSymbol}${AppUtils.formatAmountString(orderVm.cartTotalAmount.toString())}',
                 ),
-                const CustomPaymentListTile(
-                  leftText: 'Vats',
-                  rightText: 'N200',
-                ),
+                // const CustomPaymentListTile(
+                //   leftText: 'Vats',
+                //   rightText: 'N200',
+                // ),
                 CustomPaymentListTile(
                   leftText: 'Shipping',
                   rightText:
