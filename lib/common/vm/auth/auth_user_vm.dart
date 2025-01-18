@@ -69,16 +69,22 @@ class AuthUserVM extends BaseVM {
   }
 
   Future<ApiResponse> updateUserProfile({
-    String? firstName,
-    String? lastName,
-    String? email,
+    String? fullName,
+    // String? lastName,
     String? phone,
   }) async {
     return await performApiCall(
       url: "/user/update-profile",
-      method: apiService.postWithAuth,
+      method: apiService.putWithAuth,
+      busyObjectName: updatingShipment,
+      isFormData: true,
+      body: {
+        // "FirstName": firstName,
+        // "LastName": lastName,
+        "FullName": fullName,
+        "PhoneNumber": phone,
+      },
       onSuccess: (data) {
-        getUserProfile();
         return apiResponse;
       },
     );

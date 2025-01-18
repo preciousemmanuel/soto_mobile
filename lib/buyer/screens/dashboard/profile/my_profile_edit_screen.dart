@@ -78,7 +78,6 @@ class _MyProfileScreenEditState extends State<MyProfileScreenEdit> {
                       fillColor: AppColors.transparent,
                       borderColor: AppColors.grayE0,
                       labelText: "First Name",
-                      isReadOnly: true,
                       showLabelHeader: true,
                       hintText: 'Enter your first name',
                       controller: firstNameC,
@@ -90,7 +89,6 @@ class _MyProfileScreenEditState extends State<MyProfileScreenEdit> {
                       borderColor: AppColors.grayE0,
                       labelText: "Last Name",
                       showLabelHeader: true,
-                      isReadOnly: true,
                       hintText: 'Enter your last name',
                       controller: lastNameC,
                       onChanged: (val) => ref.reBuildUI(),
@@ -112,7 +110,6 @@ class _MyProfileScreenEditState extends State<MyProfileScreenEdit> {
                       borderColor: AppColors.grayE0,
                       labelText: "Phone Number",
                       showLabelHeader: true,
-                      isReadOnly: true,
                       hintText: 'Enter your phone number',
                       controller: phoneC,
                       onChanged: (val) => ref.reBuildUI(),
@@ -120,8 +117,9 @@ class _MyProfileScreenEditState extends State<MyProfileScreenEdit> {
                     const YBox(150),
                     CustomBtn.solid(
                       online: activateBtn(),
+                      isLoading: ref.busy(AuthUserVM.updatingShipment),
                       borderRadius: BorderRadius.circular(40),
-                      onTap: () {},
+                      onTap: updateProfile,
                       text: 'Save Changes',
                     ),
                     const YBox(40),
@@ -141,10 +139,27 @@ class _MyProfileScreenEditState extends State<MyProfileScreenEdit> {
             firstNameC.text.trim().isNotEmpty) ||
         (vm.authUser?.lastName != lastNameC.text.trim() &&
             lastNameC.text.trim().isNotEmpty) ||
-        (vm.authUser?.email != emailC.text.trim() &&
-            emailC.text.trim().isNotEmpty) ||
+        // (vm.authUser?.email != emailC.text.trim() &&
+        //     emailC.text.trim().isNotEmpty) ||
         (vm.authUser?.phoneNumber != phoneC.text.trim() &&
             phoneC.text.trim().isNotEmpty);
+  }
+
+  void updateProfile() async {
+    final vm = context.read<AuthUserVM>();
+    final res = await vm.updateUserProfile(
+      // firstName: firstNameC.text.trim(),
+      // lastName: lastNameC.text.trim(),
+      fullName: '${firstNameC.text.trim()} ${lastNameC.text.trim()}',
+      phone: phoneC.text.trim(),
+    );
+
+    handleApiResponse(
+      response: res,
+      onSuccess: () {
+        vm.getUserProfile();
+      },
+    );
   }
 
   String getFullNamesInitails(String firstName, String lastName) {
