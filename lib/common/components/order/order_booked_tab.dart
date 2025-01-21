@@ -57,9 +57,29 @@ class _OrderBookedTabState extends State<OrderBookedTab> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 const Divider(color: AppColors.whiteF7),
-                VendorOrderCard(
-                  orderCode: ao.trackingId ?? '',
-                  orderLength: '${ao.items?.length ?? 0}',
+                // VendorOrderCard(
+                //   orderCode: ao.trackingId ?? '',
+                //   orderLength: '${ao.items?.length ?? 0}',
+                //   orderTime: AppUtils.formatDateTime(
+                //       (ao.updatedAt ?? DateTime.now()).toLocal().toString()),
+                //   onTap: () {
+                //     Navigator.pushNamed(
+                //       context,
+                //       RoutePath.orderDetailScreen,
+                //       arguments: OrderDetailArg(
+                //         orderId: ao.id ?? '',
+                //         isVendor: true,
+                //         buyerOrder: ao,
+                //       ),
+                //     );
+                //   },
+                // ),
+                OrderCard(
+                  status: widget.status,
+                  orderId: ao.id ?? '',
+                  qty: '${ao.items?.length ?? 0}',
+                  trackingCode: ao.trackingId ?? '',
+                  productName: ao.items?.first.productName ?? '',
                   orderTime: AppUtils.formatDateTime(
                       (ao.updatedAt ?? DateTime.now()).toLocal().toString()),
                   onTap: () {
@@ -68,22 +88,11 @@ class _OrderBookedTabState extends State<OrderBookedTab> {
                       RoutePath.orderDetailScreen,
                       arguments: OrderDetailArg(
                         orderId: ao.id ?? '',
-                        isVendor: true,
                         buyerOrder: ao,
                       ),
                     );
                   },
                 ),
-                // OrderCard(
-                //   status: widget.status,
-                //   orderId: widget.vm.activeOrders[i].id ?? '',
-                //   qty: '${widget.vm.activeOrders[i].items?.first.quantity ?? 0}',
-                //   trackingCode: widget.vm.activeOrders[i].trackingId ?? '',
-                //   productName:
-                //       widget.vm.activeOrders[i].items?.first.productName ?? '',
-                //   productImage:
-                //       widget.vm.activeOrders[i].items?.first.images?.first ?? '',
-                // ),
                 if (i == 4) const Divider(color: AppColors.whiteF7),
               ],
             );

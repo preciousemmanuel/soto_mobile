@@ -42,7 +42,7 @@ class _VendorOrderDetailScreenState extends State<VendorOrderDetailScreen> {
         ),
         child: ListView(
           children: [
-            const YBox(26),
+            const YBox(36),
             Row(
               children: [
                 Text(
