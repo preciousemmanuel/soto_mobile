@@ -27,7 +27,9 @@ class ContactUsTabView extends StatelessWidget {
             icon: AppSvgs.ws,
             h: Sizer.height(32),
             w: Sizer.width(32),
-            onTap: () {},
+            onTap: () {
+              AppUtils.lauchWhatsapp();
+            },
           ),
           const YBox(24),
           ContactUsListTile(

@@ -134,6 +134,8 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
                                 ref.allProductList[i].productName ?? '',
                             productId: ref.allProductList[i].id ?? '',
                             unitPrice: '${ref.allProductList[i].unitPrice}',
+                            discountPrice:
+                                '${ref.allProductList[i].discountPrice ?? ''}',
                             productImage:
                                 (ref.allProductList[i].images?.isNotEmpty ??
                                         false)

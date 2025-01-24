@@ -8,9 +8,11 @@ class RelatedProductCard extends StatefulWidget {
     required this.productImage,
     required this.productId,
     required this.unitPrice,
-    this.salesPrice,
     this.favLoading = false,
     this.showAddToCartBtn = false,
+    this.outOfStock = false,
+    this.percentDiscount,
+    this.discountPrice,
     this.onAddToCartTap,
     this.onTap,
   });
@@ -19,9 +21,11 @@ class RelatedProductCard extends StatefulWidget {
   final String productImage;
   final String productId;
   final String unitPrice;
-  final String? salesPrice;
   final bool favLoading;
   final bool showAddToCartBtn;
+  final bool outOfStock;
+  final String? percentDiscount;
+  final String? discountPrice;
   final Function()? onTap;
   final Function()? onAddToCartTap;
 
@@ -50,6 +54,7 @@ class _RelatedProductCardState extends State<RelatedProductCard> {
               )
             ]),
         child: Stack(
+          clipBehavior: Clip.none,
           children: [
             Column(
               mainAxisSize: MainAxisSize.min,
@@ -78,19 +83,26 @@ class _RelatedProductCardState extends State<RelatedProductCard> {
                 RichText(
                     text: TextSpan(
                   children: [
-                    if (widget.salesPrice != null)
+                    if (widget.discountPrice != null &&
+                        widget.discountPrice != '')
                       TextSpan(
-                        text: widget.salesPrice ?? '',
+                        text: widget.discountPrice ?? '',
                         style: AppTypography.text12.copyWith(
                             color: AppColors.textAA,
                             fontFamily: '',
                             decoration: TextDecoration.lineThrough),
                       ),
+                    if (widget.discountPrice != null &&
+                        widget.discountPrice != '')
+                      const TextSpan(
+                        text: ' ',
+                      ),
                     TextSpan(
                       text:
                           ' ${AppUtils.nairaSymbol}${AppUtils.formatAmountString(widget.unitPrice)}',
                       style: GoogleFonts.roboto(
-                        color: widget.salesPrice != null
+                        color: widget.discountPrice != null &&
+                                widget.discountPrice != ''
                             ? AppColors.primaryOrange
                             : AppColors.text12,
                         fontWeight: FontWeight.w600,
@@ -110,6 +122,34 @@ class _RelatedProductCardState extends State<RelatedProductCard> {
                 ),
               ],
             ),
+            (widget.outOfStock ||
+                    (widget.percentDiscount != null &&
+                        widget.percentDiscount != ''))
+                ? Positioned(
+                    left: -10,
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: Sizer.width(8),
+                          vertical: Sizer.height(4)),
+                      decoration: BoxDecoration(
+                        color: widget.outOfStock
+                            ? AppColors.orange5E
+                            : AppColors.primaryOrange,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(Sizer.radius(8)),
+                          topRight: Radius.circular(Sizer.radius(8)),
+                        ),
+                      ),
+                      child: Text(
+                        'Out of stock',
+                        style: AppTypography.text12.copyWith(
+                          color: AppColors.white,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  )
+                : const SizedBox.shrink(),
             Positioned(
               right: 8,
               top: 10,

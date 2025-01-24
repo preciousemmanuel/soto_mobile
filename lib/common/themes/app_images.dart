@@ -32,6 +32,7 @@ class AppImages {
   static const product2 = "$images/archive/product2.png";
 
   static const moniePoint = "$images/moniePoint.png";
+  static const whatsapp = "$images/whatsapp.png";
 }
 
 // Image Helper

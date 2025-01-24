@@ -374,4 +374,26 @@ class AppUtils {
 
     await launchUrl(emailLaunchUri);
   }
+
+  static lauchWhatsapp() async {
+    // String text = 'Hello, how can I help you?';
+    // String androidUrl = "whatsapp://send?phone=$contact&text=$text";
+    String webUrl = 'https://api.whatsapp.com/send';
+    String iosUrl = "https://wa.me/message/7V3CGNZN5GPMO1";
+
+    try {
+      if (Platform.isIOS) {
+        if (await canLaunchUrl(Uri.parse(iosUrl))) {
+          await launchUrl(Uri.parse(iosUrl));
+        }
+      } else {
+        if (await canLaunchUrl(Uri.parse(iosUrl))) {
+          await launchUrl(Uri.parse(iosUrl));
+        }
+      }
+    } catch (e) {
+      printty('object');
+      await launchUrl(Uri.parse(webUrl), mode: LaunchMode.externalApplication);
+    }
+  }
 }

@@ -16,10 +16,13 @@ class ProductDetailsScreen extends StatefulWidget {
 }
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
+  final _pageController = PageController(initialPage: 0);
+
   ProductData? _singleProduct;
   ReviewsDescType _reviewsDescType = ReviewsDescType.description;
 
   int _productQty = 1;
+  int _currentPageIndex = 0;
 
   @override
   void initState() {
@@ -42,6 +45,13 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   }
 
   @override
+  void dispose() {
+    _pageController.dispose();
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Consumer<ProductVM>(builder: (context, vm, _) {
       printty("singleProduct images $_singleProduct");
@@ -58,40 +68,83 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   SizedBox(
                     height: Sizer.height(340),
                     width: Sizer.screenWidth,
-                    child: MyCachedNetworkImage(
-                      imageUrl:
-                          (_singleProduct?.product?.images?.isNotEmpty ?? false)
-                              ? (_singleProduct?.product?.images?.first ?? '')
-                              : '',
-                      fadeInDuration: const Duration(milliseconds: 50),
-                      // fit: BoxFit.cover,
-                      width: MediaQuery.of(context).size.width,
-                      height: Sizer.height(160),
+                    child: PageView.builder(
+                      controller: _pageController,
+                      scrollDirection: Axis.horizontal,
+                      itemCount: _singleProduct?.product?.images?.length ?? 0,
+                      onPageChanged: (v) {
+                        _currentPageIndex = v;
+                        setState(() {});
+                      },
+                      itemBuilder: (context, index) {
+                        return MyCachedNetworkImage(
+                          imageUrl:
+                              _singleProduct?.product?.images?[index] ?? '',
+                          fadeInDuration: const Duration(milliseconds: 50),
+                          width: MediaQuery.of(context).size.width,
+                          height: Sizer.height(160),
+                        );
+                      },
                     ),
                   ),
+                  if ((_singleProduct?.product?.images?.length ?? 0) > 1)
+                    Positioned(
+                      bottom: 60,
+                      left: 0,
+                      right: 0,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: List.generate(
+                          _singleProduct?.product?.images?.length ?? 0,
+                          (index) {
+                            return AnimatedContainer(
+                              duration: const Duration(milliseconds: 300),
+                              width: _currentPageIndex == index ? 30 : 10,
+                              height: 10,
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: Sizer.width(4)),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: _currentPageIndex == index
+                                    ? AppColors.primaryOrange
+                                    : AppColors.text60,
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
                   Positioned(
                     top: Sizer.height(60),
                     left: Sizer.width(20),
-                    child: const ArrowBackBtn(
-                      svgPath: AppSvgs.arrowLeft,
-                      color: AppColors.primaryOrange,
+                    child: GestureDetector(
+                      onTap: () {
+                        _pageController.nextPage(
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.easeIn,
+                        );
+                      },
+                      child: const ArrowBackBtn(
+                        svgPath: AppSvgs.arrowLeft,
+                        color: AppColors.primaryOrange,
+                      ),
                     ),
                   ),
                   Positioned(
-                      bottom: 0,
-                      left: 0,
-                      right: 0,
-                      child: Container(
-                        height: Sizer.height(26),
-                        // width: Sizer.screenWidth,
-                        decoration: BoxDecoration(
-                          color: AppColors.bgWhite,
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(Sizer.width(24)),
-                            topRight: Radius.circular(Sizer.width(24)),
-                          ),
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: Container(
+                      height: Sizer.height(26),
+                      decoration: BoxDecoration(
+                        color: AppColors.bgWhite,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(Sizer.width(24)),
+                          topRight: Radius.circular(Sizer.width(24)),
                         ),
-                      )),
+                      ),
+                    ),
+                  ),
                 ],
               ),
               Column(
@@ -258,6 +311,14 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         context,
                         child: const SignupAlertModal(),
                       );
+                    }
+
+                    if (_singleProduct?.product?.inStock == false) {
+                      FlushBarToast.fLSnackBar(
+                        snackBarType: SnackBarType.success,
+                        message: 'Product is out of stock',
+                      );
+                      return;
                     }
 
                     orderVM

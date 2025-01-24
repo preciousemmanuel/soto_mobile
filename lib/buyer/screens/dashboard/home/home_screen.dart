@@ -293,16 +293,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     childrenDelegate: SliverChildBuilderDelegate(
                       (context, i) {
+                        final p = vm.popularProductList[i];
                         return RelatedProductCard(
-                          productName:
-                              vm.popularProductList[i].productName ?? '',
-                          productId: vm.popularProductList[i].id ?? '',
-                          unitPrice: '${vm.popularProductList[i].unitPrice}',
-                          productImage:
-                              (vm.popularProductList[i].images?.isNotEmpty ??
-                                      false)
-                                  ? vm.popularProductList[i].images?.first ?? ''
-                                  : '',
+                          discountPrice: '${p.discountPrice ?? ''}',
+                          outOfStock: p.inStock == false,
+                          productName: p.productName ?? '',
+                          productId: p.id ?? '',
+                          unitPrice: '${p.unitPrice}',
+                          productImage: (p.images?.isNotEmpty ?? false)
+                              ? p.images?.first ?? ''
+                              : '',
                           onTap: () {
                             Navigator.pushNamed(
                               context,
@@ -320,6 +320,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                 context,
                                 child: const SignupAlertModal(),
                               );
+                            }
+                            if (p.inStock == false) {
+                              FlushBarToast.fLSnackBar(
+                                snackBarType: SnackBarType.success,
+                                message: 'Product is out of stock',
+                              );
+                              return;
                             }
                             orderVm
                                 .addproductToCart(
@@ -363,6 +370,16 @@ class _HomeScreenState extends State<HomeScreen> {
               const YBox(100),
             ],
           ),
+        ),
+      ),
+      floatingActionButton: InkWell(
+        onTap: () {
+          AppUtils.lauchWhatsapp();
+        },
+        child: imageHelper(
+          AppImages.whatsapp,
+          height: Sizer.height(80),
+          width: Sizer.width(80),
         ),
       ),
     );

@@ -51,6 +51,7 @@ class Product extends Equatable {
   final String? status;
   final int? unitPrice;
   final int? rawPrice;
+  final int? discountPrice;
   final int? productQuantity;
   final int? height;
   final int? width;
@@ -75,6 +76,7 @@ class Product extends Equatable {
     this.status,
     this.unitPrice,
     this.rawPrice,
+    this.discountPrice,
     this.productQuantity,
     this.height,
     this.width,
@@ -104,6 +106,7 @@ class Product extends Equatable {
         status: json["status"],
         unitPrice: json["unit_price"],
         rawPrice: json["raw_price"],
+        discountPrice: json["discount_price"],
         productQuantity: json["product_quantity"],
         height: json["height"],
         width: json["width"],
@@ -134,6 +137,7 @@ class Product extends Equatable {
         "status": status,
         "unit_price": unitPrice,
         "raw_price": rawPrice,
+        "discount_price": discountPrice,
         "product_quantity": productQuantity,
         "height": height,
         "width": width,

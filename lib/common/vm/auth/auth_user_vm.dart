@@ -202,6 +202,7 @@ class AuthUserVM extends BaseVM {
   }
 
   void clearData() {
+    printty('AuthUserVM clearData');
     _selectedImage = null;
     _authUser = null;
     _cities = [];
