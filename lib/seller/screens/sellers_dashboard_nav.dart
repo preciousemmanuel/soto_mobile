@@ -1,8 +1,6 @@
 import 'package:soto_ecommerce/buyer/buyer.dart';
 import 'package:soto_ecommerce/common/common.dart';
-import 'package:soto_ecommerce/seller/screens/insights/insights_screen.dart';
-import 'package:soto_ecommerce/seller/screens/overview/overview_screen.dart';
-import 'package:soto_ecommerce/seller/screens/wallet/wallet_screen.dart';
+import 'package:soto_ecommerce/seller/screens/screens.dart';
 
 class SellersDashboardNav extends StatefulWidget {
   const SellersDashboardNav({
@@ -21,7 +19,7 @@ class _SellersDashboardNavState extends State<SellersDashboardNav> {
 
   List screens = [
     const OverviewScreen(),
-    const OrderScreen(),
+    const VendorOrderScreen(),
     const WalletScreen(),
     const InsightScreen(),
     const ProfileScreen(),
@@ -31,10 +29,21 @@ class _SellersDashboardNavState extends State<SellersDashboardNav> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<AuthUserVM>().getUserProfile(
-            busyObjectName: AuthUserVM.dashboardLoading,
-          );
+      _init();
     });
+  }
+
+  _init() async {
+    final authVm = context.read<AuthUserVM>();
+    await authVm.getUserProfile(
+      busyObjectName: AuthUserVM.dashboardLoading,
+    );
+
+    if (authVm.authUser != null) {
+      authVm.addFCMToken(
+          fcmToken:
+              await StorageService.getStringItem(StorageKey.deviceToken) ?? "");
+    }
   }
 
   @override

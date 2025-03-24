@@ -28,7 +28,7 @@ class LoginVM extends BaseVM {
       onSuccess: (data) {
         String token = data["data"]["Token"];
         StorageService.storeAccessToken(token);
-        return ApiResponse(success: true, data: apiResponse.data);
+        return apiResponse;
       },
     );
   }
@@ -37,17 +37,22 @@ class LoginVM extends BaseVM {
     try {
       setBusy(true);
       await Future.delayed(const Duration(seconds: 1));
-      final AuthUser? user = await StorageService.getUser();
-      Navigator.pushNamedAndRemoveUntil(
-        NavKey.appNavigatorKey.currentContext!,
-        RoutePath.loginScreen,
-        arguments: LoginScreenArgs(isVendor: switchToVendor),
-        (r) => false,
-      );
-      setBusy(false);
-
       await StorageService.logout();
-      await StorageService.storeStringItem(StorageKey.email, user?.email ?? "");
+      if (switchToVendor) {
+        Navigator.pushNamedAndRemoveUntil(
+          NavKey.appNavigatorKey.currentContext!,
+          RoutePath.loginScreen,
+          arguments: LoginScreenArgs(isVendor: switchToVendor),
+          (r) => false,
+        );
+      } else {
+        Navigator.pushNamedAndRemoveUntil(
+          NavKey.appNavigatorKey.currentContext!,
+          RoutePath.dashboardNavScreen,
+          (r) => false,
+        );
+      }
+      setBusy(false);
 
       return ApiResponse(success: true);
     } catch (e) {

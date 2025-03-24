@@ -8,12 +8,14 @@ class OrderScreen extends StatefulWidget {
 }
 
 class _OrderScreenState extends State<OrderScreen> {
-  int currentIndex = 0;
+  OrderStatusType orderStatusType = OrderStatusType.booked;
 
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<OrderVM>().fetchBuyerOrders();
+      context
+          .read<OrderVM>()
+          .fetchBuyerOrders(status: OrderStatusType.booked.name.toUpperCase());
     });
     super.initState();
   }
@@ -28,75 +30,53 @@ class _OrderScreenState extends State<OrderScreen> {
           child: BusyOverlay(
             child: Scaffold(
               backgroundColor: AppColors.bgWhite,
-              appBar: CustomHeader(
+              appBar: const CustomHeader(
                 title: 'My Orders',
-                backBtn: () {},
+                showBackBtn: false,
               ),
               body: Column(
                 children: [
                   const YBox(40),
-                  Row(
-                    children: [
-                      ...List.generate(
-                        OrderStatusType.values.length,
-                        (i) => StatusWidget(
-                          margin: EdgeInsets.only(
-                            left: i == 0 ? 20 : 0,
-                            right: 10,
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        ...List.generate(
+                          OrderStatusType.values.length - 1,
+                          (i) => StatusWidget(
+                            margin: EdgeInsets.only(
+                              left: i == 0 ? 20 : 0,
+                              right: 10,
+                            ),
+                            text: OrderStatusType.values[i].name,
+                            isSelected:
+                                orderStatusType == OrderStatusType.values[i],
+                            onTap: () {
+                              orderStatusType = OrderStatusType.values[i];
+                              setState(() {});
+                            },
                           ),
-                          text: OrderStatusType.values[i].name,
-                          isSelected: i == currentIndex,
-                          onTap: () {
-                            currentIndex = i;
-                            setState(() {});
-                          },
-                        ),
-                      )
-                    ],
+                        )
+                      ],
+                    ),
                   ),
                   const YBox(10),
-                  Builder(builder: (context) {
-                    if (vm.isBusy) {
-                      return const SizerLoader();
-                    }
-                    if (vm.myOrder.isEmpty) {
-                      return const EmptyListState(
-                        height: 500,
-                        text: 'No order yet',
-                      );
-                    }
-                    return Expanded(
-                      child: ListView.separated(
-                        padding: EdgeInsets.only(
-                          top: Sizer.height(20),
-                          left: Sizer.width(20),
-                          right: Sizer.width(20),
-                          bottom: Sizer.height(60),
-                        ),
-                        shrinkWrap: true,
-                        itemBuilder: (ctx, i) {
-                          return Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Divider(color: AppColors.whiteF7),
-                              OrderCard(
-                                qty: vm.myOrder[i].quantity.toString(),
-                                productName:
-                                    vm.myOrder[i].productId?.productName ?? '',
-                                productImage:
-                                    vm.myOrder[i].productId?.images?.first ??
-                                        '',
-                              ),
-                              if (i == 4)
-                                const Divider(color: AppColors.whiteF7),
-                            ],
-                          );
-                        },
-                        separatorBuilder: (ctx, i) => const YBox(6),
-                        itemCount: vm.myOrder.length,
-                      ),
-                    );
-                  }),
+                  if (orderStatusType == OrderStatusType.booked)
+                    OrderBookedTab(vm: vm, status: OrderStatusType.booked.name),
+                  if (orderStatusType == OrderStatusType.pending)
+                    OrderPendingTab(
+                        vm: vm, status: OrderStatusType.pending.name),
+                  if (orderStatusType == OrderStatusType.delivered)
+                    OrderDeliveredTab(
+                        vm: vm, status: OrderStatusType.delivered.name),
+                  if (orderStatusType == OrderStatusType.cancelled)
+                    OrderCancelledTab(
+                        vm: vm, status: OrderStatusType.cancelled.name),
+                  if (orderStatusType == OrderStatusType.failed)
+                    OrderFailedTab(vm: vm, status: OrderStatusType.failed.name),
+                  if (orderStatusType == OrderStatusType.returned)
+                    OrderReturnedTab(
+                        vm: vm, status: OrderStatusType.returned.name),
                 ],
               ),
             ),

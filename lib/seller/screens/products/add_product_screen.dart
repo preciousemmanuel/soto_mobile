@@ -2,13 +2,38 @@ import 'package:soto_ecommerce/common/common.dart';
 import 'package:soto_ecommerce/seller/vm/vm.dart';
 
 class AddProductScreen extends StatefulWidget {
-  const AddProductScreen({super.key});
+  const AddProductScreen({
+    super.key,
+    this.args,
+  });
+
+  final VendorProductArgs? args;
 
   @override
   State<AddProductScreen> createState() => _AddProductScreenState();
 }
 
 class _AddProductScreenState extends State<AddProductScreen> {
+  TextEditingController productNameC = TextEditingController();
+  TextEditingController productDescC = TextEditingController();
+  TextEditingController unitpriceC = TextEditingController();
+  TextEditingController productQtyC = TextEditingController();
+  TextEditingController disCountPriceC = TextEditingController();
+  TextEditingController heightC = TextEditingController();
+  TextEditingController widthC = TextEditingController();
+  TextEditingController weightC = TextEditingController();
+  List productImages = [];
+
+  // FocusNode
+  FocusNode productNameFocus = FocusNode();
+  FocusNode productDescFocus = FocusNode();
+  FocusNode unitpriceFocus = FocusNode();
+  FocusNode productQtyFocus = FocusNode();
+  FocusNode disCountPriceFocus = FocusNode();
+  FocusNode heightFocus = FocusNode();
+  FocusNode widthFocus = FocusNode();
+  FocusNode weightFocus = FocusNode();
+
   bool isExpanded = false;
   bool inStock = false;
 
@@ -17,11 +42,48 @@ class _AddProductScreenState extends State<AddProductScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<ProductVM>().getCategories();
+      if (widget.args?.isEdit == true) {
+        _iniitialise();
+      }
     });
+  }
+
+  _iniitialise() {
+    final vm = context.read<VendorProductVM>();
+
+    productNameC.text = widget.args?.product?.productName ?? '';
+    productDescC.text = widget.args?.product?.description ?? '';
+    unitpriceC.text = (widget.args?.product?.unitPrice ?? 0).toString();
+    productQtyC.text = (widget.args?.product?.productQuantity ?? 0).toString();
+    // disCountPriceC.text = (widget.args?.product?.discountPrice ?? 0).toString();
+    heightC.text = (widget.args?.product?.height ?? 0).toString();
+    widthC.text = (widget.args?.product?.width ?? 0).toString();
+    weightC.text = (widget.args?.product?.weight ?? 0).toString();
+    inStock = widget.args?.product?.inStock ?? false;
+    productImages = widget.args?.product?.images ?? [];
+    vm.setSelectCategory(widget.args?.product?.category ?? ProductCategory());
   }
 
   @override
   void dispose() {
+    productNameC.dispose();
+    productDescC.dispose();
+    unitpriceC.dispose();
+    productQtyC.dispose();
+    disCountPriceC.dispose();
+    heightC.dispose();
+    widthC.dispose();
+    weightC.dispose();
+
+    productNameFocus.dispose();
+    productDescFocus.dispose();
+    unitpriceFocus.dispose();
+    productQtyFocus.dispose();
+    disCountPriceFocus.dispose();
+    heightFocus.dispose();
+    widthFocus.dispose();
+    weightFocus.dispose();
+
     super.dispose();
   }
 
@@ -34,7 +96,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
           child: Scaffold(
             backgroundColor: AppColors.white,
             appBar: CustomHeader(
-              title: 'Add Product',
+              title: '${widget.args?.isEdit ?? false ? 'Edit' : 'Add'} Product',
               titleStyle: AppTypography.text18.copyWith(
                 fontWeight: FontWeight.w500,
                 color: AppColors.text12,
@@ -57,7 +119,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     labelText: "Product Name",
                     showLabelHeader: true,
                     hintText: 'Product Name',
-                    controller: vm.productNameC,
+                    controller: productNameC,
+                    focusNode: productNameFocus,
                     onChanged: (val) => vm.reBuildUI(),
                   ),
                   const YBox(16),
@@ -67,7 +130,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     labelText: "Describe the Product",
                     showLabelHeader: true,
                     maxLines: 3,
-                    controller: vm.productDescC,
+                    controller: productDescC,
+                    focusNode: productDescFocus,
                     onChanged: (val) => vm.reBuildUI(),
                   ),
                   const YBox(16),
@@ -99,7 +163,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                         (i) {
                           return InkWell(
                             onTap: () {
-                              vm.selectCategory(catRef.productCategories[i]);
+                              vm.setSelectCategory(catRef.productCategories[i]);
                               isExpanded = false;
                               vm.reBuildUI();
                             },
@@ -192,6 +256,58 @@ class _AddProductScreenState extends State<AddProductScreen> {
                         );
                       }
 
+                      if (productImages.isNotEmpty) {
+                        return Center(
+                          child: Wrap(
+                            spacing: Sizer.width(15),
+                            runSpacing: Sizer.height(10),
+                            children: List.generate(
+                              productImages.length,
+                              (i) => Stack(
+                                clipBehavior: Clip.none,
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      border:
+                                          Border.all(color: AppColors.grayE0),
+                                      borderRadius: BorderRadius.circular(
+                                          Sizer.height(8)),
+                                    ),
+                                    height: Sizer.height(80),
+                                    width: Sizer.width(80),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(
+                                          Sizer.height(8)),
+                                      child: MyCachedNetworkImage(
+                                        imageUrl: productImages[i],
+                                        fadeInDuration:
+                                            const Duration(milliseconds: 50),
+                                        fit: BoxFit.cover,
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                      ),
+                                    ),
+                                  ),
+                                  Positioned(
+                                    top: -8,
+                                    right: -8,
+                                    child: InkWell(
+                                      onTap: () {
+                                        productImages.removeAt(i);
+                                      },
+                                      child: const Icon(
+                                        Iconsax.close_circle,
+                                        color: AppColors.red,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      }
+
                       return InkWell(
                         onTap: () => vm.pickImage().then((v) {
                           if (!v.success) {
@@ -242,7 +358,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     labelText: "Unit Price (N)",
                     showLabelHeader: true,
                     hintText: 'Unit Price (N)',
-                    controller: vm.unitpriceC,
+                    controller: unitpriceC,
+                    focusNode: unitpriceFocus,
                     onChanged: (val) => vm.reBuildUI(),
                   ),
                   const YBox(16),
@@ -252,7 +369,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     labelText: "Product Qty",
                     showLabelHeader: true,
                     hintText: 'Product Qty',
-                    controller: vm.productQtyC,
+                    controller: productQtyC,
+                    focusNode: productQtyFocus,
                     onChanged: (val) => vm.reBuildUI(),
                   ),
                   const YBox(16),
@@ -262,7 +380,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     labelText: "Discount Price (Optional)",
                     showLabelHeader: true,
                     hintText: 'Discount Price (Optional)',
-                    controller: vm.disCountPriceC,
+                    controller: disCountPriceC,
+                    focusNode: disCountPriceFocus,
                     onChanged: (val) => vm.reBuildUI(),
                   ),
                   const YBox(20),
@@ -273,7 +392,9 @@ class _AddProductScreenState extends State<AddProductScreen> {
                           fillColor: AppColors.transparent,
                           borderColor: AppColors.grayE0,
                           hintText: 'Height',
-                          controller: vm.heightC,
+                          controller: heightC,
+                          focusNode: heightFocus,
+                          keyboardType: KeyboardType.decimal,
                           onChanged: (val) => vm.reBuildUI(),
                         ),
                       ),
@@ -283,7 +404,9 @@ class _AddProductScreenState extends State<AddProductScreen> {
                           fillColor: AppColors.transparent,
                           borderColor: AppColors.grayE0,
                           hintText: 'Width',
-                          controller: vm.widthC,
+                          controller: widthC,
+                          focusNode: widthFocus,
+                          keyboardType: KeyboardType.decimal,
                           onChanged: (val) => vm.reBuildUI(),
                         ),
                       ),
@@ -291,11 +414,14 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   ),
                   const YBox(16),
                   CustomTextField(
-                      fillColor: AppColors.transparent,
-                      borderColor: AppColors.grayE0,
-                      hintText: 'Product Weight',
-                      controller: vm.weightC,
-                      onChanged: (val) {}),
+                    fillColor: AppColors.transparent,
+                    borderColor: AppColors.grayE0,
+                    hintText: 'Product Weight',
+                    focusNode: weightFocus,
+                    controller: weightC,
+                    onChanged: (val) {},
+                    keyboardType: KeyboardType.decimal,
+                  ),
                   const YBox(16),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -318,7 +444,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   ),
                   const YBox(30),
                   CustomBtn.solid(
-                    online: vm.btnIsValid,
+                    online: btnIsValid,
                     onTap: () {
                       _addProduct();
                     },
@@ -334,16 +460,61 @@ class _AddProductScreenState extends State<AddProductScreen> {
     );
   }
 
+  bool get btnIsValid {
+    return productNameC.text.isNotEmpty &&
+        productDescC.text.isNotEmpty &&
+        // _selectedCategory != null &&
+        unitpriceC.text.isNotEmpty &&
+        productQtyC.text.isNotEmpty;
+  }
+
   _addProduct() async {
+    FocusScope.of(context).unfocus();
     final vm = context.read<VendorProductVM>();
-    ApiResponse apiResponse = await vm.addNewproduct(isInstock: inStock);
+    ApiResponse apiResponse = await vm.addNewproduct(
+      isInstock: inStock,
+      productNameC: productNameC.text.trim(),
+      productDescC: productDescC.text.trim(),
+      unitpriceC: unitpriceC.text.trim(),
+      productQtyC: productQtyC.text.trim(),
+      disCountPriceC: disCountPriceC.text.trim(),
+      heightC: heightC.text.trim(),
+      widthC: widthC.text.trim(),
+      weightC: weightC.text.trim(),
+      productId: widget.args?.product?.id ?? '',
+      isEditing: widget.args?.isEdit ?? false,
+      existingImages: productImages,
+    );
 
     handleApiResponse(
         response: apiResponse,
         onSuccess: () {
+          clearFields();
           vm.clearData();
-          _pop();
+          vm.getProductsByVendor();
+          if (widget.args?.isEdit ?? false) {
+            Navigator.pushNamed(
+              context,
+              RoutePath.vendorProductDetailsScreen,
+              arguments: ProductArgs(
+                productId: widget.args?.product?.id ?? '',
+              ),
+            );
+          } else {
+            _pop();
+          }
         });
+  }
+
+  clearFields() {
+    productNameC.clear();
+    productDescC.clear();
+    unitpriceC.clear();
+    productQtyC.clear();
+    disCountPriceC.clear();
+    heightC.clear();
+    widthC.clear();
+    weightC.clear();
   }
 
   _pop() {

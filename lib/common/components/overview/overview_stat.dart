@@ -1,9 +1,22 @@
+import 'package:google_fonts/google_fonts.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:soto_ecommerce/common/common.dart';
 
 class OverViewStat extends StatelessWidget {
   const OverViewStat({
     super.key,
+    required this.title,
+    required this.subtitle,
+    required this.cent,
+    required this.amount,
+    this.iconColor,
   });
+
+  final String title;
+  final String subtitle;
+  final String cent;
+  final String amount;
+  final Color? iconColor;
 
   @override
   Widget build(BuildContext context) {
@@ -26,13 +39,19 @@ class OverViewStat extends StatelessWidget {
         children: [
           Row(
             children: [
-              svgHelper(
-                AppSvgs.activity,
-                width: Sizer.width(25),
+              Skeleton.replace(
+                replacement: const Bone.circle(
+                  size: 25,
+                ),
+                child: svgHelper(
+                  AppSvgs.activity,
+                  color: iconColor,
+                  width: Sizer.width(25),
+                ),
               ),
               const XBox(8),
               Text(
-                'Sold',
+                title,
                 style: AppTypography.text10.copyWith(
                   color: AppColors.primaryOrange.withOpacity(0.7),
                 ),
@@ -43,14 +62,15 @@ class OverViewStat extends StatelessWidget {
           Row(
             children: [
               Text(
-                'N51,858',
-                style: AppTypography.text24.copyWith(
+                '${AppUtils.nairaSymbol}$amount',
+                style: GoogleFonts.roboto(
+                  fontSize: Sizer.text(20),
                   fontWeight: FontWeight.w500,
                 ),
               ),
               const XBox(4),
               Text(
-                '+55%',
+                cent,
                 style: AppTypography.text10.copyWith(
                   color: AppColors.greenB78,
                   fontWeight: FontWeight.w500,
@@ -59,7 +79,7 @@ class OverViewStat extends StatelessWidget {
             ],
           ),
           Text(
-            'Amount to be Remitted',
+            subtitle,
             style: AppTypography.text10.copyWith(
               color: AppColors.black66.withOpacity(0.7),
             ),

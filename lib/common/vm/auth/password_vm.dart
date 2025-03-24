@@ -34,10 +34,11 @@ class PasswordVM extends BaseVM {
     );
   }
 
-  Future<ApiResponse> validateOtp() async {
+  Future<ApiResponse> validateOtp(String otp,
+      {PasswordType type = PasswordType.changePassword}) async {
     final data = {
-      "otp": otpC.text.trim(),
-      "otp_purpose": PasswordType.changePassword.name,
+      "otp": otp,
+      "otp_purpose": type.name,
     };
 
     printty('validateOtp body: $data');
@@ -52,14 +53,16 @@ class PasswordVM extends BaseVM {
   }
 
   Future<ApiResponse> newPassword({PasswordType? type}) async {
+    final payload = {
+      "new_password": passwordC.text.trim(),
+      "otp": otpC.text.trim(),
+      "otp_purpose": PasswordType.changePassword.name,
+    };
+    printty('newPassword body: $payload');
     return await performApiCall(
       url: "/user/new-password",
-      method: apiService.post,
-      body: {
-        "new_password": passwordC.text.trim(),
-        "otp": otpC.text.trim(),
-        "otp_purpose": PasswordType.changePassword.name,
-      },
+      method: apiService.putWithAuth,
+      body: payload,
       onSuccess: (data) {
         return apiResponse;
       },

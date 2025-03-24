@@ -1,9 +1,14 @@
 import 'package:soto_ecommerce/common/common.dart';
 import 'package:soto_ecommerce/seller/vm/vm.dart';
 
-class AllTransactionsScreen extends StatelessWidget {
+class AllTransactionsScreen extends StatefulWidget {
   const AllTransactionsScreen({super.key});
 
+  @override
+  State<AllTransactionsScreen> createState() => _AllTransactionsScreenState();
+}
+
+class _AllTransactionsScreenState extends State<AllTransactionsScreen> {
   @override
   Widget build(BuildContext context) {
     return Consumer<VendorDashboardVM>(
@@ -61,10 +66,14 @@ class AllTransactionsScreen extends StatelessWidget {
                       text: 'No transactions yet',
                     );
                   }
-                  return ListView.separated(
+                  return ListView(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder: (_, i) {
+                    padding: EdgeInsets.only(
+                      top: Sizer.height(10),
+                      bottom: Sizer.height(100),
+                    ),
+                    children: ref.groupedTransactionList.entries.map((e) {
                       return Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -75,7 +84,7 @@ class AllTransactionsScreen extends StatelessWidget {
                             child: Row(
                               children: [
                                 Text(
-                                  'Today, Oct. 13th, 2024',
+                                  e.key,
                                   style: AppTypography.text14.copyWith(
                                     color: AppColors.black33,
                                     fontWeight: FontWeight.w500,
@@ -89,13 +98,14 @@ class AllTransactionsScreen extends StatelessWidget {
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
                             itemBuilder: (_, i) {
-                              final transaction = ref.transactionList[i];
+                              final t = e.value[i];
                               return WalletHistoryListTile(
-                                isSend: (i + 1) % 2 == 0,
-                                naration: transaction.narration ?? '',
-                                amount: (transaction.amount ?? 0.0).toString(),
+                                // isSend: (i + 1) % 2 == 0,
+                                reference: t.reference ?? '',
+                                naration: t.narration ?? '',
+                                amount: (t.amount ?? 0.0).toString(),
                                 date: AppUtils.formatDateTime(
-                                    (transaction.createdAt ?? DateTime.now())
+                                    (t.createdAt ?? DateTime.now())
                                         .toLocal()
                                         .toString()),
                               );
@@ -103,13 +113,11 @@ class AllTransactionsScreen extends StatelessWidget {
                             separatorBuilder: (_, __) => const Divider(
                               color: AppColors.dividerColor,
                             ),
-                            itemCount: ref.transactionList.length,
+                            itemCount: e.value.length,
                           ),
                         ],
                       );
-                    },
-                    separatorBuilder: (_, __) => const YBox(40),
-                    itemCount: ref.transactionList.length,
+                    }).toList(),
                   );
                 })
               ],

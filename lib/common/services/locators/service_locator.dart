@@ -12,9 +12,14 @@ final allProviders = <SingleChildWidget>[
   ChangeNotifierProvider(create: (_) => ProductVM()),
   ChangeNotifierProvider(create: (_) => WishlistVM()),
   ChangeNotifierProvider(create: (_) => OrderVM()),
+  ChangeNotifierProvider(create: (_) => NotificationVm()),
+  ChangeNotifierProvider(create: (_) => CustomOrderVm()),
+  ChangeNotifierProvider(create: (_) => DisputeVm()),
 
   // Seller
   ChangeNotifierProvider(create: (_) => CreateBusinessVM()),
   ChangeNotifierProvider(create: (_) => VendorDashboardVM()),
   ChangeNotifierProvider(create: (_) => VendorProductVM()),
+  ChangeNotifierProvider(create: (_) => VendorOrderVm()),
+  ChangeNotifierProvider(create: (_) => WalletVm()),
 ];

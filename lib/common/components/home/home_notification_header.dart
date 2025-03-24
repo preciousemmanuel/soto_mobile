@@ -72,42 +72,44 @@ class NotificationIocnWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          Icon(
-            Iconsax.notification,
-            color: iconColor ?? AppColors.text12,
-            size: Sizer.radius(iconSize ?? 28),
-          ),
-          Positioned(
-            right: -12,
-            top: -10,
-            child: Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: Sizer.width(2),
-                vertical: Sizer.height(1),
-              ),
-              decoration: BoxDecoration(
-                color: AppColors.primaryOrange,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: const Center(
-                child: Text(
-                  '99+',
-                  style: TextStyle(
-                    color: AppColors.white,
-                    fontSize: 10,
-                    fontWeight: FontWeight.w500,
+    return Consumer<NotificationVm>(builder: (ctx, ref, _) {
+      return InkWell(
+        onTap: onTap,
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            Icon(
+              Iconsax.notification,
+              color: iconColor ?? AppColors.text12,
+              size: Sizer.radius(iconSize ?? 28),
+            ),
+            Positioned(
+              right: -4,
+              top: -10,
+              child: Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: Sizer.width(2),
+                  vertical: Sizer.height(1),
+                ),
+                decoration: BoxDecoration(
+                  color: AppColors.primaryOrange,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Center(
+                  child: Text(
+                    '${ref.notificationList.length}',
+                    style: const TextStyle(
+                      color: AppColors.white,
+                      fontSize: 10,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        ],
-      ),
-    );
+          ],
+        ),
+      );
+    });
   }
 }

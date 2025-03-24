@@ -8,8 +8,12 @@ class RelatedProductCard extends StatefulWidget {
     required this.productImage,
     required this.productId,
     required this.unitPrice,
-    this.salesPrice,
     this.favLoading = false,
+    this.showAddToCartBtn = false,
+    this.outOfStock = false,
+    this.percentDiscount,
+    this.discountPrice,
+    this.onAddToCartTap,
     this.onTap,
   });
 
@@ -17,9 +21,13 @@ class RelatedProductCard extends StatefulWidget {
   final String productImage;
   final String productId;
   final String unitPrice;
-  final String? salesPrice;
   final bool favLoading;
+  final bool showAddToCartBtn;
+  final bool outOfStock;
+  final String? percentDiscount;
+  final String? discountPrice;
   final Function()? onTap;
+  final Function()? onAddToCartTap;
 
   @override
   State<RelatedProductCard> createState() => _RelatedProductCardState();
@@ -32,8 +40,10 @@ class _RelatedProductCardState extends State<RelatedProductCard> {
     return InkWell(
       onTap: widget.onTap,
       child: Container(
-        padding: EdgeInsets.symmetric(
-          horizontal: Sizer.width(8),
+        padding: EdgeInsets.only(
+          left: Sizer.width(8),
+          right: Sizer.width(8),
+          bottom: Sizer.height(8),
         ),
         decoration: BoxDecoration(
             color: AppColors.white,
@@ -46,6 +56,7 @@ class _RelatedProductCardState extends State<RelatedProductCard> {
               )
             ]),
         child: Stack(
+          clipBehavior: Clip.none,
           children: [
             Column(
               mainAxisSize: MainAxisSize.min,
@@ -58,7 +69,7 @@ class _RelatedProductCardState extends State<RelatedProductCard> {
                     fadeInDuration: const Duration(milliseconds: 50),
                     fit: BoxFit.cover,
                     width: MediaQuery.of(context).size.width,
-                    height: Sizer.height(160),
+                    height: Sizer.height(150),
                   ),
                 ),
                 const YBox(8),
@@ -74,19 +85,26 @@ class _RelatedProductCardState extends State<RelatedProductCard> {
                 RichText(
                     text: TextSpan(
                   children: [
-                    if (widget.salesPrice != null)
+                    if (widget.discountPrice != null &&
+                        widget.discountPrice != '')
                       TextSpan(
-                        text: widget.salesPrice ?? '',
+                        text: widget.discountPrice ?? '',
                         style: AppTypography.text12.copyWith(
                             color: AppColors.textAA,
                             fontFamily: '',
                             decoration: TextDecoration.lineThrough),
                       ),
+                    if (widget.discountPrice != null &&
+                        widget.discountPrice != '')
+                      const TextSpan(
+                        text: ' ',
+                      ),
                     TextSpan(
                       text:
                           ' ${AppUtils.nairaSymbol}${AppUtils.formatAmountString(widget.unitPrice)}',
                       style: GoogleFonts.roboto(
-                        color: widget.salesPrice != null
+                        color: widget.discountPrice != null &&
+                                widget.discountPrice != ''
                             ? AppColors.primaryOrange
                             : AppColors.text12,
                         fontWeight: FontWeight.w600,
@@ -94,9 +112,46 @@ class _RelatedProductCardState extends State<RelatedProductCard> {
                       ),
                     ),
                   ],
-                ))
+                )),
+                const Spacer(),
+                CustomBtn.solid(
+                  // online:
+                  isOutline: true,
+                  textColor: AppColors.primaryOrange,
+                  height: Sizer.height(40),
+                  onTap: widget.onAddToCartTap,
+                  text: "Add to cart",
+                ),
               ],
             ),
+            (widget.outOfStock ||
+                    (widget.percentDiscount != null &&
+                        widget.percentDiscount != ''))
+                ? Positioned(
+                    left: -10,
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: Sizer.width(8),
+                          vertical: Sizer.height(4)),
+                      decoration: BoxDecoration(
+                        color: widget.outOfStock
+                            ? AppColors.orange5E
+                            : AppColors.primaryOrange,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(Sizer.radius(8)),
+                          topRight: Radius.circular(Sizer.radius(8)),
+                        ),
+                      ),
+                      child: Text(
+                        'Out of stock',
+                        style: AppTypography.text12.copyWith(
+                          color: AppColors.white,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  )
+                : const SizedBox.shrink(),
             Positioned(
               right: 8,
               top: 10,

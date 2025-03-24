@@ -11,18 +11,30 @@ class CreateBusinessAccountScreen extends StatefulWidget {
 
 class _CreateBusinessAccountScreenState
     extends State<CreateBusinessAccountScreen> {
+  FocusNode businessNameF = FocusNode();
+  FocusNode businessEmailF = FocusNode();
+  FocusNode businessPhoneF = FocusNode();
+  FocusNode businessAddressF = FocusNode();
+  FocusNode descriptionF = FocusNode();
+
   bool isExpanded = false;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<ProductVM>().getCategories();
+      context.read<CreateBusinessVM>().getVendorCategories();
     });
   }
 
   @override
   void dispose() {
+    businessNameF.dispose();
+    businessEmailF.dispose();
+    businessPhoneF.dispose();
+    businessAddressF.dispose();
+    descriptionF.dispose();
+
     super.dispose();
   }
 
@@ -30,6 +42,7 @@ class _CreateBusinessAccountScreenState
   Widget build(BuildContext context) {
     return Consumer<CreateBusinessVM>(builder: (context, vm, _) {
       return Scaffold(
+        backgroundColor: AppColors.bgFF,
         appBar: CustomHeader(
           title: 'Business Details',
           titleStyle: AppTypography.text20.copyWith(
@@ -52,6 +65,7 @@ class _CreateBusinessAccountScreenState
               ),
               const YBox(20),
               CustomTextField(
+                focusNode: businessNameF,
                 labelText: "Business Name",
                 showLabelHeader: true,
                 fillColor: AppColors.orangeEA.withOpacity(0.5),
@@ -66,6 +80,7 @@ class _CreateBusinessAccountScreenState
               ),
               const YBox(20),
               CustomTextField(
+                  focusNode: businessEmailF,
                   labelText: "Business Email Address",
                   showLabelHeader: true,
                   fillColor: AppColors.orangeEA.withOpacity(0.5),
@@ -85,6 +100,7 @@ class _CreateBusinessAccountScreenState
                   }),
               const YBox(20),
               CustomTextField(
+                focusNode: businessPhoneF,
                 labelText: "Phone Number",
                 showLabelHeader: true,
                 fillColor: AppColors.orangeEA.withOpacity(0.5),
@@ -103,6 +119,7 @@ class _CreateBusinessAccountScreenState
               ),
               const YBox(20),
               CustomTextField(
+                focusNode: businessAddressF,
                 labelText: "Business Address",
                 showLabelHeader: true,
                 fillColor: AppColors.orangeEA.withOpacity(0.5),
@@ -125,49 +142,46 @@ class _CreateBusinessAccountScreenState
                 ),
               ),
               const YBox(6),
-              Consumer<ProductVM>(builder: (context, catRef, _) {
-                return SelectCategoryField(
-                  text: vm.businessCategoryC.text.isEmpty
-                      ? 'Select Category'
-                      : vm.businessCategoryC.text,
-                  isExpanded: isExpanded,
-                  isLoading: vm.isBusy,
-                  hasBeenSelected: vm.businessCategoryC.text.isNotEmpty,
-                  onSelect: () {
-                    isExpanded = !isExpanded;
-                    vm.reBuildUI();
-                  },
-                  children: List.generate(
-                    catRef.productCategories.length,
-                    (i) {
-                      return InkWell(
-                        onTap: () {
-                          vm.businessCategoryC.text =
-                              catRef.productCategories[i].name ?? '';
-                          isExpanded = false;
-                          vm.reBuildUI();
-                        },
-                        child: Container(
-                          padding: EdgeInsets.only(
-                            top: Sizer.height(i == 0 ? 30 : 14),
-                            bottom: Sizer.height(
-                                i == catRef.productCategories.length - 1
-                                    ? 0
-                                    : 14),
-                          ),
-                          child: Text(
-                            catRef.productCategories[i].name ?? '',
-                            style: AppTypography.text14.copyWith(
-                              fontWeight: FontWeight.w500,
-                              color: AppColors.text57,
-                            ),
+              SelectCategoryField(
+                text: vm.businessCategoryC.text.isEmpty
+                    ? 'Select Category'
+                    : vm.businessCategoryC.text,
+                isExpanded: isExpanded,
+                isLoading: vm.isBusy,
+                hasBeenSelected: vm.businessCategoryC.text.isNotEmpty,
+                onSelect: () {
+                  isExpanded = !isExpanded;
+                  vm.reBuildUI();
+                },
+                children: List.generate(
+                  vm.productCategories.length,
+                  (i) {
+                    return InkWell(
+                      onTap: () {
+                        vm.setCategoryId(vm.productCategories[i].id ?? '');
+                        vm.businessCategoryC.text =
+                            vm.productCategories[i].name ?? '';
+                        isExpanded = false;
+                        vm.reBuildUI();
+                      },
+                      child: Container(
+                        padding: EdgeInsets.only(
+                          top: Sizer.height(i == 0 ? 30 : 14),
+                          bottom: Sizer.height(
+                              i == vm.productCategories.length - 1 ? 0 : 14),
+                        ),
+                        child: Text(
+                          vm.productCategories[i].name ?? '',
+                          style: AppTypography.text14.copyWith(
+                            fontWeight: FontWeight.w500,
+                            color: AppColors.text57,
                           ),
                         ),
-                      );
-                    },
-                  ),
-                );
-              }),
+                      ),
+                    );
+                  },
+                ),
+              ),
               const YBox(20),
               Text(
                 'Description',
@@ -185,6 +199,7 @@ class _CreateBusinessAccountScreenState
               ),
               const YBox(6),
               CustomTextField(
+                focusNode: descriptionF,
                 fillColor: AppColors.transparent,
                 borderColor: AppColors.grayE0,
                 controller: vm.businessDescriptionC,
@@ -238,6 +253,7 @@ class _CreateBusinessAccountScreenState
               CustomBtn.solid(
                 online: vm.btnIsValid,
                 onTap: () {
+                  FocusManager.instance.primaryFocus?.unfocus();
                   Navigator.pushNamed(context, RoutePath.createPasswordScreen);
                 },
                 text: "Continue",

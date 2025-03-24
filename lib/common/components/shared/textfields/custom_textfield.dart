@@ -152,14 +152,14 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 errorText: widget.errorText,
                 errorStyle: TextStyle(
                     color: AppColors.red, fontSize: 0.01.sp, height: 0.2),
-                // contentPadding: widget.contentPadding ??
-                //     EdgeInsets.only(
-                //       //left: 16.w,
-                //       top: 20.h,
-                //       bottom: 0.h,
-                //       left: 16.w,
-                //       right: 10.w,
-                //     ),
+                contentPadding: widget.contentPadding ??
+                    EdgeInsets.only(
+                      //left: 16.w,
+                      top: 20.h,
+                      bottom: 0.h,
+                      left: 16.w,
+                      right: 10.w,
+                    ),
                 // labelText: widget.labelText,
                 hintText: widget.hintText,
                 hintStyle: widget.hintStyle ??

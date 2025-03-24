@@ -46,4 +46,9 @@ class ProductCategory {
         "createdAt": createdAt?.toIso8601String(),
         "updatedAt": updatedAt?.toIso8601String(),
       };
+
+  @override
+  String toString() {
+    return 'ProductCategory(id: $id, name: $name, image: $image, v: $v, createdAt: $createdAt, updatedAt: $updatedAt)';
+  }
 }

@@ -3,7 +3,10 @@ import 'package:soto_ecommerce/common/common.dart';
 class DescTabDetail extends StatelessWidget {
   const DescTabDetail({
     super.key,
+    this.desc,
   });
+
+  final String? desc;
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +15,7 @@ class DescTabDetail extends StatelessWidget {
         horizontal: Sizer.width(20),
       ),
       child: Text(
-        "I recently purchased the Avery Sofa and Armchair from E&M Furnitures, and I couldn't be happier! The quality of the materials and craftsmanship is top-notch and the delivery team was professional, ensuring everything was perfectly assembled.",
+        desc ?? "No description available",
         style: AppTypography.text12.copyWith(
           color: AppColors.text57,
         ),

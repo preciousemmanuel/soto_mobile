@@ -16,10 +16,13 @@ class ProductDetailsScreen extends StatefulWidget {
 }
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
-  Product? _singleProduct;
+  final _pageController = PageController(initialPage: 0);
+
+  ProductData? _singleProduct;
   ReviewsDescType _reviewsDescType = ReviewsDescType.description;
 
   int _productQty = 1;
+  int _currentPageIndex = 0;
 
   @override
   void initState() {
@@ -42,6 +45,13 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   }
 
   @override
+  void dispose() {
+    _pageController.dispose();
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Consumer<ProductVM>(builder: (context, vm, _) {
       printty("singleProduct images $_singleProduct");
@@ -58,39 +68,83 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   SizedBox(
                     height: Sizer.height(340),
                     width: Sizer.screenWidth,
-                    child: MyCachedNetworkImage(
-                      imageUrl: (_singleProduct?.images?.isNotEmpty ?? false)
-                          ? (_singleProduct?.images?.first ?? '')
-                          : '',
-                      fadeInDuration: const Duration(milliseconds: 50),
-                      // fit: BoxFit.cover,
-                      width: MediaQuery.of(context).size.width,
-                      height: Sizer.height(160),
+                    child: PageView.builder(
+                      controller: _pageController,
+                      scrollDirection: Axis.horizontal,
+                      itemCount: _singleProduct?.product?.images?.length ?? 0,
+                      onPageChanged: (v) {
+                        _currentPageIndex = v;
+                        setState(() {});
+                      },
+                      itemBuilder: (context, index) {
+                        return MyCachedNetworkImage(
+                          imageUrl:
+                              _singleProduct?.product?.images?[index] ?? '',
+                          fadeInDuration: const Duration(milliseconds: 50),
+                          width: MediaQuery.of(context).size.width,
+                          height: Sizer.height(160),
+                        );
+                      },
                     ),
                   ),
+                  if ((_singleProduct?.product?.images?.length ?? 0) > 1)
+                    Positioned(
+                      bottom: 60,
+                      left: 0,
+                      right: 0,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: List.generate(
+                          _singleProduct?.product?.images?.length ?? 0,
+                          (index) {
+                            return AnimatedContainer(
+                              duration: const Duration(milliseconds: 300),
+                              width: _currentPageIndex == index ? 30 : 10,
+                              height: 10,
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: Sizer.width(4)),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: _currentPageIndex == index
+                                    ? AppColors.primaryOrange
+                                    : AppColors.text60,
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
                   Positioned(
                     top: Sizer.height(60),
                     left: Sizer.width(20),
-                    child: const ArrowBackBtn(
-                      svgPath: AppSvgs.arrowLeft,
-                      color: AppColors.primaryOrange,
+                    child: GestureDetector(
+                      onTap: () {
+                        _pageController.nextPage(
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.easeIn,
+                        );
+                      },
+                      child: const ArrowBackBtn(
+                        svgPath: AppSvgs.arrowLeft,
+                        color: AppColors.primaryOrange,
+                      ),
                     ),
                   ),
                   Positioned(
-                      bottom: 0,
-                      left: 0,
-                      right: 0,
-                      child: Container(
-                        height: Sizer.height(26),
-                        // width: Sizer.screenWidth,
-                        decoration: BoxDecoration(
-                          color: AppColors.bgWhite,
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(Sizer.width(24)),
-                            topRight: Radius.circular(Sizer.width(24)),
-                          ),
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: Container(
+                      height: Sizer.height(26),
+                      decoration: BoxDecoration(
+                        color: AppColors.bgWhite,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(Sizer.width(24)),
+                          topRight: Radius.circular(Sizer.width(24)),
                         ),
-                      )),
+                      ),
+                    ),
+                  ),
                 ],
               ),
               Column(
@@ -108,7 +162,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
-                                _singleProduct?.productName ?? '',
+                                _singleProduct?.product?.productName ?? '',
                                 style: AppTypography.text16.copyWith(
                                   fontWeight: FontWeight.w500,
                                   color: AppColors.text3E,
@@ -116,7 +170,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               ),
                               const YBox(4),
                               Text(
-                                ' N${AppUtils.formatAmountString(_singleProduct?.unitPrice.toString() ?? '')}',
+                                ' N${AppUtils.formatAmountString(_singleProduct?.product?.unitPrice.toString() ?? '')}',
                                 style: AppTypography.text24.copyWith(
                                   color: AppColors.primaryOrange,
                                   fontWeight: FontWeight.w600,
@@ -158,7 +212,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   const YBox(20),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: Sizer.width(20)),
-                    child: const ProductReviewStat(),
+                    child: ProductReviewStat(
+                      rating: _singleProduct?.product?.rating,
+                      reviewCount: _singleProduct?.reviews?.length ?? 0,
+                    ),
                   ),
                   const YBox(16),
                   Container(
@@ -199,8 +256,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   ),
                   const YBox(26),
                   _reviewsDescType == ReviewsDescType.description
-                      ? const DescTabDetail()
-                      : const ReviewsTabDetail(),
+                      ? DescTabDetail(
+                          desc: _singleProduct?.product?.description,
+                        )
+                      : ReviewsTabDetail(
+                          reviews: _singleProduct?.reviews ?? []),
                   const YBox(20),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: Sizer.width(20)),
@@ -253,26 +313,40 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       );
                     }
 
+                    if (_singleProduct?.product?.inStock == false) {
+                      FlushBarToast.fLSnackBar(
+                        snackBarType: SnackBarType.success,
+                        message: 'Product is out of stock',
+                      );
+                      return;
+                    }
+
                     orderVM
                         .addproductToCart(
                       product: ProductCart(
-                        productId: _singleProduct?.id ?? '',
-                        productName: _singleProduct?.productName ?? '',
-                        productImage: _singleProduct?.images?.first ?? '',
-                        unitPrice: (_singleProduct?.unitPrice ?? 0).toDouble(),
+                        productId: _singleProduct?.product?.id ?? '',
+                        productName: _singleProduct?.product?.productName ?? '',
+                        productImage:
+                            _singleProduct?.product?.images?.first ?? '',
+                        unitPrice: (_singleProduct?.product?.unitPrice ?? 0)
+                            .toDouble(),
                         qty: _productQty,
                       ),
                     )
                         .then((_) {
                       orderVM.getCartFromStorage();
-                      Navigator.pushNamed(
-                        context,
-                        RoutePath.dashboardNavScreen,
-                        arguments: DashArg(index: 2),
-                      );
+
                       FlushBarToast.fLSnackBar(
                         snackBarType: SnackBarType.success,
                         message: 'Product added to cart',
+                        actionText: 'Go to cart',
+                        onActionTap: () {
+                          Navigator.pushNamed(
+                            context,
+                            RoutePath.dashboardNavScreen,
+                            arguments: DashArg(index: 2),
+                          );
+                        },
                       );
                     });
                   },

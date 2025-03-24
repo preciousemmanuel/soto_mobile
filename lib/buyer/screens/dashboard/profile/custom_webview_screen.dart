@@ -1,4 +1,3 @@
-import 'package:soto_ecommerce/buyer/buyer.dart';
 import 'package:soto_ecommerce/common/common.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -17,35 +16,92 @@ class CustomWebviewScreen extends StatefulWidget {
 class _CustomWebviewScreenState extends State<CustomWebviewScreen> {
   bool isLoading = true;
 
-  late WebViewController _controller;
+  WebViewController? _controller;
 
   @override
   void initState() {
     super.initState();
+    print("urlParam ${widget.arg.webURL}");
     _initializeControllerFuture();
   }
 
   Future<void> _initializeControllerFuture() async {
-    final WebViewController controller =
-        WebViewController.fromPlatformCreationParams(
-      const PlatformWebViewControllerCreationParams(),
-    );
-
-    controller
+    _controller = WebViewController()
+      ..loadRequest(Uri.parse(widget.arg.webURL))
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setNavigationDelegate(NavigationDelegate(
-        onPageStarted: (_) async {
-          isLoading = true;
-        },
-        onPageFinished: (finish) {
-          setState(() {
-            isLoading = false;
-          });
-        },
-      ))
-      ..loadRequest(Uri.parse(widget.arg.webURL));
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onPageStarted: (String url) {
+            print('Page started loading: $url');
+          },
+          onPageFinished: (String url) {
+            print('Page finished loading: $url');
+            setState(() {
+              isLoading = false;
+            });
+          },
+          onWebResourceError: (WebResourceError error) {
+            print('Error loading page: ${error.description}');
+          },
+          onNavigationRequest: (NavigationRequest request) async {
+            print("urlpadhere ${request.url}");
+            if (request.url.contains('success')) {
+              context.read<OrderVM>().clearCart();
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                RoutePath.dashboardNavScreen,
+                (route) => false,
+                arguments: DashArg(index: 1),
+              );
+            }
+            return NavigationDecision.navigate;
+          },
+        ),
+      );
 
-    _controller = controller;
+    // final WebViewController controller =
+    //     WebViewController.fromPlatformCreationParams(
+    //   const PlatformWebViewControllerCreationParams(),
+    // );
+
+    // controller
+    //   ..setJavaScriptMode(JavaScriptMode.unrestricted)
+    //   ..setNavigationDelegate(
+    //     NavigationDelegate(
+    //       onPageStarted: (v) async {
+    //         printty('onPageStarted : $v');
+    //         isLoading = true;
+    //       },
+    //       onPageFinished: (finish) {
+    //         printty('onPageFinished: $finish');
+    //         setState(() {
+    //           isLoading = false;
+    //         });
+    //       },
+    //       onNavigationRequest: (NavigationRequest request) async {
+    //         print("urlpadhere ${request.url}");
+    //         if (request.url.contains('success')) {
+    //           context.read<OrderVM>().clearCart();
+    //           Navigator.pushNamedAndRemoveUntil(
+    //             context,
+    //             RoutePath.dashboardNavScreen,
+    //             (route) => false,
+    //             arguments: DashArg(index: 1),
+    //           );
+    //         }
+    //         return NavigationDecision.navigate;
+    //       },
+    //       onUrlChange: (request) async {
+    //         printty('onUrlChange: ${request.url}');
+    //         if (request.url == "https://hello.pstk.xyz/callback") {
+    //           Navigator.of(context).pop(); //close webview
+    //         }
+    //       },
+    //     ),
+    //   )
+    //   ..loadRequest(Uri.parse(widget.arg.webURL));
+
+    // _controller = controller;
   }
 
   @override
@@ -63,15 +119,7 @@ class _CustomWebviewScreenState extends State<CustomWebviewScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               InkWell(
-                onTap: () {
-                  context.read<OrderVM>().clearCart();
-                  Navigator.pushNamedAndRemoveUntil(
-                    context,
-                    RoutePath.dashboardNavScreen,
-                    (route) => false,
-                    arguments: DashArg(index: 1),
-                  );
-                },
+                onTap: widget.arg.onBackPress ?? () => Navigator.pop(context),
                 child: Padding(
                   padding: EdgeInsets.all(Sizer.radius(4)),
                   child: Icon(
@@ -88,11 +136,11 @@ class _CustomWebviewScreenState extends State<CustomWebviewScreen> {
       body: Stack(
         children: [
           WebViewWidget(
-            controller: _controller,
+            controller: _controller!,
           ),
-          isLoading
-              ? const Center(child: CircularProgressIndicator())
-              : const Stack(),
+          // isLoading
+          //     ? const Center(child: CircularProgressIndicator())
+          //     : const Stack(),
         ],
       ),
     );

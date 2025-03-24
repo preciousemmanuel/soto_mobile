@@ -33,12 +33,16 @@ class DioResponseHandler {
         return _parseBadRequestError(response);
       } else if (res.statusCode! >= 400 || res.statusCode! <= 404) {
         return ApiResponse(
-            code: res.statusCode,
-            success: false,
-            message: response["message"] ?? AppText.errorMsg);
+          code: res.statusCode,
+          success: false,
+          message: res.statusMessage ?? AppText.errorMsg,
+        );
       } else {
         return ApiResponse(
-            code: res.statusCode, success: false, message: response["message"]);
+          code: res.statusCode,
+          success: false,
+          message: res.statusMessage ?? response["message"],
+        );
       }
     } catch (e) {
       return ApiResponse(
@@ -56,7 +60,7 @@ class DioResponseHandler {
         printty("error dioError: $dioError");
         printty("error code: ${dioError.response!.statusCode}");
         printty("error response: ${dioError.response}");
-        String deviceErrorMsg = "This device is not set as your trusted device";
+        // String deviceErrorMsg = "This device is not set as your trusted device";
 
         try {
           if (dioError.response!.statusCode == 422 ||
@@ -75,11 +79,11 @@ class DioResponseHandler {
           //           AppText.errorMsg);
           // }
 
-          printty(dioError.response!.data["message"]);
+          printty(dioError.response?.data?["message"]);
           return ApiResponse(
               code: dioError.response?.statusCode,
               success: false,
-              message: dioError.response!.data["message"] ??
+              message: dioError.response?.data?["message"] ??
                   dioError.message ??
                   dioError.response?.statusMessage ??
                   AppText.errorMsg);
@@ -89,7 +93,7 @@ class DioResponseHandler {
           return ApiResponse(
               code: dioError.response!.statusCode,
               success: false,
-              message: AppText.errorMsg);
+              message: dioError.response?.statusMessage ?? AppText.errorMsg);
         }
 
       case DioExceptionType.cancel:

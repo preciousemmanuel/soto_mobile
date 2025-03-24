@@ -25,6 +25,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
           backgroundColor: AppColors.bgWhite,
           appBar: CustomHeader(
             title: 'Wishlist',
+            showBackBtn: false,
             backBtn: () {},
           ),
           body: Container(

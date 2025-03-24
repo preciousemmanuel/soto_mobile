@@ -1,3 +1,4 @@
+import 'package:google_fonts/google_fonts.dart';
 import 'package:soto_ecommerce/common/common.dart';
 
 class OverviewProductTile extends StatelessWidget {
@@ -49,31 +50,45 @@ class OverviewProductTile extends StatelessWidget {
                 const YBox(4),
                 Text(
                   '${AppUtils.nairaSymbol}${AppUtils.formatAmountString(
-                    (product?.unitPrice ?? 0).toString(),
+                    (product?.rawPrice ?? 0).toString(),
                   )}',
-                  style: AppTypography.text12.copyWith(
+                  style: GoogleFonts.roboto(
+                    fontSize: Sizer.text(12),
                     color: AppColors.black66,
                   ),
                 ),
               ],
             ),
           ),
-          Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: Sizer.width(10),
-              vertical: Sizer.height(4),
-            ),
-            decoration: BoxDecoration(
-              color: AppColors.orangeE3,
-              borderRadius: BorderRadius.circular(Sizer.radius(4)),
-            ),
-            child: Text(
-              'Qty: ${product?.productQuantity ?? 0}',
-              style: AppTypography.text12.copyWith(
-                color: AppColors.primaryOrange,
-                fontWeight: FontWeight.w500,
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Qty: ${product?.productQuantity ?? 0}',
+                style: AppTypography.text10.copyWith(
+                  color: AppColors.text57,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
-            ),
+              const YBox(10),
+              Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: Sizer.width(10),
+                  vertical: Sizer.height(2),
+                ),
+                decoration: BoxDecoration(
+                  color: AppColors.orangeE3,
+                  borderRadius: BorderRadius.circular(Sizer.radius(4)),
+                ),
+                child: Text(
+                  product?.status ?? '',
+                  style: AppTypography.text10.copyWith(
+                    color: AppColors.primaryOrange,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ],
           )
         ],
       ),

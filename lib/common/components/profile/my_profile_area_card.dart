@@ -23,8 +23,7 @@ class MyProfileAreaCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ProfileAvatar(
-              initials: AppUtils.getInitials(
-                  vm.authUser?.firstName ?? '', vm.authUser?.lastName ?? ''),
+              initials: getFullNamesInitails(vm.fullname, '').toUpperCase(),
             ),
             const XBox(10),
             Expanded(

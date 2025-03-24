@@ -8,6 +8,10 @@ class AppUtils {
   static String nairaSymbol = "₦";
   static String nairaCurrency = "NGN";
 
+  static String termsAndConditions =
+      "https://soto-web.vercel.app/terms-condition";
+  static String policy = "https://soto-web.vercel.app/privacy-policy";
+
   static String dateFormatter(String date) {
     var formatter = DateFormat('yyyy-MM-dd');
     DateTime dateTime = formatter.parse(date);
@@ -369,5 +373,27 @@ class AppUtils {
     final Uri emailLaunchUri = Uri(scheme: 'tel', path: url);
 
     await launchUrl(emailLaunchUri);
+  }
+
+  static lauchWhatsapp() async {
+    // String text = 'Hello, how can I help you?';
+    // String androidUrl = "whatsapp://send?phone=$contact&text=$text";
+    String webUrl = 'https://api.whatsapp.com/send';
+    String iosUrl = "https://wa.me/message/7V3CGNZN5GPMO1";
+
+    try {
+      if (Platform.isIOS) {
+        if (await canLaunchUrl(Uri.parse(iosUrl))) {
+          await launchUrl(Uri.parse(iosUrl));
+        }
+      } else {
+        if (await canLaunchUrl(Uri.parse(iosUrl))) {
+          await launchUrl(Uri.parse(iosUrl));
+        }
+      }
+    } catch (e) {
+      printty('object');
+      await launchUrl(Uri.parse(webUrl), mode: LaunchMode.externalApplication);
+    }
   }
 }

@@ -6,4 +6,5 @@ export 'payment_narration.dart';
 export 'payment_type.dart';
 export 'reviews_desc_type.dart';
 export 'signup_channel.dart';
+export 'time_frame.dart';
 export 'user_type.dart';

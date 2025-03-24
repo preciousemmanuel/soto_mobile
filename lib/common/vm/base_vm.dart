@@ -80,7 +80,7 @@ class BaseVM extends ChangeNotifier {
       }
 
       return onSuccess(apiResponse.data);
-    } catch (e, s) {
+    } catch (e) {
       setError(true);
       if (onError != null) {
         return onError(e.toString());

@@ -68,6 +68,7 @@ class AppColors {
   static const green78 = Color(0xFF0AAE78);
   static const greenE9 = Color(0xFFDEF5E9);
   static const greenB78 = Color(0xFF48BB78);
+  static const greenB59 = Color(0xFF199D59);
 
   static const yellowE3 = Color(0xFFFDF3E3);
   static const yellowF5 = Color(0xFFFCF5F5);
@@ -97,6 +98,10 @@ class AppColors {
   static const textE70 = Color(0xFF6E6E70);
   static const text66 = Color(0xFF636466);
   static const text060 = Color(0xFF616060);
+  static const text72A = Color(0xFF27272A);
+
+  static const yellow07 = Color(0xFFFCB007);
+  static const yellow00 = Color(0xFFFFC900);
 
   static const opacityRed100 = Color(0xFFFFF8F7);
   static const opacityGreen200 = Color(0xFFF0FFF9);

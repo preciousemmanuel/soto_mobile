@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:soto_ecommerce/buyer/buyer.dart';
 import 'package:soto_ecommerce/common/common.dart';
-import 'package:soto_ecommerce/seller/screens/products/vendor_product_details_screen.dart';
 import 'package:soto_ecommerce/seller/seller.dart';
 
 class AppRouter {
@@ -18,6 +17,8 @@ class AppRouter {
         return buildRoute(const OnboardScreenOne());
       case RoutePath.onboardScreenTwo:
         return buildRoute(const OnboardScreenTwo());
+      case RoutePath.onboardScreenThree:
+        return buildRoute(const OnboardScreenThree());
 
       // Auth
       case RoutePath.loginScreen:
@@ -49,16 +50,41 @@ class AppRouter {
       case RoutePath.allProductsScreen:
         AllProductArgs? allProductArgs = args as AllProductArgs?;
         return buildRoute(AllProductsScreen(args: allProductArgs));
+      case RoutePath.searchProductScreen:
+        return buildRoute(const SearchProductScreen());
+
+      case RoutePath.productCategoryScreen:
+        if (args is ProductCatArg) {
+          return buildRoute(ProductsCategoryScreen(args: args));
+        }
+        return errorScreen('Incorrect arguments for ${settings.name}');
 
       // Orders
       case RoutePath.createOrderScreen:
         return buildRoute(const CreateOrderScreen());
+      case RoutePath.orderDetailScreen:
+        if (args is OrderDetailArg) {
+          return buildRoute(OrderDetailsScreen(args: args));
+        }
+        return errorScreen('Incorrect arguments for ${settings.name}');
+      case RoutePath.raiseDisputeScreen:
+        return buildRoute(const RaiseDisputeScreen());
+
+      case RoutePath.disputeConfirmScreen:
+        if (args is DisputeArgs) {
+          return buildRoute(DisputeConfirmScreen(args: args));
+        }
+        return errorScreen('Incorrect arguments for ${settings.name}');
+
       case RoutePath.addOrderScreen:
         return buildRoute(const AddOrderScreen());
       case RoutePath.reviewOrderScreen:
         return buildRoute(const ReviewOrderScreen());
       case RoutePath.trackMyOrderScreen:
-        return buildRoute(const TrackMyOrderScreen());
+        if (args is OrderDetailArg) {
+          return buildRoute(TrackMyOrderScreen(args: args));
+        }
+        return errorScreen('Incorrect arguments for ${settings.name}');
 
       // Cart
       case RoutePath.checkoutScreen:
@@ -101,9 +127,13 @@ class AppRouter {
         return buildRoute(const CreatePasswordScreen());
       case RoutePath.approvalScreen:
         return buildRoute(const ApprovalScreen());
+      case RoutePath.vendorOtpScreen:
+        return buildRoute(const VendorOtpScreen());
 
       case RoutePath.addProductScreen:
-        return buildRoute(const AddProductScreen());
+        final VendorProductArgs? vendorProductArgs = args as VendorProductArgs?;
+        return buildRoute(AddProductScreen(args: vendorProductArgs));
+
       case RoutePath.vendorProductListScreen:
         return buildRoute(const VendorProductListScreen());
       case RoutePath.vendorProductDetailsScreen:
@@ -111,13 +141,24 @@ class AppRouter {
           return buildRoute(VendorProductDetailsScreen(args: args));
         }
         return errorScreen('Incorrect arguments for ${settings.name}');
+      case RoutePath.vendorOrderDetailScreen:
+        if (args is OrderDetailArg) {
+          return buildRoute(VendorOrderDetailScreen(args: args));
+        }
+        return errorScreen('Incorrect arguments for ${settings.name}');
 
       case RoutePath.withdrawToBankScreen:
-        return buildRoute(const WithdrawToBankScreen());
+        if (args is WithdrawArgs) {
+          return buildRoute(WithdrawToBankScreen(args: args));
+        }
+        return errorScreen('Incorrect arguments for ${settings.name}');
+
       case RoutePath.withdrawChooseAccount:
         return buildRoute(const WithdrawChooseAccount());
       case RoutePath.walletPaymentMethodScreen:
         return buildRoute(const WalletPaymentMethodScreen());
+      case RoutePath.withdrawRequestScreen:
+        return buildRoute(const WithdrawRequestScreen());
 
       default:
         return errorScreen('No route defined for ${settings.name}');

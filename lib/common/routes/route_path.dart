@@ -7,16 +7,21 @@ class RoutePath {
 
   // order
   static const orderScreen = '/orderScreen';
+  static const orderDetailScreen = '/orderDetailScreen';
   static const createOrderScreen = '/createOrderScreen';
   static const addOrderScreen = '/addOrderScreen';
   static const reviewOrderScreen = '/reviewOrderScreen';
   static const trackMyOrderScreen = '/trackMyOrderScreen';
+  static const raiseDisputeScreen = '/raiseDisputeScreen';
+  static const disputeConfirmScreen = '/disputeConfirmScreen';
 
   // Dashboard
   static const dashboardNavScreen = '/dashboardNavScreen';
   static const notificationScreen = '/notificationScreen';
   static const productDetailScreen = '/productDetailScreen';
   static const allProductsScreen = '/allProductsScreen';
+  static const searchProductScreen = '/searchProductScreen';
+  static const productCategoryScreen = '/productCategoryScreen';
 
   // Profile
   static const profileScreen = '/profileScreen';
@@ -47,12 +52,15 @@ class RoutePath {
   static const createBusinessAccountScreen = '/createBusinessAccountScreen';
   static const createPasswordScreen = '/createPasswordScreen';
   static const approvalScreen = '/approvalScreen';
+  static const vendorOtpScreen = '/vendorOtpScreen';
 
   static const addProductScreen = '/addProductScreen';
   static const vendorProductListScreen = '/vendorProductListScreen';
   static const vendorProductDetailsScreen = '/vendorProductDetailsScreen';
+  static const vendorOrderDetailScreen = '/vendorOrderDetailScreen';
 
   static const withdrawToBankScreen = '/withdrawToBankScreen';
   static const withdrawChooseAccount = '/withdrawChooseAccount';
   static const walletPaymentMethodScreen = '/walletPaymentMethodScreen';
+  static const withdrawRequestScreen = '/withdrawRequestScreen';
 }

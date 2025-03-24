@@ -3,10 +3,20 @@ import 'dart:convert';
 import 'package:soto_ecommerce/common/common.dart';
 
 class OrderVM extends BaseVM {
-  List<OrderRes> _myOrder = [];
-  List<OrderRes> get myOrder => _myOrder;
+  List<OrderRes> _activeOrders = [];
+  List<OrderRes> get activeOrders => _activeOrders;
   List<ProductCart> _cartItems = [];
   List<ProductCart> get cartItems => _cartItems;
+  OrderDetailsRes? _singleOrder;
+  OrderDetailsRes? get singleOrder => _singleOrder;
+  ShippingCostAgility? _shippingCostAgility;
+  ShippingCostAgility? get shippingCostAgility => _shippingCostAgility;
+  List<String> get orderTrackSteps {
+    final orderItinerary = _singleOrder?.orderItinerary;
+    if (orderItinerary == null) return [];
+
+    return orderItinerary.toJson().values.whereType<String>().toList();
+  }
 
   Future<void> addproductToCart({required ProductCart product}) async {
     printty("add to cart call with product: $product");
@@ -48,7 +58,7 @@ class OrderVM extends BaseVM {
     for (var item in _cartItems) {
       total += (item.qty) * (item.unitPrice ?? 0);
     }
-    return total;
+    return total + (_shippingCostAgility?.shippingCost ?? 0);
   }
 
   void increaseCartQty(String productId) {
@@ -137,21 +147,61 @@ class OrderVM extends BaseVM {
       method: apiService.postWithAuth,
       body: body,
       onSuccess: (data) {
+        print("dsdaddata $data");
+        print(
+            "dsdaddataLink ${data["data"]["data"]["data"]["authorization_url"]}");
         return ApiResponse(
           success: true,
-          data: data["data"]["data"]["authorization_url"],
+          data: data["data"]["data"]["data"]["authorization_url"],
         );
       },
     );
   }
 
-  Future<ApiResponse> fetchBuyerOrders() async {
+  Future<ApiResponse> fetchBuyerOrders({String? status}) async {
     printty("add to cart call");
+
+    final url = "/order/fetch/by-buyer?limit=100&page=1&status=${status ?? ''}";
     return await performApiCall(
-      url: "/order/fetch/by-buyer?limit=10&page=1",
+      url: url,
       method: apiService.getWithAuth,
       onSuccess: (data) {
-        _myOrder = orderResFromJson(jsonEncode(data["data"]["data"]));
+        _activeOrders = orderResFromJson(jsonEncode(data["data"]["data"]));
+        return apiResponse;
+      },
+    );
+  }
+
+  Future<ApiResponse> getDeliveryAgilityPrice({
+    required List<ProductCart> items,
+  }) async {
+    final bodyItemsList = items
+        .map((item) => {
+              "_id": item.productId,
+              "quantity": item.qty,
+            })
+        .toList();
+
+    printty("add to cart call with body: $bodyItemsList");
+    return await performApiCall(
+      url: "/delivery/agility-get-price",
+      method: apiService.postWithAuth,
+      body: {"items": bodyItemsList},
+      onSuccess: (data) {
+        _shippingCostAgility =
+            shippingCostAgilityFromJson(jsonEncode(data["data"]));
+        return apiResponse;
+      },
+    );
+  }
+
+  Future<ApiResponse> fetchOrderDetails(String id) async {
+    final url = "/order/view-one/$id";
+    return await performApiCall(
+      url: url,
+      method: apiService.getWithAuth,
+      onSuccess: (data) {
+        _singleOrder = OrderDetailsRes.fromJson(data["data"]);
         return apiResponse;
       },
     );
@@ -182,6 +232,7 @@ class OrderVM extends BaseVM {
   // }
 }
 
+// Used to format payloads, not API res
 List<ProductCart> productCartFromJson(String str) => List<ProductCart>.from(
     json.decode(str).map((x) => ProductCart.fromJson(x)));
 

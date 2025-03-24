@@ -1,3 +1,4 @@
+import 'package:soto_ecommerce/buyer/screens/dashboard/profile/modals/signup_alert_modal.dart';
 import 'package:soto_ecommerce/common/common.dart';
 
 class CartScreen extends StatelessWidget {
@@ -15,7 +16,7 @@ class CartScreen extends StatelessWidget {
             backgroundColor: AppColors.bgWhite,
             appBar: CustomHeader(
               title: 'Shopping Cart',
-              backBtn: () {},
+              showBackBtn: ModalRoute.of(context)!.canPop,
             ),
             body: RefreshIndicator(
               onRefresh: () async {
@@ -51,7 +52,7 @@ class CartScreen extends StatelessWidget {
                                   ShoppingCartCard(
                                     cartItem: cartItem,
                                   ),
-                                  if (i == (vm.cartItems.length))
+                                  if (i == (vm.cartItems.length - 1))
                                     const Divider(
                                       color: AppColors.whiteF7,
                                       thickness: 2,
@@ -61,6 +62,25 @@ class CartScreen extends StatelessWidget {
                             },
                             separatorBuilder: (ctx, i) => const YBox(6),
                             itemCount: vm.cartItems.length,
+                          ),
+                          const YBox(20),
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: Sizer.width(20),
+                            ),
+                            child: CustomBtn.solid(
+                              isOutline: true,
+                              height: Sizer.height(50),
+                              borderRadius: BorderRadius.circular(
+                                Sizer.radius(100),
+                              ),
+                              text: "Continue Shopping",
+                              textColor: AppColors.primaryOrange,
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, RoutePath.allProductsScreen);
+                              },
+                            ),
                           ),
                           const YBox(26),
                           Container(
@@ -85,7 +105,7 @@ class CartScreen extends StatelessWidget {
                               crossAxisSpacing: Sizer.width(20),
                               mainAxisSpacing: Sizer.width(20),
                               physics: const NeverScrollableScrollPhysics(),
-                              childAspectRatio: 0.74,
+                              childAspectRatio: 0.64,
                               padding: EdgeInsets.symmetric(
                                 horizontal: Sizer.width(20),
                               ),
@@ -113,11 +133,61 @@ class CartScreen extends StatelessWidget {
                                         ),
                                       );
                                     },
+                                    onAddToCartTap: () {
+                                      final orderVm = context.read<OrderVM>();
+                                      final userVm = context.read<AuthUserVM>();
+                                      if (userVm.authUser == null) {
+                                        return ModalWrapper.showCustomDialog(
+                                          context,
+                                          child: const SignupAlertModal(),
+                                        );
+                                      }
+
+                                      orderVm
+                                          .addproductToCart(
+                                        product: ProductCart(
+                                          productId:
+                                              productVM.allProductList[i].id ??
+                                                  '',
+                                          productName: productVM
+                                                  .allProductList[i]
+                                                  .productName ??
+                                              '',
+                                          productImage: productVM
+                                                  .allProductList[i]
+                                                  .images
+                                                  ?.first ??
+                                              '',
+                                          unitPrice: (productVM
+                                                      .allProductList[i]
+                                                      .unitPrice ??
+                                                  0)
+                                              .toDouble(),
+                                          qty: 1,
+                                        ),
+                                      )
+                                          .then((_) {
+                                        orderVm.getCartFromStorage();
+
+                                        FlushBarToast.fLSnackBar(
+                                          snackBarType: SnackBarType.success,
+                                          message: 'Product added to cart',
+                                          actionText: 'Go to cart',
+                                          onActionTap: () {
+                                            Navigator.pushNamed(
+                                              context,
+                                              RoutePath.dashboardNavScreen,
+                                              arguments: DashArg(index: 2),
+                                            );
+                                          },
+                                        );
+                                      });
+                                    },
                                   ),
                               ],
                             );
                           }),
-                          const YBox(48),
+                          const YBox(60),
                           CartAmountTotal(
                             total:
                                 '${AppUtils.nairaSymbol}${AppUtils.formatAmountString('${vm.cartTotalAmount}')}',

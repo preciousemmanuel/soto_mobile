@@ -9,14 +9,6 @@ const String pickImageState = "pickImageState";
 class VendorProductVM extends BaseVM {
   final ImageHelperPicker _imagePicker = ImageHelperPicker();
 
-  TextEditingController productNameC = TextEditingController();
-  TextEditingController productDescC = TextEditingController();
-  TextEditingController unitpriceC = TextEditingController();
-  TextEditingController productQtyC = TextEditingController();
-  TextEditingController disCountPriceC = TextEditingController();
-  TextEditingController heightC = TextEditingController();
-  TextEditingController widthC = TextEditingController();
-  TextEditingController weightC = TextEditingController();
   ProductCategory? _selectedCategory;
   ProductCategory? get selectedCategory => _selectedCategory;
   final List<File> _productImages = [];
@@ -25,16 +17,7 @@ class VendorProductVM extends BaseVM {
   List<Product> _productsByVendor = [];
   List<Product> get productsByVendor => _productsByVendor;
 
-  bool get btnIsValid {
-    return productNameC.text.isNotEmpty &&
-        productDescC.text.isNotEmpty &&
-        _selectedCategory != null &&
-        unitpriceC.text.isNotEmpty &&
-        productQtyC.text.isNotEmpty &&
-        disCountPriceC.text.isNotEmpty;
-  }
-
-  void selectCategory(ProductCategory category) {
+  void setSelectCategory(ProductCategory category) {
     _selectedCategory = category;
     reBuildUI();
   }
@@ -44,31 +27,50 @@ class VendorProductVM extends BaseVM {
     reBuildUI();
   }
 
-  Future<ApiResponse> addNewproduct({bool isInstock = false}) async {
+  Future<ApiResponse> addNewproduct({
+    bool isInstock = false,
+    required String productNameC,
+    String? productDescC,
+    String? unitpriceC,
+    String? productQtyC,
+    String? disCountPriceC,
+    String? heightC,
+    String? widthC,
+    String? weightC,
+    String? productId,
+    bool isEditing = false,
+    List? existingImages,
+  }) async {
     final body = {
-      "product_name": productNameC.text.trim(),
-      "description": productDescC.text.trim(),
+      "product_name": productNameC,
+      "description": productDescC,
       "category": _selectedCategory!.id,
-      "unit_price": unitpriceC.text.trim(),
-      "product_quantity": productQtyC.text.trim(),
-      "discount_price": disCountPriceC.text.trim(),
+      "unit_price": unitpriceC,
+      "product_quantity": productQtyC,
+      "discount_price": disCountPriceC,
       "in_stock": isInstock ? 'YES' : 'NO',
-      "height": heightC.text.trim(),
-      "width": widthC.text.trim(),
-      "weight": weightC.text.trim(),
+      "height": heightC,
+      "width": widthC,
+      "weight": weightC,
       "images": _productImages
           .map((e) => MultipartFile.fromFileSync(e.path))
           .toList(),
+      for (var i = 0; i < (existingImages?.length ?? 0); i++)
+        'existing_images[$i]': existingImages?[i],
     };
 
-    printty('addNewproduct body: $body');
+    // loop through body and  remove empty values
+    body.removeWhere(
+        (k, v) => v == null || v == '' || (v is List && v.isEmpty));
+    final String url =
+        isEditing ? '/product/update/$productId' : '/product/add-new';
+    printty('addNewproduct body: $body, url: $url');
     return await performApiCall(
-      url: "/product/add-new",
-      method: apiService.postWithAuth,
+      url: url,
+      method: isEditing ? apiService.putWithAuth : apiService.postWithAuth,
       isFormData: true,
       body: body,
       onSuccess: (data) {
-        //
         return apiResponse;
       },
     );
@@ -92,7 +94,7 @@ class VendorProductVM extends BaseVM {
       onSuccess: (data) {
         // _singleProduct = Product.fromJson(data["data"]["product"]);
         return ApiResponse(
-            success: true, data: Product.fromJson(data["data"]["product"]));
+            success: true, data: ProductData.fromJson(data["data"]));
       },
     );
   }
@@ -143,30 +145,6 @@ class VendorProductVM extends BaseVM {
 
   clearData() {
     _selectedCategory = null;
-
     _productImages.clear();
-    productNameC.clear();
-    productDescC.clear();
-    unitpriceC.clear();
-    productQtyC.clear();
-    disCountPriceC.clear();
-    heightC.clear();
-    widthC.clear();
-    weightC.clear();
-  }
-
-  @override
-  void dispose() {
-    printty('Vendor Product VM Disposed');
-
-    productNameC.dispose();
-    productDescC.dispose();
-    unitpriceC.dispose();
-    productQtyC.dispose();
-    disCountPriceC.dispose();
-    heightC.dispose();
-    widthC.dispose();
-    weightC.dispose();
-    super.dispose();
   }
 }

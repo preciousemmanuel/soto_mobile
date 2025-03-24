@@ -20,7 +20,7 @@ class CustomPaymentListTile extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(
         horizontal: Sizer.width(20),
-        vertical: Sizer.height(8),
+        vertical: Sizer.height(12),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

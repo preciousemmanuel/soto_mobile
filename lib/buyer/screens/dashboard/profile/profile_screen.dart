@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:soto_ecommerce/buyer/buyer.dart';
 import 'package:soto_ecommerce/common/common.dart';
 
@@ -10,7 +12,6 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   bool _isVendor = false;
-  final bool _enableBiometric = false;
 
   @override
   void initState() {
@@ -64,6 +65,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     : vm.setVendorUser();
                                 context.read<LoginVM>().logout(
                                     switchToVendor: _isVendor ? false : true);
+                                context.read<AuthUserVM>().clearData();
                               },
                             ),
                           );
@@ -159,17 +161,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                   const YBox(16),
-                  DecorationContainer(
-                    onTap: () {
-                      Navigator.pushNamed(
-                          context, RoutePath.paymentMethodScreen);
-                    },
-                    child: const ProfileListTile(
-                      title: 'Payment Methods',
-                      leadicon: Iconsax.card_add,
-                    ),
-                  ),
-                  const YBox(10),
+                  // DecorationContainer(
+                  //   onTap: () {
+                  //     Navigator.pushNamed(
+                  //         context, RoutePath.paymentMethodScreen);
+                  //   },
+                  //   child: const ProfileListTile(
+                  //     title: 'Payment Methods',
+                  //     leadicon: Iconsax.card_add,
+                  //   ),
+                  // ),
+                  // const YBox(10),
                   DecorationContainer(
                     onTap: () {
                       ModalWrapper.bottomSheet(
@@ -195,14 +197,59 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   const YBox(10),
                   DecorationContainer(
                     onTap: () {
+                      Navigator.pushNamed(
+                          context, RoutePath.customWebviewScreen,
+                          arguments: WebViewArg(
+                            webURL: AppUtils.termsAndConditions,
+                          ));
+                    },
+                    child: const ProfileListTile(
+                      title: 'Terms & Conditions',
+                      leadicon: AppSvgs.note,
+                    ),
+                  ),
+                  const YBox(10),
+                  DecorationContainer(
+                    onTap: () {
+                      Navigator.pushNamed(
+                        context,
+                        RoutePath.customWebviewScreen,
+                        arguments: WebViewArg(
+                          webURL: AppUtils.policy,
+                        ),
+                      );
+                    },
+                    child: const ProfileListTile(
+                      title: 'Privacy Policie',
+                      leadicon: AppSvgs.warning,
+                    ),
+                  ),
+                  const YBox(10),
+                  DecorationContainer(
+                    onTap: () {
                       ModalWrapper.showCustomDialog(
                         context,
                         child: ConfirmModal(
                           message: 'Do you want to Logout?',
                           confirmText: 'Yes Logout',
                           onConfirm: () {
-                            vm.removeVendorUser();
-                            context.read<LoginVM>().logout();
+                            if (vm.isVendor) {
+                              context
+                                  .read<LoginVM>()
+                                  .logout(switchToVendor: true)
+                                  .then(
+                                (v) {
+                                  context.read<AuthUserVM>().clearData();
+                                },
+                              );
+                            } else {
+                              vm.removeVendorUser();
+                              context.read<LoginVM>().logout().then(
+                                (v) {
+                                  context.read<AuthUserVM>().clearData();
+                                },
+                              );
+                            }
                           },
                         ),
                       );

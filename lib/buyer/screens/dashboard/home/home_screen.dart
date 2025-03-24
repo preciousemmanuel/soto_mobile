@@ -1,6 +1,7 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:soto_ecommerce/buyer/screens/dashboard/profile/modals/signup_alert_modal.dart';
 import 'package:soto_ecommerce/common/common.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -19,10 +20,17 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
   }
 
-  _init() {
+  _init() async {
+    final authVm = context.read<AuthUserVM>();
     context.read<ProductVM>()
       ..getCategories()
       ..getProductList();
+
+    if (authVm.authUser != null) {
+      authVm.addFCMToken(
+          fcmToken:
+              await StorageService.getStringItem(StorageKey.deviceToken) ?? "");
+    }
   }
 
   @override
@@ -47,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     Expanded(
                       flex: 7,
                       child: CustomTextField(
-                        hintText: 'I’m looking for...',
+                        hintText: 'Enter list.... ',
                         showfillColor: false,
                         borderColor: AppColors.grayDE,
                         prefixIcon: Icon(
@@ -59,8 +67,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         isReadOnly: true,
                         onTap: () {
                           Navigator.pushNamed(
-                              context, RoutePath.allProductsScreen,
-                              arguments: AllProductArgs(isSearch: true));
+                            context,
+                            RoutePath.searchProductScreen,
+                          );
                         },
                         suffixIcon: Container(
                           padding: const EdgeInsets.all(8),
@@ -143,36 +152,49 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       ...List.generate(
                         ref.productCategories.length,
-                        (i) => ClipRRect(
-                          borderRadius: BorderRadius.circular(Sizer.radius(8)),
-                          child: Container(
-                            padding: EdgeInsets.only(
-                              left: Sizer.width(12),
-                              right: Sizer.width(12),
-                              // top: Sizer.height(18),
-                            ),
-                            margin: EdgeInsets.only(
-                              right: Sizer.width(8),
-                              left: i == 0 ? Sizer.width(20) : 0,
-                            ),
-                            width: Sizer.width(125),
-                            height: Sizer.height(56),
-                            decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.circular(Sizer.radius(8)),
-                              image: DecorationImage(
+                        (i) => InkWell(
+                          onTap: () {
+                            Navigator.pushNamed(
+                              context,
+                              RoutePath.productCategoryScreen,
+                              arguments: ProductCatArg(
+                                category: ref.productCategories[i],
+                              ),
+                            );
+                          },
+                          child: ClipRRect(
+                            borderRadius:
+                                BorderRadius.circular(Sizer.radius(8)),
+                            child: Container(
+                              padding: EdgeInsets.only(
+                                left: Sizer.width(12),
+                                right: Sizer.width(12),
+                                // top: Sizer.height(18),
+                              ),
+                              margin: EdgeInsets.only(
+                                right: Sizer.width(8),
+                                left: i == 0 ? Sizer.width(20) : 0,
+                              ),
+                              width: Sizer.width(125),
+                              height: Sizer.height(56),
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.circular(Sizer.radius(8)),
+                                image: DecorationImage(
                                   fit: BoxFit.cover,
                                   image: ref.productCategories[i].image == null
                                       ? const AssetImage(AppImages.noImage)
                                       : NetworkImage(
                                           ref.productCategories[i].image ?? '',
-                                        )),
-                            ),
-                            child: Center(
-                              child: Text(
-                                ref.productCategories[i].name ?? '',
-                                style: AppTypography.text12.copyWith(
-                                  fontWeight: FontWeight.w500,
+                                        ),
+                                ),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  ref.productCategories[i].name ?? '',
+                                  style: AppTypography.text12.copyWith(
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
                               ),
                             ),
@@ -235,8 +257,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         crossAxisSpacing: Sizer.width(20),
                         mainAxisSpacing: Sizer.width(20),
                         pattern: [
-                          const StairedGridTile(0.5, 0.74),
-                          const StairedGridTile(0.5, 0.74),
+                          const StairedGridTile(0.5, 0.62),
+                          const StairedGridTile(0.5, 0.62),
                         ],
                       ),
                       childrenDelegate:
@@ -265,47 +287,80 @@ class _HomeScreenState extends State<HomeScreen> {
                       crossAxisSpacing: Sizer.width(20),
                       mainAxisSpacing: Sizer.width(20),
                       pattern: [
-                        const StairedGridTile(0.5, 0.74),
-                        const StairedGridTile(0.5, 0.74),
+                        const StairedGridTile(0.5, 0.62),
+                        const StairedGridTile(0.5, 0.62),
                       ],
                     ),
                     childrenDelegate: SliverChildBuilderDelegate(
-                      (context, index) {
-                        if (vm.isBusy) {
-                          return const Skeletonizer(
-                            enabled: true,
-                            child: RelatedProductCard(
-                              productName: 'Gucci Product',
-                              productId: '2777378388ddbdbd',
-                              unitPrice: '1000',
-                              productImage:
-                                  'https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg',
-                              onTap: null,
-                            ),
-                          );
-                        }
+                      (context, i) {
+                        final p = vm.popularProductList[i];
                         return RelatedProductCard(
-                          productName:
-                              vm.allProductList[index].productName ?? '',
-                          productId: vm.allProductList[index].id ?? '',
-                          unitPrice: '${vm.allProductList[index].unitPrice}',
-                          productImage:
-                              (vm.allProductList[index].images?.isNotEmpty ??
-                                      false)
-                                  ? vm.allProductList[index].images?.first ?? ''
-                                  : '',
+                          discountPrice: '${p.discountPrice ?? ''}',
+                          outOfStock: p.inStock == false,
+                          productName: p.productName ?? '',
+                          productId: p.id ?? '',
+                          unitPrice: '${p.unitPrice}',
+                          productImage: (p.images?.isNotEmpty ?? false)
+                              ? p.images?.first ?? ''
+                              : '',
                           onTap: () {
                             Navigator.pushNamed(
                               context,
                               RoutePath.productDetailScreen,
                               arguments: ProductArgs(
-                                productId: vm.allProductList[index].id ?? '',
+                                productId: vm.allProductList[i].id ?? '',
                               ),
                             );
                           },
+                          onAddToCartTap: () {
+                            final orderVm = context.read<OrderVM>();
+                            final userVm = context.read<AuthUserVM>();
+                            if (userVm.authUser == null) {
+                              return ModalWrapper.showCustomDialog(
+                                context,
+                                child: const SignupAlertModal(),
+                              );
+                            }
+                            if (p.inStock == false) {
+                              FlushBarToast.fLSnackBar(
+                                snackBarType: SnackBarType.success,
+                                message: 'Product is out of stock',
+                              );
+                              return;
+                            }
+                            orderVm
+                                .addproductToCart(
+                              product: ProductCart(
+                                productId: vm.allProductList[i].id ?? '',
+                                productName:
+                                    vm.allProductList[i].productName ?? '',
+                                productImage:
+                                    vm.allProductList[i].images?.first ?? '',
+                                unitPrice: (vm.allProductList[i].unitPrice ?? 0)
+                                    .toDouble(),
+                                qty: 1,
+                              ),
+                            )
+                                .then((_) {
+                              orderVm.getCartFromStorage();
+
+                              FlushBarToast.fLSnackBar(
+                                snackBarType: SnackBarType.success,
+                                message: 'Product added to cart',
+                                actionText: 'Go to cart',
+                                onActionTap: () {
+                                  Navigator.pushNamed(
+                                    context,
+                                    RoutePath.dashboardNavScreen,
+                                    arguments: DashArg(index: 2),
+                                  );
+                                },
+                              );
+                            });
+                          },
                         );
                       },
-                      childCount: vm.allProductList.length,
+                      childCount: vm.popularProductList.take(8).length,
                     ),
                   );
                 },
@@ -315,6 +370,16 @@ class _HomeScreenState extends State<HomeScreen> {
               const YBox(100),
             ],
           ),
+        ),
+      ),
+      floatingActionButton: InkWell(
+        onTap: () {
+          AppUtils.lauchWhatsapp();
+        },
+        child: imageHelper(
+          AppImages.whatsapp,
+          height: Sizer.height(80),
+          width: Sizer.width(80),
         ),
       ),
     );

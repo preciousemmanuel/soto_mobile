@@ -18,11 +18,11 @@ class AppInterceptors extends QueuedInterceptorsWrapper {
     // printty("url headers:===> ${options.headers.toString()}");
     printty(token.toString());
 
-    if (token == null) {
-      handler.reject(DioException(requestOptions: options));
-      logout();
-      return;
-    }
+    // if (token == null) {
+    //   handler.reject(DioException(requestOptions: options));
+    //   logout();
+    //   return;
+    // }
     options.headers.addAll({"authorization": "Bearer $token"});
     handler.next(options);
     //return super.onRequest(options, handler);
@@ -39,10 +39,10 @@ class AppInterceptors extends QueuedInterceptorsWrapper {
       DioException err, ErrorInterceptorHandler handler) async {
     ApiResponse res = DioResponseHandler.dioErrorHandler(err);
 
-    if (res.code == 401 || res.code == 403) {
-      logout();
-      return;
-    }
+    // if (res.code == 401 || res.code == 403) {
+    //   logout();
+    //   return;
+    // }
 
     if (res.code == 500 &&
         res.message != null &&
