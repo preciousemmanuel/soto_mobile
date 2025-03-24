@@ -40,8 +40,10 @@ class _RelatedProductCardState extends State<RelatedProductCard> {
     return InkWell(
       onTap: widget.onTap,
       child: Container(
-        padding: EdgeInsets.symmetric(
-          horizontal: Sizer.width(8),
+        padding: EdgeInsets.only(
+          left: Sizer.width(8),
+          right: Sizer.width(8),
+          bottom: Sizer.height(8),
         ),
         decoration: BoxDecoration(
             color: AppColors.white,
@@ -67,7 +69,7 @@ class _RelatedProductCardState extends State<RelatedProductCard> {
                     fadeInDuration: const Duration(milliseconds: 50),
                     fit: BoxFit.cover,
                     width: MediaQuery.of(context).size.width,
-                    height: Sizer.height(160),
+                    height: Sizer.height(150),
                   ),
                 ),
                 const YBox(8),
@@ -111,7 +113,7 @@ class _RelatedProductCardState extends State<RelatedProductCard> {
                     ),
                   ],
                 )),
-                const YBox(8),
+                const Spacer(),
                 CustomBtn.solid(
                   // online:
                   isOutline: true,

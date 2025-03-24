@@ -15,7 +15,7 @@ class ProductsYouMayLike extends StatelessWidget {
           mainAxisSpacing: Sizer.width(20),
           physics: const NeverScrollableScrollPhysics(),
           padding: EdgeInsets.zero,
-          childAspectRatio: 0.64,
+          childAspectRatio: 0.62,
           children: [
             for (int i = 0; i < 4; i++)
               RelatedProductCard(

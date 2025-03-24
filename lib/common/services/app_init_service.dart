@@ -19,7 +19,7 @@ class AppInitService {
 
     // Dotenv
     await dotenv.load(fileName: ".env");
-    EnvMain().init(EnvMain.DEV);
+    EnvMain().init(EnvMain.PROD);
   }
 
   _firebaseInit() async {

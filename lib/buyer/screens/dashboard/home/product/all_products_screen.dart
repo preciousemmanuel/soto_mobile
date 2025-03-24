@@ -75,7 +75,7 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
                       crossAxisSpacing: Sizer.width(20),
                       mainAxisSpacing: Sizer.width(20),
                       physics: const NeverScrollableScrollPhysics(),
-                      childAspectRatio: 0.64,
+                      childAspectRatio: 0.62,
                       padding: EdgeInsets.only(
                         left: Sizer.width(20),
                         right: Sizer.width(20),

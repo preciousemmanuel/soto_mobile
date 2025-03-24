@@ -3,7 +3,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/> 
-    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
+    <!-- <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" /> -->
     
     <application android:label="Soto" android:name="${applicationName}" android:icon="@mipmap/launcher_icon">
         <activity android:name=".MainActivity" android:exported="true" android:launchMode="singleTop" android:taskAffinity="" android:theme="@style/LaunchTheme" android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode" android:hardwareAccelerated="true" android:windowSoftInputMode="adjustResize">

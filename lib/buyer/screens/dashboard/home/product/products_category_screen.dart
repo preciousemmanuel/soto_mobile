@@ -57,6 +57,7 @@ class _ProductsCategoryScreenState extends State<ProductsCategoryScreen> {
                 ),
                 children: [
                   Container(
+                    height: Sizer.height(100),
                     padding: EdgeInsets.only(
                       left: Sizer.width(20),
                       right: Sizer.width(20),
@@ -91,7 +92,7 @@ class _ProductsCategoryScreenState extends State<ProductsCategoryScreen> {
                       crossAxisSpacing: Sizer.width(20),
                       mainAxisSpacing: Sizer.width(20),
                       physics: const NeverScrollableScrollPhysics(),
-                      childAspectRatio: 0.74,
+                      childAspectRatio: 0.62,
                       padding: EdgeInsets.only(
                         left: Sizer.width(20),
                         right: Sizer.width(20),
